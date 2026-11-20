@@ -1,4 +1,175 @@
 {
- "updated": "",
- "questions": []
+ "updated": "2026-11-20 15:28",
+ "questions": [
+  {
+   "id": "agent-20261120-01",
+   "title": "Agent 长任务断点恢复：状态序列化失败与恢复后副作用重放怎么兜底",
+   "topic": "agent",
+   "difficulty": "资深",
+   "tags": [
+    "checkpoint",
+    "状态序列化",
+    "幂等",
+    "可观测性"
+   ],
+   "date": "2026-11-20",
+   "source_type": "面经",
+   "source_url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/23-agent-observability/README.md",
+   "path": "agent/agent-20261120-01.md",
+   "has_diagram": true
+  },
+  {
+   "id": "agent-20261120-02",
+   "title": "自报置信度不可信时，Agent 的人工接管闸门该怎么设计",
+   "topic": "agent",
+   "difficulty": "进阶",
+   "tags": [
+    "HITL",
+    "置信度校准",
+    "escalation",
+    "成本权衡"
+   ],
+   "date": "2026-11-20",
+   "source_type": "面经",
+   "source_url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/21-multimodal-agents/README.md",
+   "path": "agent/agent-20261120-02.md",
+   "has_diagram": true
+  },
+  {
+   "id": "agent-20261120-03",
+   "title": "多 Agent 编排：跨 Agent 的 trace 传播与净收益判据怎么落地",
+   "topic": "agent",
+   "difficulty": "资深",
+   "tags": [
+    "multi-agent",
+    "observability",
+    "tracing",
+    "成本归因"
+   ],
+   "date": "2026-11-20",
+   "source_type": "面经",
+   "source_url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/multi-agent/evaluation.md",
+   "path": "agent/agent-20261120-03.md",
+   "has_diagram": true
+  },
+  {
+   "id": "agent-20261120-04",
+   "title": "Agent 流式输出：线上退化成假流式与工具中间态错乱怎么定位",
+   "topic": "agent",
+   "difficulty": "进阶",
+   "tags": [
+    "streaming",
+    "sse",
+    "fastapi",
+    "故障定位"
+   ],
+   "date": "2026-11-20",
+   "source_type": "issue",
+   "source_url": "https://github.com/run-llama/llama_index/issues/22749",
+   "path": "agent/agent-20261120-04.md",
+   "has_diagram": true
+  },
+  {
+   "id": "rag-20261120-01",
+   "title": "加了 rerank 和混合召回，p95 延迟翻倍但答案没变好：怎么定位瓶颈并量化收益",
+   "topic": "rag",
+   "difficulty": "资深",
+   "tags": [
+    "hybrid-search",
+    "rerank",
+    "chunk策略",
+    "延迟预算"
+   ],
+   "date": "2026-11-20",
+   "source_type": "面经",
+   "source_url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md",
+   "path": "rag/rag-20261120-01.md",
+   "has_diagram": true
+  },
+  {
+   "id": "rag-20261120-02",
+   "title": "知识库更新后旧答案还在被召回：增量索引的差集删除、版本可服务与缓存失效",
+   "topic": "rag",
+   "difficulty": "资深",
+   "tags": [
+    "增量索引",
+    "软删除",
+    "版本切换",
+    "缓存失效"
+   ],
+   "date": "2026-11-20",
+   "source_type": "面经",
+   "source_url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md",
+   "path": "rag/rag-20261120-02.md",
+   "has_diagram": true
+  },
+  {
+   "id": "rag-20261120-03",
+   "title": "加一个 tenant_id 过滤条件后召回明显变差、长尾延迟飙升：filtered search 的执行路径怎么排查，向量库怎么选",
+   "topic": "rag",
+   "difficulty": "进阶",
+   "tags": [
+    "vector-db",
+    "filtered-search",
+    "HNSW",
+    "选型"
+   ],
+   "date": "2026-11-20",
+   "source_type": "面经",
+   "source_url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md",
+   "path": "rag/rag-20261120-03.md",
+   "has_diagram": true
+  },
+  {
+   "id": "rag-20261120-04",
+   "title": "备份任务天天显示成功，真要回滚时却恢复不出来：RAG 索引快照的可用性该怎么验证",
+   "topic": "rag",
+   "difficulty": "资深",
+   "tags": [
+    "snapshot",
+    "灾备演练",
+    "collection-alias",
+    "数据血缘"
+   ],
+   "date": "2026-11-20",
+   "source_type": "issue",
+   "source_url": "https://github.com/qdrant/qdrant/issues/8934",
+   "path": "rag/rag-20261120-04.md",
+   "has_diagram": true
+  },
+  {
+   "id": "fastapi-20261120-01",
+   "title": "async def 接口 P99 抖动到秒级：同步 SDK 打满共享线程池，怎么定位并隔离",
+   "topic": "fastapi",
+   "difficulty": "进阶",
+   "tags": [
+    "async",
+    "线程池",
+    "阻塞调用",
+    "性能排查"
+   ],
+   "date": "2026-11-20",
+   "source_type": "文档",
+   "source_url": "",
+   "path": "fastapi/fastapi-20261120-01.md",
+   "has_diagram": true
+  },
+  {
+   "id": "fastapi-20261120-02",
+   "title": "SSE 流式接口 worker 被长连接占满、客户端断开后仍在计费：多进程部署怎么收口",
+   "topic": "fastapi",
+   "difficulty": "资深",
+   "tags": [
+    "SSE",
+    "StreamingResponse",
+    "部署",
+    "资源回收"
+   ],
+   "date": "2026-11-20",
+   "source_type": "文档",
+   "source_url": "",
+   "path": "fastapi/fastapi-20261120-02.md",
+   "has_diagram": true
+  }
+ ]
 }

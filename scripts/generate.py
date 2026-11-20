@@ -79,14 +79,28 @@ def build_user_prompt(topic, quota, clues, issues, web, bank_titles, generated_t
 
 
 def generate_topic(topic, quota, clues, issues, web, index, generated_titles):
+    """按每批 2 道分批生成；reasoner 的思考 token 会挤占输出额度，小批次更稳。"""
     bank_titles = [
         q["title"] for q in index.get("questions", [])
         if q.get("topic") == topic
     ][-150:]
-    user = build_user_prompt(topic, quota, clues, issues, web, bank_titles, generated_titles)
-    data = llm.reasoner(SYSTEM_PROMPT, user)
     allowed = {c["url"] for c in clues} | {x["url"] for x in issues} | {w["url"] for w in web}
-    return validate_questions(data.get("questions") or [], topic, allowed, quota)
+    out, attempts = [], 0
+    while len(out) < quota and attempts < 5:
+        attempts += 1
+        need = min(2, quota - len(out))
+        titles = [q["title"] for q in generated_titles + out]
+        user = build_user_prompt(topic, need, clues, issues, web, bank_titles, titles)
+        try:
+            data = llm.reasoner(SYSTEM_PROMPT, user)
+        except Exception as exc:
+            print(f"[warn] {topic} 批次生成失败：{exc}")
+            break
+        qs = validate_questions(data.get("questions") or [], topic, allowed, need)
+        if not qs:
+            break
+        out.extend(qs)
+    return out[:quota]
 
 
 def validate_questions(raw, topic, allowed_urls, quota):

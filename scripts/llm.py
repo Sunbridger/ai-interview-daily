@@ -55,7 +55,7 @@ def _post(model, messages, max_tokens, json_mode=False, temperature=None, timeou
     raise RuntimeError(f"{model} 调用失败：{last_err}")
 
 
-def reasoner(system, user, max_tokens=8000):
+def reasoner(system, user, max_tokens=16000):
     return _post(
         "deepseek-reasoner",
         [{"role": "system", "content": system}, {"role": "user", "content": user}],

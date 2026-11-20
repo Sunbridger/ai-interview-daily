@@ -181,13 +181,19 @@ def main(argv=None):
         issue_pick = sources.pick_issues(DATA, issues, date_str)
         questions, generated = [], []
         for topic in config.TOPIC_ORDER:
-            qs = generate.generate_topic(
-                topic, config.TOPIC_QUOTA[topic], clue_sets[topic],
-                issue_pick, web, index, [q["title"] for q in generated],
-            )
+            try:
+                qs = generate.generate_topic(
+                    topic, config.TOPIC_QUOTA[topic], clue_sets[topic],
+                    issue_pick, web, index, [q["title"] for q in generated],
+                )
+            except Exception as exc:
+                print(f"[warn] {config.TOPIC_NAMES[topic]} 生成失败：{exc}")
+                qs = []
             print(f"[gen] {config.TOPIC_NAMES[topic]}：{len(qs)} 道")
             questions.extend(qs)
             generated.extend(qs)
+        if not questions:
+            raise RuntimeError("今日生成 0 道题，检查数据源与模型日志")
         questions = generate.dedupe_questions(questions, index)
         generate.validate_diagrams(questions)
         assign_ids(questions, date_str)

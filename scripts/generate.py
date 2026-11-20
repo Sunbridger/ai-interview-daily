@@ -89,7 +89,7 @@ def generate_topic(topic, quota, clues, issues, web, index, generated_titles):
     while len(out) < quota and attempts < 5:
         attempts += 1
         need = min(2, quota - len(out))
-        titles = [q["title"] for q in generated_titles + out]
+        titles = list(generated_titles) + [q["title"] for q in out]
         user = build_user_prompt(topic, need, clues, issues, web, bank_titles, titles)
         try:
             data = llm.reasoner(SYSTEM_PROMPT, user)

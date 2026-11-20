@@ -1,0 +1,58 @@
+name: daily-interview
+
+on:
+  schedule:
+    # 23:30 UTC = 次日 07:30 北京时间；偏移分钟抵消 Actions 延迟，目标 08:00 送达
+    - cron: "30 23 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  issues: read
+
+concurrency:
+  group: daily-interview
+  cancel-in-progress: false
+
+jobs:
+  daily:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install Python deps
+        run: pip install -r requirements.txt
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install Mermaid validator
+        run: npm install --no-audit --no-fund
+
+      - name: Generate daily questions
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          BARK_ENDPOINT: ${{ secrets.BARK_ENDPOINT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MERMAID_CHECK: "1"
+          TZ: Asia/Shanghai
+        run: python -m scripts.main
+
+      - name: Commit bank, pages and state
+        run: |
+          git config user.name  "interview-bot"
+          git config user.email "interview-bot@users.noreply.github.com"
+          git add bank docs data
+          if git diff --cached --quiet; then
+            echo "no changes to commit"
+          else
+            git commit -m "chore: daily interview questions $(TZ=Asia/Shanghai date +%F)"
+            git push
+          fi

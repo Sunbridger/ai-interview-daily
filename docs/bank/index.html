@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI 面试题库</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:#3f3f3f;font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;letter-spacing:.4px;-webkit-font-smoothing:antialiased}
+main{width:80%;max-width:1080px;margin:0 auto;padding:44px 0 80px}
+.masthead{text-align:center}
+.kicker{display:inline-block;font-size:12px;letter-spacing:2px;color:#d4472a;border:1px solid #f0cfc6;background:#fdf5f2;padding:3px 12px;border-radius:2px}
+h1{font-size:24px;line-height:1.5;color:#1a1a1a;font-weight:700;margin:18px 0 6px}
+.masthead .meta{font-size:13px;color:#999;margin:0}
+.lede{font-size:15px;color:#8a8a8a;text-align:center;margin:14px 0 0}
+.orn{display:flex;align-items:center;gap:12px;margin:30px 0;color:#d8d8d8;font-size:10px;line-height:1}
+.orn:before,.orn:after{content:"";flex:1;height:1px;background:#eee}
+.topic-head{text-align:center;margin:46px 0 6px}
+.topic-head span{display:inline-block;font:600 13px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.22em;color:#d4472a;border-top:1px solid #f0cfc6;border-bottom:1px solid #f0cfc6;padding:7px 16px}
+.q{margin:34px 0 0}
+.no{display:inline-block;background:#d4472a;color:#fff;font-size:12px;font-weight:600;line-height:1;padding:5px 8px;border-radius:3px;margin-right:9px;vertical-align:3px;letter-spacing:1px}
+h2{font-size:19px;line-height:1.65;color:#1a1a1a;font-weight:700;margin:0 0 8px}
+.meta-line{font-size:13px;color:#9b9b9b;margin:0 0 16px;padding-left:2px}
+.meta-line a{color:#576b95;text-decoration:none}
+.tag{display:inline-block;border:1px solid #ececec;border-radius:2px;padding:0 6px;margin-right:5px;font-size:12px;color:#8a8a8a;line-height:1.9}
+p{margin:14px 0}
+.sub{font-size:15px;font-weight:700;color:#222;margin:24px 0 10px;padding-left:9px;border-left:3px solid #d4472a;line-height:1.5}
+.steps{list-style:none;margin:0;padding:0;counter-reset:s}
+.steps li{counter-increment:s;position:relative;padding-left:27px;margin:8px 0}
+.steps li:before{content:counter(s);position:absolute;left:0;top:0;color:#d4472a;font-weight:600;font-size:14px;line-height:1.9}
+.code{background:#f7f7f7;border-radius:4px;padding:14px 16px;margin:16px 0;overflow:auto}
+.code code{display:block;font:13px/1.7 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#2f2f2f;white-space:pre}
+.qa{background:#fbfbfb;border-radius:4px;padding:12px 16px;margin:0}
+.qa p{margin:6px 0;font-size:15px;color:#444}
+.qa strong{color:#1a1a1a}
+.diagram{background:#fbfbfb;border:1px solid #eee;border-radius:4px;padding:12px;margin:16px 0;overflow:auto}
+.diagram .mermaid{display:flex;justify-content:center}
+footer{margin-top:56px;text-align:center;color:#b0b0b0;font-size:12px;line-height:2.2}
+footer a{color:#8a9bbf;text-decoration:none}
+.empty{text-align:center;color:#9b9b9b;padding:48px 0}
+/* 题库页 */
+.search-box{margin:32px 0 0}
+input[type=search]{width:100%;padding:11px 14px;border:1px solid #e5e5e5;border-radius:4px;font-size:15px;color:#333;outline:none;background:#fff}
+input[type=search]:focus{border-color:#d4472a}
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 10px}
+.filter{border:1px solid #e5e5e5;border-radius:999px;padding:3px 12px;font-size:13px;color:#666;background:#fff;cursor:pointer;font-family:inherit}
+.filter.on{border-color:#d4472a;color:#d4472a;background:#fdf5f2}
+.count{color:#9b9b9b;font-size:13px;margin:6px 0 14px}
+.bank-item{border-top:1px solid #eee;padding:16px 0}
+.bank-item a{color:#1a1a1a;text-decoration:none;font-weight:600}
+.bank-item a:hover{color:#d4472a}
+.bank-item .meta{font-size:12px;color:#9b9b9b;margin-top:4px}
+@media (max-width:760px){main{width:auto;padding:32px 20px 64px}}
+@media (min-width:1200px){body{font-size:17px}h1{font-size:28px}h2{font-size:21px}.qa p{font-size:16px}}
+</style>
+</head>
+<body>
+<main>
+<header class="masthead">
+<span class="kicker">AI 面试题库</span>
+<h1>共 0 道题</h1>
+<p class="meta">Agent · RAG · FastAPI ｜ 永久去重，每天新增</p>
+</header>
+<div class="search-box">
+<input id="kw" type="search" placeholder="搜索题目关键字或标签，例如：重排、依赖注入、工具调用">
+<div class="filters" id="filters"></div>
+<p class="count" id="count"></p>
+<div id="list"></div>
+</div>
+<footer>
+<p><a href="../index.html">← 返回今日题目</a> ｜ 题库自动维护，点击题目跳转到当日页面</p>
+</footer>
+</main>
+<script id="bank-data" type="application/json">[]</script>
+<script>
+(function(){
+  var data = JSON.parse(document.getElementById("bank-data").textContent);
+  var state = {topic:"all", diff:"all", source:"all", kw:""};
+  var filtersEl = document.getElementById("filters");
+  var listEl = document.getElementById("list");
+  var countEl = document.getElementById("count");
+  var kwEl = document.getElementById("kw");
+
+  function makeFilter(label, value, key){
+    var b = document.createElement("button");
+    b.className = "filter" + (state[key] === value ? " on" : "");
+    b.textContent = label;
+    b.onclick = function(){ state[key] = value; draw(); };
+    return b;
+  }
+  function drawFilters(){
+    filtersEl.textContent = "";
+    [["全部主题","all","topic"],["Agent","agent","topic"],["RAG","rag","topic"],["FastAPI","fastapi","topic"]]
+      .forEach(function(f){ filtersEl.appendChild(makeFilter(f[0], f[1], f[2])); });
+    [["全部难度","all","diff"],["进阶","进阶","diff"],["资深","资深","diff"]]
+      .forEach(function(f){ filtersEl.appendChild(makeFilter(f[0], f[1], f[2])); });
+    [["全部来源","all","source"],["面经","面经","source"],["issue","issue","source"],["文档","文档","source"]]
+      .forEach(function(f){ filtersEl.appendChild(makeFilter(f[0], f[1], f[2])); });
+  }
+  function match(q){
+    if (state.topic !== "all" && q.topic !== state.topic) return false;
+    if (state.diff !== "all" && q.difficulty !== state.diff) return false;
+    if (state.source !== "all" && q.source_type !== state.source) return false;
+    if (!state.kw) return true;
+    var hay = (q.title + " " + q.tags.join(" ")).toLowerCase();
+    return hay.indexOf(state.kw.toLowerCase()) >= 0;
+  }
+  function draw(){
+    drawFilters();
+    var items = data.filter(match);
+    countEl.textContent = "显示 " + items.length + " / " + data.length + " 道";
+    listEl.textContent = "";
+    items.forEach(function(q){
+      var div = document.createElement("div");
+      div.className = "bank-item";
+      var a = document.createElement("a");
+      a.href = q.href; a.textContent = q.title;
+      var meta = document.createElement("div");
+      meta.className = "meta";
+      meta.textContent = q.date + " · " + q.topicName + " · " + q.difficulty +
+        (q.source_type ? " · " + q.source_type : "") +
+        (q.tags.length ? " · " + q.tags.join(" / ") : "");
+      div.appendChild(a); div.appendChild(meta);
+      listEl.appendChild(div);
+    });
+  }
+  kwEl.addEventListener("input", function(){ state.kw = kwEl.value.trim(); draw(); });
+  draw();
+})();
+</script>
+</body>
+</html>

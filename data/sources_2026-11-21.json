@@ -1,0 +1,256 @@
+{
+ "clues": {
+  "agent": [
+   {
+    "title": "如何部署 LLM 应用到生产环境？需要注意什么？",
+    "topic": "agent",
+    "repo": "guocong-bincai/ai-interview-guide",
+    "path": "docs/12-frameworks-tools/README.md",
+    "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/12-frameworks-tools/README.md"
+   },
+   {
+    "title": "MCP Tool Poisoning 与服务端漏洞会形成怎样的攻击链？如何防御？",
+    "topic": "agent",
+    "repo": "guocong-bincai/ai-interview-guide",
+    "path": "docs/14-mcp-skill-systems/README.md",
+    "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+   },
+   {
+    "title": "为什么需要 SWE-bench Multimodal？",
+    "topic": "agent",
+    "repo": "guocong-bincai/ai-interview-guide",
+    "path": "docs/17-ai-coding-tools/README.md",
+    "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+   },
+   {
+    "title": "问题：谁来决定\"何时扩大发布\"？",
+    "topic": "agent",
+    "repo": "guocong-bincai/ai-interview-guide",
+    "path": "docs/17-ai-coding-tools/README.md",
+    "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+   },
+   {
+    "title": "纯视觉与 Accessibility Tree/XML 路线如何取舍？",
+    "topic": "agent",
+    "repo": "guocong-bincai/ai-interview-guide",
+    "path": "docs/21-multimodal-agents/README.md",
+    "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/21-multimodal-agents/README.md"
+   },
+   {
+    "title": "三大AI编程工具的设计哲学和2026年市场格局是什么？",
+    "topic": "agent",
+    "repo": "guocong-bincai/ai-interview-guide",
+    "path": "docs/17-ai-coding-tools/README.md",
+    "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+   },
+   {
+    "title": "Coze 平台如何搭建 AI 应用？与传统开发有什么区别？",
+    "topic": "agent",
+    "repo": "guocong-bincai/ai-interview-guide",
+    "path": "docs/12-frameworks-tools/README.md",
+    "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/12-frameworks-tools/README.md"
+   },
+   {
+    "title": "多 Agent 协作中如何归因某次失败是哪个环节导致的？",
+    "topic": "agent",
+    "repo": "cdavid817/agent-interview",
+    "path": "docs/02-capabilities/multi-agent/evaluation.md",
+    "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/multi-agent/evaluation.md"
+   }
+  ],
+  "rag": [
+   {
+    "title": "为什么 RAG 要用向量数据库？其他数据库不行吗？",
+    "topic": "rag",
+    "repo": "guocong-bincai/ai-interview-guide",
+    "path": "docs/03-rag-system/README.md",
+    "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md"
+   },
+   {
+    "title": "向量数据库的 Metadata 过滤怎么用？有什么应用场景？",
+    "topic": "rag",
+    "repo": "guocong-bincai/ai-interview-guide",
+    "path": "docs/12-frameworks-tools/README.md",
+    "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/12-frameworks-tools/README.md"
+   },
+   {
+    "title": "问题是否包含多个子问题？",
+    "topic": "rag",
+    "repo": "guocong-bincai/ai-interview-guide",
+    "path": "docs/03-rag-system/README.md",
+    "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md"
+   },
+   {
+    "title": "RRF为什么在工业界使用较多？",
+    "topic": "rag",
+    "repo": "cdavid817/agent-interview",
+    "path": "docs/02-capabilities/rag/embedding-vector-1.md",
+    "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md"
+   },
+   {
+    "title": "HNSW 生产调参实战：M/ef/efConstruction 如何选择？有哪些性能陷阱？",
+    "topic": "rag",
+    "repo": "guocong-bincai/ai-interview-guide",
+    "path": "docs/06-vector-index-optimization/README.md",
+    "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/06-vector-index-optimization/README.md"
+   },
+   {
+    "title": "为什么向量索引需要专门监控？",
+    "topic": "rag",
+    "repo": "guocong-bincai/ai-interview-guide",
+    "path": "docs/06-vector-index-optimization/README.md",
+    "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/06-vector-index-optimization/README.md"
+   },
+   {
+    "title": "如何降低向量检索成本？",
+    "topic": "rag",
+    "repo": "cdavid817/agent-interview",
+    "path": "docs/02-capabilities/rag/embedding-vector-1.md",
+    "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md"
+   },
+   {
+    "title": "向量数据库迁移如何避免停机和检索回退？",
+    "topic": "rag",
+    "repo": "guocong-bincai/ai-interview-guide",
+    "path": "docs/06-vector-index-optimization/README.md",
+    "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/06-vector-index-optimization/README.md"
+   }
+  ],
+  "fastapi": []
+ },
+ "issues": [
+  {
+   "repo": "langchain-ai/langchain",
+   "title": "TypeError in merge_lists when streaming Mistral responses with inline citations",
+   "url": "https://github.com/langchain-ai/langchain/issues/35259",
+   "labels": [
+    "bug",
+    "langchain",
+    "mistralai",
+    "external"
+   ],
+   "comments": 5,
+   "excerpt": "### Checked other resources - [x] This is a bug, not a usage question. - [x] I added a clear and descriptive title that summarizes this issue. - [x] I used the GitHub search to find a similar question and didn't find it. - [x] I am sure that this is a bug in LangChain rather than my code. - [x] The bug is not resolved by updating to the latest stable version of LangChain (or the specific integration package). - [x] This is not related to the langchain-community package. - [x] I posted a self-contained, minimal, reproducible example. A maintainer can copy it and run it AS IS. ### Package (Required) - [x] langchain - [ ] langchain-openai - [ ] langchain-anthropic - [ ] langchain-classic - [ ] "
+  },
+  {
+   "repo": "milvus-io/milvus",
+   "title": "[Bug]: BinaryVector HAMMING search silently ignores top-level group_by_fields instead of rejecting or grouping",
+   "url": "https://github.com/milvus-io/milvus/issues/51136",
+   "labels": [
+    "kind/bug",
+    "triage/accepted",
+    "ready-for-verification"
+   ],
+   "comments": 5,
+   "excerpt": "### Is there an existing issue for this? - [x] I have searched the existing issues ### Environment ### Current Behavior `BinaryVector` search with HAMMING accepts the top-level search parameter `group_by_fields`, but it neither rejects the request nor applies group-by semantics. When searching with: Milvus returns ordinary Hamming Top-k results instead of one best result per group. Actual result: ids = [1, 2, 4, 3] groups = [1, 1, 2, 2] id=1 and id=2 both belong to group 1, so `group_by_fields` appears to be silently ignored. The same result is returned after applying the same XOR mask to both the query vector and all stored binary vectors: base: ([1, 2, 4, 3], ...) xor : ([1, 2, 4, 3], ...)"
+  },
+  {
+   "repo": "milvus-io/milvus",
+   "title": "[Bug]: REST API v2 returns Array fields in raw protobuf ScalarField format instead of JSON arrays",
+   "url": "https://github.com/milvus-io/milvus/issues/52048",
+   "labels": [
+    "kind/bug",
+    "triage/accepted",
+    "ready-for-verification"
+   ],
+   "comments": 2,
+   "excerpt": "### Is there an existing issue for this? - [x] I have searched the existing issues ### Environment ### Current Behavior When retrieving Array-type fields via the REST API v2 (query, search, or get endpoints), the response contains the raw protobuf `ScalarField` message structure instead of a native JSON array. Observed output for a VarChar Array field: instead of the expected `{\"tags\": [\"a\", \"b\", \"c\"]}`. This affects ALL Array element types and all three retrieval endpoints (`query`, `search`, `get`): - VarChar Array → `{\"Data\": {\"StringData\": {\"data\": [...]}}}` - Int64 Array → `{\"Data\": {\"LongData\": {\"data\": [...]}}}` - Float Array → `{\"Data\": {\"FloatData\": {\"data\": [...]}}}` Empty arrays a"
+  },
+  {
+   "repo": "run-llama/llama_index",
+   "title": "[Bug]: IntelEmbedding RuntimeError",
+   "url": "https://github.com/run-llama/llama_index/issues/19328",
+   "labels": [
+    "bug",
+    "P2"
+   ],
+   "comments": 7,
+   "excerpt": "### Bug Description Running the [example code](https://docs.llamaindex.ai/en/stable/examples/embeddings/optimum_intel/) results in the error. ### Version 0.12.46 ### Steps to Reproduce ### Relevant Logs/Tracbacks"
+  },
+  {
+   "repo": "qdrant/qdrant",
+   "title": "Issue with configuring S3 storage with tls",
+   "url": "https://github.com/qdrant/qdrant/issues/8934",
+   "labels": [
+    "bug",
+    "area/snapshots"
+   ],
+   "comments": 2,
+   "excerpt": "Upload snapshot to s3 using http works but it failed with https. ## Current Behavior Issue with uploading snapshot to s3 using https ## Steps to Reproduce My config snippet is as below: storage: snapshots_config: snapshots_storage: s3 s3_config: bucket: qdrant-snapshots #region: \"\" access_key: minio secret_key: minio endpoint_url: https://minio.minio.svc.cluster.local:9000 How do I configure in the config to specify connections is secure and how do I specify the ca-cert path in the config for s3 connections? If it is not possible to specify in config, is there any way to do it using env variables? Also, I cannot find any documentations which lists all the available QDRANT__ env variables bei"
+  },
+  {
+   "repo": "qdrant/qdrant",
+   "title": "Exact Euclid search collapses distinct tiny vectors to zero distance in Qdrant 1.19.1",
+   "url": "https://github.com/qdrant/qdrant/issues/11287",
+   "labels": [
+    "bug",
+    "wontfix",
+    "area/segment"
+   ],
+   "comments": 2,
+   "excerpt": "## Current Behavior Exact Euclid search (`params.exact=true`) with points `id1=[1e-25, 0]`, `id2=[0, 0]` and query `[1e-25, 0]` returns The **zero vector** (true distance `1e-25` from the query) ranks *before* the **exact self-match** (true distance `0`), and the non-self score is collapsed to `0.0`. Expected: `[(1, 0.0), (2, 1e-25)]`. The identical collection with `Manhattan` orders and scores exactly (`[(1, 0.0), (2, 1e-25)]`), isolating the fault to the squared-difference path of exact Euclid scoring. ## Steps to Reproduce [reproduce.py](https://github.com/user-attachments/files/33767377/reproduce.py) ## Expected Behavior For Euclid, results are ordered by ascending true distance and scor"
+  }
+ ],
+ "web": [
+  {
+   "title": "面试官让你把 LLM、RAG、Agent、MCP 串起来讲清楚，90% 的 Java 工程师当场露馅",
+   "url": "https://juejin.cn/post/7703872149400453156",
+   "source": "掘金"
+  },
+  {
+   "title": "RAG 面试 6 连问，从原理到优化全部覆盖",
+   "url": "https://juejin.cn/post/7693689217004732459",
+   "source": "掘金"
+  },
+  {
+   "title": "面试官：RAG 不用向量数据库，用 MySQL 硬扛？我：100 万向量不是很轻松？",
+   "url": "https://juejin.cn/post/7652606969635848235",
+   "source": "掘金"
+  },
+  {
+   "title": " 面试被问 RAG 只能说出六个字？这篇用 100 行 Node.js 代码帮你彻底搞懂",
+   "url": "https://juejin.cn/post/7659630107413659698",
+   "source": "掘金"
+  },
+  {
+   "title": "万字长文图解 Agent 面试题：ReAct、MCP、Skills、Function call、Tools、A2A、Workflow 等",
+   "url": "https://juejin.cn/post/7628156003448553506",
+   "source": "掘金"
+  },
+  {
+   "title": "大厂面试合集：Agent面试核心知识地图（涵盖所有方向）",
+   "url": "https://juejin.cn/post/7642596411209662502",
+   "source": "掘金"
+  },
+  {
+   "title": "大模型 Agent 面试高频100题——基础篇",
+   "url": "https://juejin.cn/post/7638270500838408233",
+   "source": "掘金"
+  },
+  {
+   "title": "2026年最新AI agent面试（01）_Agent基础与推理范式",
+   "url": "https://juejin.cn/post/7662570924793282603",
+   "source": "掘金"
+  },
+  {
+   "title": "fastapi面试题总结",
+   "url": "https://juejin.cn/post/7616650313060597811",
+   "source": "掘金"
+  },
+  {
+   "title": "Python面试：FastAPI框架原理与实战",
+   "url": "https://juejin.cn/post/7359893196438306852",
+   "source": "掘金"
+  },
+  {
+   "title": "学习 FastAPI 的 Day 4：完成用户系统与接口联调（完结）",
+   "url": "https://juejin.cn/post/7684893611952619529",
+   "source": "掘金"
+  },
+  {
+   "title": "学习 FastAPI 的 Day 1：看懂接口与请求流程",
+   "url": "https://juejin.cn/post/7682323883429232691",
+   "source": "掘金"
+  }
+ ]
+}

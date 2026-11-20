@@ -1,0 +1,3386 @@
+{
+ "synced": "2026-11-20",
+ "questions": [
+  {
+   "title": "向量量化后为什么会损失召回率？",
+   "topic": "rag",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/rag/embedding-vector-1.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md"
+  },
+  {
+   "title": "Reflexion 和普通反思有什么区别？它的记忆机制是什么？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/22-agent-planning-reflection/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/22-agent-planning-reflection/README.md"
+  },
+  {
+   "title": "什么是 SWE-bench Multimodal 和 Terminal-Bench？2026年最新评测数据如何？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "实体间关系是核心信息吗？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/03-rag-system/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md"
+  },
+  {
+   "title": "如何测试 AI 应用的质量？有哪些评估指标？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/12-frameworks-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/12-frameworks-tools/README.md"
+  },
+  {
+   "title": "什么是 Tree of Thoughts（ToT）？它和 CoT、ReAct 有什么区别？什么时候树搜索得不偿失？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/22-agent-planning-reflection/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/22-agent-planning-reflection/README.md"
+  },
+  {
+   "title": "视频理解Agent的核心技术是什么？如何处理长视频？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/21-multimodal-agents/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/21-multimodal-agents/README.md"
+  },
+  {
+   "title": "如何设计一个发票识别+报销Agent？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/21-multimodal-agents/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/21-multimodal-agents/README.md"
+  },
+  {
+   "title": "一个完整 RAG 系统里，哪些步骤属于离线建库，哪些属于在线问答？",
+   "topic": "rag",
+   "repo": "didilili/ai-agents-from-zero",
+   "path": "19-RAG检索增强生成.md",
+   "url": "https://github.com/didilili/ai-agents-from-zero/blob/main/19-RAG%E6%A3%80%E7%B4%A2%E5%A2%9E%E5%BC%BA%E7%94%9F%E6%88%90.md"
+  },
+  {
+   "title": "什么是 Chain-of-Vision-Thought（CoVT）？为什么它对 VLM 如此重要？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/21-multimodal-agents/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/21-multimodal-agents/README.md"
+  },
+  {
+   "title": "为什么 2026 年 MCP 安全突然变得重要？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "AI 编程工具的核心能力有哪些？有哪些关键评测指标？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "RAG 系统中 Embedding Drift 是什么？如何检测和缓解？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "RRF为什么在工业界使用较多？",
+   "topic": "rag",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/rag/embedding-vector-1.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md"
+  },
+  {
+   "title": "AutoGen 如何实现对话式多 Agent 协作？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/13-multi-agent-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/13-multi-agent-systems/README.md"
+  },
+  {
+   "title": "视觉语言模型的核心架构是怎样的？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/21-multimodal-agents/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/21-multimodal-agents/README.md"
+  },
+  {
+   "title": "Cursor的\"Self-Hosted Cloud Agents\"是什么？和传统Cursor Agent有什么区别？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "HNSW 的 efConstruction 和 efSearch 如何调优？",
+   "topic": "rag",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/rag/embedding-vector-1.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md"
+  },
+  {
+   "title": "Dify 如何本地部署并进行性能优化？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/12-frameworks-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/12-frameworks-tools/README.md"
+  },
+  {
+   "title": "如何定义 Agent 系统的成熟度？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/13-multi-agent-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/13-multi-agent-systems/README.md"
+  },
+  {
+   "title": "什么时候固定工作流比 Agent 更合适？",
+   "topic": "rag",
+   "repo": "didilili/ai-agents-from-zero",
+   "path": "1-3-RAG、微调、续训与智能体选型.md",
+   "url": "https://github.com/didilili/ai-agents-from-zero/blob/main/1-3-RAG%E3%80%81%E5%BE%AE%E8%B0%83%E3%80%81%E7%BB%AD%E8%AE%AD%E4%B8%8E%E6%99%BA%E8%83%BD%E4%BD%93%E9%80%89%E5%9E%8B.md"
+  },
+  {
+   "title": "状态不一致如何检测？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/23-agent-observability/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/23-agent-observability/README.md"
+  },
+  {
+   "title": "什么是 Semantic Chunking？它和固定分块有什么区别？2026年有什么新发现？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "高频追问：RAG 效果如何提升？出现幻觉怎么办？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/03-rag-system/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md"
+  },
+  {
+   "title": "Cline是什么？为什么它是开源极客的首选？Amazon Q Developer适合哪些场景？2026年AI编程五大趋势是什么？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "什么是 RAG？为什么需要 RAG？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/03-rag-system/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md"
+  },
+  {
+   "title": "什么是多模态Agent？和单模态Agent有什么区别？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/21-multimodal-agents/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/21-multimodal-agents/README.md"
+  },
+  {
+   "title": "什么是多模态 RAG？如何实现图文混合检索？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/03-rag-system/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md"
+  },
+  {
+   "title": "如何实现 LLM 流式输出（Streaming）？前后端完整方案是什么？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/12-frameworks-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/12-frameworks-tools/README.md"
+  },
+  {
+   "title": "SWE-bench Pro 是什么？为什么它是 2025 年最重要的编码基准变化？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "为什么必须有 ANN？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/06-vector-index-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/06-vector-index-optimization/README.md"
+  },
+  {
+   "title": "多Agent并发修改同一文件时如何解决冲突？",
+   "topic": "agent",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/multi-agent/conflict-reliability.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/multi-agent/conflict-reliability.md"
+  },
+  {
+   "title": "使用 Coding Agent 时，如何控制上下文、Token、延迟和费用？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "评估每个 step 的质量",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/12-frameworks-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/12-frameworks-tools/README.md"
+  },
+  {
+   "title": "为什么这个问题严重？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "什么是 Spatial Grounding（空间定位/接地）？为什么它是 VLM 最难的能力之一？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/21-multimodal-agents/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/21-multimodal-agents/README.md"
+  },
+  {
+   "title": "诞生命题： HNSW 全量内存才能快，但数据太大放不下怎么办？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/06-vector-index-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/06-vector-index-optimization/README.md"
+  },
+  {
+   "title": "如何选择Embedding模型？",
+   "topic": "rag",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/rag/embedding-vector-1.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md"
+  },
+  {
+   "title": "Q: 企业如何安全部署MCP？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "为什么有了向量检索还需要Rerank？",
+   "topic": "rag",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/rag/embedding-vector-1.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md"
+  },
+  {
+   "title": "心跳机制的超时阈值怎么设定？误判Agent\"假死\"怎么处理？",
+   "topic": "agent",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/multi-agent/conflict-reliability.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/multi-agent/conflict-reliability.md"
+  },
+  {
+   "title": "上下文忠实度（1-5）：答案是否基于给定上下文？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "如何部署 LLM 应用到生产环境？需要注意什么？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/12-frameworks-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/12-frameworks-tools/README.md"
+  },
+  {
+   "title": "RAG Pipeline 里的 Re-ranker 为什么必不可少？怎么选模型和调参？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/12-frameworks-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/12-frameworks-tools/README.md"
+  },
+  {
+   "title": "τ-bench是什么？为什么它是2026年最接近真实生产环境的Agent评估基准？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "为什么需要这两个特性？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/22-agent-planning-reflection/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/22-agent-planning-reflection/README.md"
+  },
+  {
+   "title": "为什么 MCP 安全在 2026 年突然成为焦点？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "为什么Chunk会冲突？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "如何降低向量检索成本？",
+   "topic": "rag",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/rag/embedding-vector-1.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md"
+  },
+  {
+   "title": "为什么需要关注新锐平台？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/23-agent-observability/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/23-agent-observability/README.md"
+  },
+  {
+   "title": "Q: 如何开发一个MCP Server？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "MCP Server 在生产环境部署的安全最佳实践有哪些？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "向量维度越大越好吗？",
+   "topic": "rag",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/rag/embedding-vector-1.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md"
+  },
+  {
+   "title": "什么是 LLM-as-a-Judge？为什么它是 RAG 评估的未来？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "vLLM 的 PagedAttention 如何实现高吞吐推理？Continuous Batching 又是什么？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/12-frameworks-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/12-frameworks-tools/README.md"
+  },
+  {
+   "title": "2026年 Dify、Coze、n8n、OpenClaw 四大平台如何选型？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/12-frameworks-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/12-frameworks-tools/README.md"
+  },
+  {
+   "title": "MCP Skills Over MCP 是什么？为什么它让 AI Agent 能动态组合多工具能力？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "RAG 和 Skill 有什么区别？RAG 管\"知识\"、Skill 管\"流程\"是什么意思？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "2026年RAG有哪些前沿研究方向？LIT-RAGBench、GAM-RAG、Robust RAG等最新成果代表了什么趋势？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "GenericAgent是什么？为什么\"自进化技能树\"是2026年AI Agent架构的新方向？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "为什么需要 DiskANN？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/06-vector-index-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/06-vector-index-optimization/README.md"
+  },
+  {
+   "title": "为什么 RAG 需要专门的可观测性？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/03-rag-system/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md"
+  },
+  {
+   "title": "AutoGen v3 和 CrewAI 有什么区别？多 Agent 协作的\"指挥官模式\"是什么？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/22-agent-planning-reflection/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/22-agent-planning-reflection/README.md"
+  },
+  {
+   "title": "多轮对话中历史状态膨胀怎么处理？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/23-agent-observability/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/23-agent-observability/README.md"
+  },
+  {
+   "title": "是否需要最新数据？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/03-rag-system/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md"
+  },
+  {
+   "title": "为什么需要多路召回？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/03-rag-system/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md"
+  },
+  {
+   "title": "三大AI编程工具的设计哲学和2026年市场格局是什么？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "Q: L5 Agent 和 L3 Multi-Agent 的核心区别？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/13-multi-agent-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/13-multi-agent-systems/README.md"
+  },
+  {
+   "title": "如何设计 Agent 的 SLA 和告警规则？有哪些关键阈值？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/23-agent-observability/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/23-agent-observability/README.md"
+  },
+  {
+   "title": "SlopCodeBench 是什么？为什么它揭示了 Coding Agent 在迭代任务中的代码退化问题？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "MCP Security 现状如何？2026年为什么企业级 MCP 部署必须解决安全问题？OWASP MCP Top 10 之外有哪些关键风险？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "为什么 Embedding 适合做语义检索，而普通关键词匹配不够？",
+   "topic": "rag",
+   "repo": "didilili/ai-agents-from-zero",
+   "path": "18-向量数据库与Embedding实战.md",
+   "url": "https://github.com/didilili/ai-agents-from-zero/blob/main/18-%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8EEmbedding%E5%AE%9E%E6%88%98.md"
+  },
+  {
+   "title": "多 Agent 系统如何设计 Policy Engine、权限和审计？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/13-multi-agent-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/13-multi-agent-systems/README.md"
+  },
+  {
+   "title": "Weaviate、Qdrant、Milvus 如何选型？",
+   "topic": "rag",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/rag/embedding-vector-1.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md"
+  },
+  {
+   "title": "OpenAI Responses API 如何管理会话和工具？它与旧 Assistants API 有什么关系？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/12-frameworks-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/12-frameworks-tools/README.md"
+  },
+  {
+   "title": "ExACT 是什么？为什么\"测试时计算扩展\"是 2026 年 Agent 推理的核心方向？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/22-agent-planning-reflection/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/22-agent-planning-reflection/README.md"
+  },
+  {
+   "title": "为什么需要多模态 RAG？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/03-rag-system/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md"
+  },
+  {
+   "title": "什么是 Gemini CLI 和 2026 年新兴 CLI 工具？和 Claude Code 有什么区别？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "向量写入数据库时，除了向量本身，还应该保存哪些信息？",
+   "topic": "rag",
+   "repo": "didilili/ai-agents-from-zero",
+   "path": "18-向量数据库与Embedding实战.md",
+   "url": "https://github.com/didilili/ai-agents-from-zero/blob/main/18-%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8EEmbedding%E5%AE%9E%E6%88%98.md"
+  },
+  {
+   "title": "Function Calling 如何实现工具并行调用和错误重试？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/12-frameworks-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/12-frameworks-tools/README.md"
+  },
+  {
+   "title": "为什么说\"Agent可观测性≠传统LLM监控\"？Agent轨迹追踪有哪些独特挑战？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/23-agent-observability/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/23-agent-observability/README.md"
+  },
+  {
+   "title": "OWASP MCP Top 10 有哪些核心安全风险？如何防御？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "GPU 向量检索和 CPU 向量检索如何选型？",
+   "topic": "rag",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/rag/embedding-vector-2.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-2.md"
+  },
+  {
+   "title": "为什么向量索引需要专门监控？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/06-vector-index-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/06-vector-index-optimization/README.md"
+  },
+  {
+   "title": "如何构建 GUI Agent 的训练数据、动作空间和评测闭环？什么时候必须请求人工接管？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/21-multimodal-agents/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/21-multimodal-agents/README.md"
+  },
+  {
+   "title": "企业级 RAG 的多租户隔离和数据权限怎么设计？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/03-rag-system/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md"
+  },
+  {
+   "title": "Agent 可观测性和传统微服务可观测性有什么区别？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/23-agent-observability/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/23-agent-observability/README.md"
+  },
+  {
+   "title": "百万级、千万级、亿级向量库分别应该采用什么架构？",
+   "topic": "rag",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/rag/embedding-vector-2.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-2.md"
+  },
+  {
+   "title": "如何评估增量索引是否真的降低了成本？",
+   "topic": "rag",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/rag/embedding-vector-1.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md"
+  },
+  {
+   "title": "LangChain 的核心组件有哪些？如何使用 Chain？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/12-frameworks-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/12-frameworks-tools/README.md"
+  },
+  {
+   "title": "为什么差异这么大？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "为什么需要上下文压缩？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "MCP 的 Root 是什么？它在文件访问控制和多工作区场景中的作用？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "SWE-bench 是什么？如何用它评估 AI 编程能力？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "A2A 和 MCP 的协议边界在哪里？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/13-multi-agent-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/13-multi-agent-systems/README.md"
+  },
+  {
+   "title": "为什么 Token 消耗相差 5.5 倍？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "如何检测 Agent 的行为异常？循环、幻觉、死循环如何发现？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/23-agent-observability/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/23-agent-observability/README.md"
+  },
+  {
+   "title": "为什么需要 LLM-as-a-Judge？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "LangGraph 的节点缓存（Node Caching）和延迟执行（Deferred Nodes）解决了什么生产问题？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/22-agent-planning-reflection/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/22-agent-planning-reflection/README.md"
+  },
+  {
+   "title": "大模型如何知道“什么时候调”“调哪一个”？",
+   "topic": "rag",
+   "repo": "didilili/ai-agents-from-zero",
+   "path": "1-3-RAG、微调、续训与智能体选型.md",
+   "url": "https://github.com/didilili/ai-agents-from-zero/blob/main/1-3-RAG%E3%80%81%E5%BE%AE%E8%B0%83%E3%80%81%E7%BB%AD%E8%AE%AD%E4%B8%8E%E6%99%BA%E8%83%BD%E4%BD%93%E9%80%89%E5%9E%8B.md"
+  },
+  {
+   "title": "如何设计可信的基准测试？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "IDE、终端与云端 Coding Agent 如何选型？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "什么是 Plan-and-Solve？它和 ReAct 的核心区别是什么？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/22-agent-planning-reflection/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/22-agent-planning-reflection/README.md"
+  },
+  {
+   "title": "为什么需要反思？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/22-agent-planning-reflection/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/22-agent-planning-reflection/README.md"
+  },
+  {
+   "title": "2026年主流多模态模型有哪些？各自特点是什么？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/21-multimodal-agents/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/21-multimodal-agents/README.md"
+  },
+  {
+   "title": "什么是向量数据库的“混合搜索”？为什么重要？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/06-vector-index-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/06-vector-index-optimization/README.md"
+  },
+  {
+   "title": "如何识别用户查询属于关键词检索还是语义检索？",
+   "topic": "rag",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/rag/embedding-vector-1.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md"
+  },
+  {
+   "title": "我到底是在解决一个长期、稳定、可评测的行为问题，还是只是暂时觉得 Prompt 写得不够顺手？",
+   "topic": "rag",
+   "repo": "didilili/ai-agents-from-zero",
+   "path": "1-3-RAG、微调、续训与智能体选型.md",
+   "url": "https://github.com/didilili/ai-agents-from-zero/blob/main/1-3-RAG%E3%80%81%E5%BE%AE%E8%B0%83%E3%80%81%E7%BB%AD%E8%AE%AD%E4%B8%8E%E6%99%BA%E8%83%BD%E4%BD%93%E9%80%89%E5%9E%8B.md"
+  },
+  {
+   "title": "分辨率变化后坐标如何迁移？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/21-multimodal-agents/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/21-multimodal-agents/README.md"
+  },
+  {
+   "title": "如何用 A2A 协议实现 Agent 发现、任务委托和状态查询？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/13-multi-agent-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/13-multi-agent-systems/README.md"
+  },
+  {
+   "title": "如何判断一篇多 Agent 研究是否值得工程落地？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/13-multi-agent-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/13-multi-agent-systems/README.md"
+  },
+  {
+   "title": "如何设计企业级生产 RAG 系统？两大 Pipeline 为什么必须分离？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "为什么 Token 效率差异如此大？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "Copilot 和 Agent 的核心区别是什么？为什么需要规划和反思？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/22-agent-planning-reflection/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/22-agent-planning-reflection/README.md"
+  },
+  {
+   "title": "如何做生产环境的RAG监控？有哪些关键指标？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "RAG 多路召回（Multi-Path Retrieval）如何实现？RRF 融合的原理是什么？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/03-rag-system/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md"
+  },
+  {
+   "title": "一个 Agent 同时对接多个 MCP Server 时，如何编排协作与冲突解决？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "如何系统性评估一个 RAG 系统？有哪些关键指标？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "企业级 AI 编程如何把规则、技能、子任务和质量门禁固化到工作流？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "OpenClaw 中 Cron、Heartbeat、Hooks 和 Task Flow 应如何选型？",
+   "topic": "agent",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/04-products/openclaw/automation-multi-agent.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/04-products/openclaw/automation-multi-agent.md"
+  },
+  {
+   "title": "什么是self-RAG和CRAG？和传统RAG有什么区别？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "如何使用 LlamaIndex 构建 RAG 系统？和 LangChain 有什么区别？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/12-frameworks-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/12-frameworks-tools/README.md"
+  },
+  {
+   "title": "为什么2026年需要专门的商业协议？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "MCP的三大核心原语是什么？各自作用是什么？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "IVF 和 HNSW 应该如何选择？",
+   "topic": "rag",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/rag/embedding-vector-1.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md"
+  },
+  {
+   "title": "多 Agent 系统里，共享上下文应该越多越好吗？",
+   "topic": "agent",
+   "repo": "didilili/ai-agents-from-zero",
+   "path": "26-LangGraph多智能体与A2A.md",
+   "url": "https://github.com/didilili/ai-agents-from-zero/blob/main/26-LangGraph%E5%A4%9A%E6%99%BA%E8%83%BD%E4%BD%93%E4%B8%8EA2A.md"
+  },
+  {
+   "title": "HNSW 在频繁插入/删除下的退化问题是什么？如何应对？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/06-vector-index-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/06-vector-index-optimization/README.md"
+  },
+  {
+   "title": "什么是 Rerank？为什么向量检索后还需要重排序？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "Anthropic Managed Agents是什么？和Claude Code有什么区别？为什么它是企业级AI编程的重大突破？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "模型量化 AWQ、GPTQ、FP8 有什么区别？生产中如何选择？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/12-frameworks-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/12-frameworks-tools/README.md"
+  },
+  {
+   "title": "如果 RAG 答案出现幻觉，你会如何判断是检索问题还是生成问题？",
+   "topic": "rag",
+   "repo": "didilili/ai-agents-from-zero",
+   "path": "19-RAG检索增强生成.md",
+   "url": "https://github.com/didilili/ai-agents-from-zero/blob/main/19-RAG%E6%A3%80%E7%B4%A2%E5%A2%9E%E5%BC%BA%E7%94%9F%E6%88%90.md"
+  },
+  {
+   "title": "RAG 与 SFT（监督微调）如何选择？什么时候该用 RAG 而不是 SFT？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "如何用Python开发一个MCP Server？FastMCP框架怎么用？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "二、为什么选择不发布？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "什么是 ScaNN？它和 IVF-PQ / HNSW 有什么本质区别？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/06-vector-index-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/06-vector-index-optimization/README.md"
+  },
+  {
+   "title": "MCP Server 上线后如何做可观测性？监控什么指标？怎么排查问题？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "运行时动态多 Agent 编排如何控制质量、延迟和成本？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/13-multi-agent-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/13-multi-agent-systems/README.md"
+  },
+  {
+   "title": "DiskANN 如何利用磁盘与内存实现大规模 ANN 检索？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/06-vector-index-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/06-vector-index-optimization/README.md"
+  },
+  {
+   "title": "Prompt Template Engine 在生产环境中为什么重要？LangChain 的 ChatPromptTemplate 和 Few-shot 模板怎么写？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/12-frameworks-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/12-frameworks-tools/README.md"
+  },
+  {
+   "title": "如何设计一个企业级多模态Agent系统？架构是怎样的？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/21-multimodal-agents/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/21-multimodal-agents/README.md"
+  },
+  {
+   "title": "为什么不能只做离线评估？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/23-agent-observability/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/23-agent-observability/README.md"
+  },
+  {
+   "title": "如何选择 Chunk 大小？有什么影响？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/03-rag-system/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md"
+  },
+  {
+   "title": "Image Editing Agent 和 Text-to-Image Agent 有什么区别？核心技术路线是什么？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/21-multimodal-agents/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/21-multimodal-agents/README.md"
+  },
+  {
+   "title": "何时选择 pgvector？如何做向量与业务条件混合检索？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/06-vector-index-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/06-vector-index-optimization/README.md"
+  },
+  {
+   "title": "Voyager 是什么？为什么\"终身学习Agent\"是2026年的重要突破？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/22-agent-planning-reflection/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/22-agent-planning-reflection/README.md"
+  },
+  {
+   "title": "企业级多 Agent 架构需要考虑哪些核心问题？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/13-multi-agent-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/13-multi-agent-systems/README.md"
+  },
+  {
+   "title": "如何构建 AI 应用的测试集？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/12-frameworks-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/12-frameworks-tools/README.md"
+  },
+  {
+   "title": "多模态Agent如何处理多图输入？和单图有什么区别？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/21-multimodal-agents/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/21-multimodal-agents/README.md"
+  },
+  {
+   "title": "向量检索成本过高时有哪些降本方案？",
+   "topic": "rag",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/rag/embedding-vector-2.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-2.md"
+  },
+  {
+   "title": "如何优化向量检索的精度和速度？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/12-frameworks-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/12-frameworks-tools/README.md"
+  },
+  {
+   "title": "为什么Rerank往往比向量库更重要？",
+   "topic": "rag",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/rag/embedding-vector-1.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md"
+  },
+  {
+   "title": "托管服务与自托管向量数据库如何选型？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/06-vector-index-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/06-vector-index-optimization/README.md"
+  },
+  {
+   "title": "内容hash和语义hash有什么区别？",
+   "topic": "rag",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/rag/embedding-vector-1.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md"
+  },
+  {
+   "title": "如果矛盾，哪个更可信？为什么？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "向量数据库迁移如何避免停机和检索回退？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/06-vector-index-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/06-vector-index-optimization/README.md"
+  },
+  {
+   "title": "什么是GUI Agent？为什么2026年\"Computer Use\"成为多模态Agent的核心战场？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/21-multimodal-agents/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/21-multimodal-agents/README.md"
+  },
+  {
+   "title": "多Agent之间如果出现循环依赖，怎么检测和避免？",
+   "topic": "agent",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/multi-agent/conflict-reliability.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/multi-agent/conflict-reliability.md"
+  },
+  {
+   "title": "为什么向量库快？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/03-rag-system/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md"
+  },
+  {
+   "title": "什么是近似最近邻（ANN）检索？它和精确最近邻（ENN）的本质区别是什么？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/06-vector-index-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/06-vector-index-optimization/README.md"
+  },
+  {
+   "title": "OpenAI Agents SDK v0.14.0 新增了 Sandbox Agent 是什么？和传统 Agent 有什么区别？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "Agentic RAG 的自适应路由、幻觉检测、自纠正闭环怎么实现？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "当一个 AI 应用回答不好时，你如何判断问题是“缺知识”“行为不稳”，还是“流程没设计好”？",
+   "topic": "rag",
+   "repo": "didilili/ai-agents-from-zero",
+   "path": "1-3-RAG、微调、续训与智能体选型.md",
+   "url": "https://github.com/didilili/ai-agents-from-zero/blob/main/1-3-RAG%E3%80%81%E5%BE%AE%E8%B0%83%E3%80%81%E7%BB%AD%E8%AE%AD%E4%B8%8E%E6%99%BA%E8%83%BD%E4%BD%93%E9%80%89%E5%9E%8B.md"
+  },
+  {
+   "title": "风险： 多个 Agent 协作产生的答案，如果出错，责任在谁？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "Orchestrator本身如果挂掉了，怎么保证整体任务不丢失？",
+   "topic": "agent",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/multi-agent/multi-agent-basics.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/multi-agent/multi-agent-basics.md"
+  },
+  {
+   "title": "RAG 效果不好如何排查和提升？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/03-rag-system/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md"
+  },
+  {
+   "title": "为什么 Qdrant 混合搜索更强？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/06-vector-index-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/06-vector-index-optimization/README.md"
+  },
+  {
+   "title": "Milvus 的底层架构是怎样的？",
+   "topic": "rag",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/rag/embedding-vector-1.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md"
+  },
+  {
+   "title": "如何建立 Agent 的可观测性体系？有哪些核心指标？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/23-agent-observability/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/23-agent-observability/README.md"
+  },
+  {
+   "title": "Agentic RAG 是什么？与普通 RAG 的区别？如何实现多跳推理？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/03-rag-system/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md"
+  },
+  {
+   "title": "为什么 Sampling 让 Server 实现 Agentic 行为？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "BM25与Embedding检索各自的优缺点是什么？",
+   "topic": "rag",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/rag/embedding-vector-1.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md"
+  },
+  {
+   "title": "Embedding微调有哪些方法？",
+   "topic": "rag",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/rag/embedding-vector-1.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md"
+  },
+  {
+   "title": "实时Embedding生成带来的资源压力如何优化？",
+   "topic": "rag",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/rag/embedding-vector-2.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-2.md"
+  },
+  {
+   "title": "如何用 Arize Phoenix 做开源可观测性？和 LangSmith 有什么区别？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/23-agent-observability/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/23-agent-observability/README.md"
+  },
+  {
+   "title": "长上下文模型（百万 token）来了，RAG 会死吗？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "为什么要评估检索质量？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/06-vector-index-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/06-vector-index-optimization/README.md"
+  },
+  {
+   "title": "RAG 上线后用户反馈效果不好，如何系统化排查？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "LangGraph 生产监控怎么做？Time-Travel 调试、Checkpointing、Human-in-the-Loop 中断是如何实现的？LangSmith 如何配合？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/12-frameworks-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/12-frameworks-tools/README.md"
+  },
+  {
+   "title": "2026年MCP生态有哪些重要更新？MCP的Roadmap是什么？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "为什么 Agent 系统要设置迭代上限、超时和失败处理？",
+   "topic": "agent",
+   "repo": "didilili/ai-agents-from-zero",
+   "path": "21-Agent智能体.md",
+   "url": "https://github.com/didilili/ai-agents-from-zero/blob/main/21-Agent%E6%99%BA%E8%83%BD%E4%BD%93.md"
+  },
+  {
+   "title": "RAG 和微调怎么选？什么场景下该用哪个？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/03-rag-system/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md"
+  },
+  {
+   "title": "相比单体应用，Multi-Agent系统的可观测性（Observability）怎么设计？",
+   "topic": "agent",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/multi-agent/evaluation.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/multi-agent/evaluation.md"
+  },
+  {
+   "title": "SWE-rebench 是什么？为什么 OpenAI 停止报告 SWE-bench 分数？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "为什么 RAG 需要保留来源和 metadata？",
+   "topic": "rag",
+   "repo": "didilili/ai-agents-from-zero",
+   "path": "19-RAG检索增强生成.md",
+   "url": "https://github.com/didilili/ai-agents-from-zero/blob/main/19-RAG%E6%A3%80%E7%B4%A2%E5%A2%9E%E5%BC%BA%E7%94%9F%E6%88%90.md"
+  },
+  {
+   "title": "2026 年 AI 编程工具市场格局是怎样的？各有什么定位？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "为什么 Agent 需要 OpenTelemetry？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/23-agent-observability/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/23-agent-observability/README.md"
+  },
+  {
+   "title": "Redis缓存与向量缓存如何统一失效？",
+   "topic": "rag",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/rag/embedding-vector-1.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md"
+  },
+  {
+   "title": "是否需要直接用户交互的角色切换？",
+   "topic": "agent",
+   "repo": "didilili/ai-agents-from-zero",
+   "path": "26-LangGraph多智能体与A2A.md",
+   "url": "https://github.com/didilili/ai-agents-from-zero/blob/main/26-LangGraph%E5%A4%9A%E6%99%BA%E8%83%BD%E4%BD%93%E4%B8%8EA2A.md"
+  },
+  {
+   "title": "Claude Code Week 14（2026年3月30日-4月3日）有哪些新功能？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "Milvus 和 Elasticsearch Vector 的区别是什么？",
+   "topic": "rag",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/rag/embedding-vector-1.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md"
+  },
+  {
+   "title": "什么是 Late Interaction 检索？ColBERTv2、ColPali、ColQwen 各自解决什么问题？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/06-vector-index-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/06-vector-index-optimization/README.md"
+  },
+  {
+   "title": "为什么需要 RAG？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/03-rag-system/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md"
+  },
+  {
+   "title": "如何做 Agent 的 A/B 测试？有哪些评估指标？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/23-agent-observability/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/23-agent-observability/README.md"
+  },
+  {
+   "title": "混合检索在代码库RAG中如何应用？",
+   "topic": "rag",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/rag/embedding-vector-1.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md"
+  },
+  {
+   "title": "如何保证向量库、关系库、对象存储之间的一致性？",
+   "topic": "rag",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/rag/embedding-vector-1.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md"
+  },
+  {
+   "title": "RAG 的完整流程是什么？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/03-rag-system/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md"
+  },
+  {
+   "title": "什么是 REWOO？它有哪些核心优势？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/22-agent-planning-reflection/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/22-agent-planning-reflection/README.md"
+  },
+  {
+   "title": "在项目中如何落地 AI 编程工具？有哪些最佳实践？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "为什么 Prompt Template Engine 不是可有可无？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/12-frameworks-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/12-frameworks-tools/README.md"
+  },
+  {
+   "title": "2026年主流AI编程工具的SWE-bench评测结果如何？如何根据场景选型？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "SWE-bench Multimodal和Terminal-Bench是什么？2026年有哪些新评测？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "Claude Code 2026年有哪些重磅新功能？Agent Teams、Scheduled Tasks、Auto Mode 是什么？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "Claude Code Cloud Auto-Fix是什么？为什么\"PR that fixes itself\"是2026年AI编程的重大突破？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "FIM（Fill-in-the-Middle）是什么？为什么对代码补全重要？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "什么是\"AI编程工作流引擎\"？2026年为什么 Cursor Rules、Claude Code Routines、Copilot Workspace 成为新热点？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "MCP的安全机制是怎样的？企业如何做权限管控？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "Embedding 是什么？1536 维什么意思？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/03-rag-system/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md"
+  },
+  {
+   "title": "多模态模型最常见的视觉幻觉（Hallucination）有哪些？怎么检测和缓解？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/21-multimodal-agents/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/21-multimodal-agents/README.md"
+  },
+  {
+   "title": "如何优化 RAG 系统的召回率和准确率？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "RAG、Agent、MCP 与 A2A 的职责边界是什么？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/13-multi-agent-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/13-multi-agent-systems/README.md"
+  },
+  {
+   "title": "为什么不work：仅靠Prompt约束",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/13-multi-agent-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/13-multi-agent-systems/README.md"
+  },
+  {
+   "title": "如何监控与调优向量索引？HNSW/IVF 各有什么指标？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/06-vector-index-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/06-vector-index-optimization/README.md"
+  },
+  {
+   "title": "向量数据库的 Metadata 过滤怎么用？有什么应用场景？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/12-frameworks-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/12-frameworks-tools/README.md"
+  },
+  {
+   "title": "状态序列化失败怎么办？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/23-agent-observability/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/23-agent-observability/README.md"
+  },
+  {
+   "title": "旧的 AgentExecutor 和新的 createagent 思路，你会怎样看待它们？",
+   "topic": "agent",
+   "repo": "didilili/ai-agents-from-zero",
+   "path": "21-Agent智能体.md",
+   "url": "https://github.com/didilili/ai-agents-from-zero/blob/main/21-Agent%E6%99%BA%E8%83%BD%E4%BD%93.md"
+  },
+  {
+   "title": "什么时候不用它？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "MCP Tasks 的调用后取结果模式解决什么问题？当前规范状态如何核验？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "Cursor Rules 是什么？如何用 Cursor Rules 做企业级配置？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "大规模并行 Agent 的收益和瓶颈是什么？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/13-multi-agent-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/13-multi-agent-systems/README.md"
+  },
+  {
+   "title": "亿级向量库如何做分片设计？",
+   "topic": "rag",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/rag/embedding-vector-1.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md"
+  },
+  {
+   "title": "文本切分为什么不是越细越好，也不是越大越好？",
+   "topic": "rag",
+   "repo": "didilili/ai-agents-from-zero",
+   "path": "19-RAG检索增强生成.md",
+   "url": "https://github.com/didilili/ai-agents-from-zero/blob/main/19-RAG%E6%A3%80%E7%B4%A2%E5%A2%9E%E5%BC%BA%E7%94%9F%E6%88%90.md"
+  },
+  {
+   "title": "2026年AI编程助手市场格局为何说是\"三强定型\"？JetBrains万人调查揭示了哪些关键数据？Composer 2和Copilot Agent Mode GA意味着什么？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "Claude Mythos是什么？为什么Anthropic选择不公开发布？Project Glasswing是什么？2026年AI安全有哪些重大变化？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "SWE-bench 2026年5月最新榜单有哪些重大变化？为什么\"模型性能\"和\"Agent scaffold质量\"同等重要？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "上下文是不是已经太重？",
+   "topic": "agent",
+   "repo": "didilili/ai-agents-from-zero",
+   "path": "26-LangGraph多智能体与A2A.md",
+   "url": "https://github.com/didilili/ai-agents-from-zero/blob/main/26-LangGraph%E5%A4%9A%E6%99%BA%E8%83%BD%E4%BD%93%E4%B8%8EA2A.md"
+  },
+  {
+   "title": "MCP Server Card 是什么？如何让 AI 应用自动发现和评估 Server 能力？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "MiniMax M2.7是什么？它和M2.5有什么关系？Self-Evolving Agent Model是什么意思？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "什么是动态重规划？什么时候需要触发重规划？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/22-agent-planning-reflection/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/22-agent-planning-reflection/README.md"
+  },
+  {
+   "title": "为什么 Agent 需要 HITL？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/22-agent-planning-reflection/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/22-agent-planning-reflection/README.md"
+  },
+  {
+   "title": "OpenAI Codex 2026年4月推出了哪些企业级更新？和Claude Code/Cursor相比有什么差异？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "向量数据库如何做增量索引（Incremental Indexing）？1000万数据加了100万新数据怎么办？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/06-vector-index-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/06-vector-index-optimization/README.md"
+  },
+  {
+   "title": "如何评估向量检索的质量？Recall@K、nDCG、MRR 怎么算？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/06-vector-index-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/06-vector-index-optimization/README.md"
+  },
+  {
+   "title": "什么是 Context Poisoning（上下文污染）？RAG 知识库如何防御？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/06-vector-index-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/06-vector-index-optimization/README.md"
+  },
+  {
+   "title": "多 Agent 协作中如何归因某次失败是哪个环节导致的？",
+   "topic": "agent",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/multi-agent/evaluation.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/multi-agent/evaluation.md"
+  },
+  {
+   "title": "为什么 MCP 要支持这么多语言？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "Claude Code v2.1.92有哪些更新？2026年最值得关注的MCP服务器有哪些？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "如何选择 Embedding 模型？有哪些关键维度？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/03-rag-system/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md"
+  },
+  {
+   "title": "为什么单一路检索不够？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "Coze 平台如何搭建 AI 应用？与传统开发有什么区别？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/12-frameworks-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/12-frameworks-tools/README.md"
+  },
+  {
+   "title": "如果查询结果总是不相关，你会先排查哪些环节？",
+   "topic": "rag",
+   "repo": "didilili/ai-agents-from-zero",
+   "path": "18-向量数据库与Embedding实战.md",
+   "url": "https://github.com/didilili/ai-agents-from-zero/blob/main/18-%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8EEmbedding%E5%AE%9E%E6%88%98.md"
+  },
+  {
+   "title": "一个函数是否应该暴露成 Tool，判断标准是什么？",
+   "topic": "agent",
+   "repo": "didilili/ai-agents-from-zero",
+   "path": "17-Tools工具调用.md",
+   "url": "https://github.com/didilili/ai-agents-from-zero/blob/main/17-Tools%E5%B7%A5%E5%85%B7%E8%B0%83%E7%94%A8.md"
+  },
+  {
+   "title": "2026年新增的官方MCP Server有哪些？Sequential Thinking和Memory有什么特点？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "如何解决检索结果不相关（Recall 质量差）？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/03-rag-system/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md"
+  },
+  {
+   "title": "为什么需要动态知识更新？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/03-rag-system/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md"
+  },
+  {
+   "title": "什么是 AI 应用的 Skill？三段式结构（输入定义/处理与工具调用/结构化输出）怎么设计？版本管理和回归评测怎么做？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "MCP Server市场有哪些？如何快速找到需要的Server？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "如何在Claude Code和Cursor中配置MCP Server？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "为什么需要 Late Interaction？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/06-vector-index-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/06-vector-index-optimization/README.md"
+  },
+  {
+   "title": "MCP Registry 是什么？如何发布和分发企业级 MCP Server？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "Q: 2026年MCP有什么新动向？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "OWASP Agent Top 10（2026）有哪些新威胁？和传统 OWASP Top 10 有什么区别？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "EVA 框架是什么？为什么\"Accuracy-Experience Tradeoff\"是 Voice Agent 评估的核心发现？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/23-agent-observability/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/23-agent-observability/README.md"
+  },
+  {
+   "title": "MCP 2026 企业级 Ready 现状如何？Audit Trails/SSO/Gateway/Config Portability 四个缺口分别是什么？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "HNSW 和 IVF-PQ 有什么区别？如何选择向量搜索索引？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "自报置信度不校准时，人工接管策略为什么会失效？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/21-multimodal-agents/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/21-multimodal-agents/README.md"
+  },
+  {
+   "title": "Claude Code 和 Cursor 的真实性能基准是什么？Token 消耗差距从何而来？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "MCP Server有哪几种类型？如何选择？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "为什么内部知识库问答通常不应该一上来就做微调？",
+   "topic": "rag",
+   "repo": "didilili/ai-agents-from-zero",
+   "path": "1-3-RAG、微调、续训与智能体选型.md",
+   "url": "https://github.com/didilili/ai-agents-from-zero/blob/main/1-3-RAG%E3%80%81%E5%BE%AE%E8%B0%83%E3%80%81%E7%BB%AD%E8%AE%AD%E4%B8%8E%E6%99%BA%E8%83%BD%E4%BD%93%E9%80%89%E5%9E%8B.md"
+  },
+  {
+   "title": "多 Agent 系统的评测集应该如何设计？",
+   "topic": "agent",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/multi-agent/evaluation.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/multi-agent/evaluation.md"
+  },
+  {
+   "title": "Recursive Character Text Splitter 为什么是行业最佳默认分块策略？何时不该用它？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "MCP 2026-07-28 规范有哪些重大变更？对现有 Server 有什么影响？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "如何建立 RAG 系统的生产级可观测性体系？有哪些关键监控指标和告警策略？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/03-rag-system/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md"
+  },
+  {
+   "title": "FAISS 常见索引有哪些？",
+   "topic": "rag",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/rag/embedding-vector-1.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md"
+  },
+  {
+   "title": "为什么它是最难的能力？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/21-multimodal-agents/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/21-multimodal-agents/README.md"
+  },
+  {
+   "title": "什么是 Chain（链）和 Loop（环）的架构差异？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/22-agent-planning-reflection/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/22-agent-planning-reflection/README.md"
+  },
+  {
+   "title": "为什么所有主流AI编程基准测试都被\"攻破\"了？2026年Berkeley论文揭示了什么？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "如何设计一个具备\"反思\"能力的生产级 Agent？有哪些关键工程问题？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/22-agent-planning-reflection/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/22-agent-planning-reflection/README.md"
+  },
+  {
+   "title": "DSPy 是什么？为什么\"声明式 LLM 编程\"是 2026 年的重要范式转变？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/12-frameworks-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/12-frameworks-tools/README.md"
+  },
+  {
+   "title": "为什么需要多模态Agent？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/21-multimodal-agents/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/21-multimodal-agents/README.md"
+  },
+  {
+   "title": "为什么需要工作流引擎？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "纯视觉与 Accessibility Tree/XML 路线如何取舍？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/21-multimodal-agents/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/21-multimodal-agents/README.md"
+  },
+  {
+   "title": "ReAct 模式的核心原理是什么？它的三个致命缺陷是什么？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/22-agent-planning-reflection/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/22-agent-planning-reflection/README.md"
+  },
+  {
+   "title": "为什么需要融合?",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/06-vector-index-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/06-vector-index-optimization/README.md"
+  },
+  {
+   "title": "如何避免 Agent 在页面未加载完成时重复点击？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/21-multimodal-agents/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/21-multimodal-agents/README.md"
+  },
+  {
+   "title": "为什么选 Go+Eino 做 AI 平台，而不是 Python+LangChain？如何做技术栈选型？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/12-frameworks-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/12-frameworks-tools/README.md"
+  },
+  {
+   "title": "Hybrid Retrieval相比纯向量检索提升在哪里？",
+   "topic": "rag",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/rag/embedding-vector-1.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md"
+  },
+  {
+   "title": "什么是 MCP（Model Context Protocol）？它解决什么集成问题？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "向量库如何实现高可用和容灾？",
+   "topic": "rag",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/rag/embedding-vector-1.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md"
+  },
+  {
+   "title": "如何构建知识图谱用于 GraphRAG？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "Claude Code 与 Cursor 如何组合使用？开发者画像选型决策树是什么？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "Embedding 模型升级后，是否需要重建向量索引？有什么风险和权衡？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/06-vector-index-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/06-vector-index-optimization/README.md"
+  },
+  {
+   "title": "答案完整性（1-5）：答案是否完整回答了问题？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "如何定位向量检索性能瓶颈？",
+   "topic": "rag",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/rag/embedding-vector-2.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-2.md"
+  },
+  {
+   "title": "什么是 AI 编程工具的\"Agent 模式\"？和普通补全有什么区别？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "如何降低 RAG 系统的成本？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/03-rag-system/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md"
+  },
+  {
+   "title": "MCP 现在有多少种官方 SDK？Go/PHP/Ruby/Rust/Swift 开发者如何快速接入 MCP？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "HNSW 生产调参实战：M/ef/efConstruction 如何选择？有哪些性能陷阱？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/06-vector-index-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/06-vector-index-optimization/README.md"
+  },
+  {
+   "title": "Q: 当前企业落地的实际情况？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/13-multi-agent-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/13-multi-agent-systems/README.md"
+  },
+  {
+   "title": "什么情况下不应该用MCP？MCP的边界在哪里？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "CRITIC 架构与传统反思（Reflection）的本质区别是什么？什么是\"Grounded Self-Correction\"？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/22-agent-planning-reflection/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/22-agent-planning-reflection/README.md"
+  },
+  {
+   "title": "Agent 可观测性平台选型：LangSmith vs Phoenix vs Opik vs Galileo，怎么选？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/23-agent-observability/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/23-agent-observability/README.md"
+  },
+  {
+   "title": "开源Embedding和商业Embedding如何选择？",
+   "topic": "rag",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/rag/embedding-vector-1.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md"
+  },
+  {
+   "title": "为什么需要流式输出",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/12-frameworks-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/12-frameworks-tools/README.md"
+  },
+  {
+   "title": "问题需要多跳推理吗？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/03-rag-system/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md"
+  },
+  {
+   "title": "OpenClaw 如何实现多 Agent 协作？",
+   "topic": "agent",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/04-products/openclaw/automation-multi-agent.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/04-products/openclaw/automation-multi-agent.md"
+  },
+  {
+   "title": "反思不是免费的，何时该触发？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/22-agent-planning-reflection/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/22-agent-planning-reflection/README.md"
+  },
+  {
+   "title": "GPT-4V如何实现视觉理解？和纯文本LLM有什么本质区别？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/21-multimodal-agents/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/21-multimodal-agents/README.md"
+  },
+  {
+   "title": "2026 年有哪些新兴 AI 编程工具？Windsurf/Trae/通义灵码/CoPaw 各有什么特点？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "MCP Transport 怎么选？stdio、SSE 和 Streamable HTTP 各自适用什么生产场景？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "为什么 k 的大小影响索引选择？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/06-vector-index-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/06-vector-index-optimization/README.md"
+  },
+  {
+   "title": "什么是 DiskANN？它解决了什么问题？和 HNSW 怎么选？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/06-vector-index-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/06-vector-index-optimization/README.md"
+  },
+  {
+   "title": "如何构建企业知识库检索平台？",
+   "topic": "rag",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/rag/embedding-vector-1.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md"
+  },
+  {
+   "title": "Q: 如何判断一个 Agent 是 L3 还是 L4？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/13-multi-agent-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/13-multi-agent-systems/README.md"
+  },
+  {
+   "title": "Agent、Tool、RAG、MCP 放在一起时，各自的位置是什么？",
+   "topic": "rag",
+   "repo": "didilili/ai-agents-from-zero",
+   "path": "21-Agent智能体.md",
+   "url": "https://github.com/didilili/ai-agents-from-zero/blob/main/21-Agent%E6%99%BA%E8%83%BD%E4%BD%93.md"
+  },
+  {
+   "title": "为什么需要混合搜索？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/06-vector-index-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/06-vector-index-optimization/README.md"
+  },
+  {
+   "title": "Embedding模型如何选择？",
+   "topic": "rag",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/rag/embedding-vector-1.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md"
+  },
+  {
+   "title": "什么是 CoSAI Agentic Identity Framework？2026年5月发布的\"签名Agent清单+持续授权\"解决了什么问题？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "如何监控 Agent 的 Token 消耗和成本？有哪些优化策略？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/23-agent-observability/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/23-agent-observability/README.md"
+  },
+  {
+   "title": "什么是多路召回（Multi-path Recall）？在生产 RAG 中如何设计？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/06-vector-index-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/06-vector-index-optimization/README.md"
+  },
+  {
+   "title": "如何在RAG系统中实现知识库的权限隔离，防止信息泄露？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "为什么 LangGraph 在 2026 年仍然是生产首选？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/12-frameworks-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/12-frameworks-tools/README.md"
+  },
+  {
+   "title": "Agent Skills 和 Tools 有什么区别？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/13-multi-agent-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/13-multi-agent-systems/README.md"
+  },
+  {
+   "title": "SWE-EVO 是什么？它在软件演化场景中如何评测 Coding Agent？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "如何评估多模态 Agent 的质量？有哪些主流评测基准？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/21-multimodal-agents/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/21-multimodal-agents/README.md"
+  },
+  {
+   "title": "如何判断某个 Agent 角色是否值得独立拆分？",
+   "topic": "agent",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/multi-agent/evaluation.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/multi-agent/evaluation.md"
+  },
+  {
+   "title": "CWM（Code World Model）是什么？为什么是 2025 年重要突破？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "Commander、P2P、Hybrid 三种协作模式如何选择？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/13-multi-agent-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/13-multi-agent-systems/README.md"
+  },
+  {
+   "title": "HoloTab 是什么？为什么它是浏览器自动化 Agent 的新突破？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "一、为什么 Agent 需要独立的可观测性体系？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/23-agent-observability/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/23-agent-observability/README.md"
+  },
+  {
+   "title": "Pinecone、Milvus、Qdrant 三类向量数据库方案怎么选？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/06-vector-index-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/06-vector-index-optimization/README.md"
+  },
+  {
+   "title": "RAG检索出的多个Chunk互相冲突时，Agent如何解决矛盾？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "Claude Code在2026年4月有哪些重要更新？v2.1.89-91版本新增了哪些生产级功能？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "什么是自愈 RAG？生产环境如何实现 RAG 的自我检测与自动恢复？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "什么是混合检索？什么时候需要“稀疏 + 密集”双路检索？RRF 如何融合？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "MCP和Function Calling有什么区别？各自适用场景是什么？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "Claude Code Routines 是什么？为什么它是 2026 年 AI 编程自动化的重大升级？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "为什么需要 SWE-bench Multimodal？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "如何用 LangGraph 原生功能做 Agent 调试？Checkpoint 在实际调试中的作用是什么？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/23-agent-observability/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/23-agent-observability/README.md"
+  },
+  {
+   "title": "如何做 RAG 知识库的动态知识更新？有哪些策略？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/03-rag-system/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md"
+  },
+  {
+   "title": "Q: 什么是MCP？为什么它是AI开发者的必备技能？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "如何通过 Agent 的 trace 发现根因？Root Cause Analysis 的最佳实践是什么？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/23-agent-observability/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/23-agent-observability/README.md"
+  },
+  {
+   "title": "Agent如何决定使用哪种检索方式？",
+   "topic": "rag",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/rag/embedding-vector-1.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md"
+  },
+  {
+   "title": "什么是自主编程 Agent（类似 Devin）？核心架构是什么？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "选择模型（OpenAI/Claude/Gemini）",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/12-frameworks-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/12-frameworks-tools/README.md"
+  },
+  {
+   "title": "HNSW 为什么查询快？底层原理是什么？",
+   "topic": "rag",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/rag/embedding-vector-1.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md"
+  },
+  {
+   "title": "Go 侧用 mcp-go 封装业务工具、Python 侧统一注册调用，MCP 如何成为跨语言工具总线？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "动态路由陷入循环时，如何通过步骤预算、状态重复检测、超时和人工接管止损？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/13-multi-agent-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/13-multi-agent-systems/README.md"
+  },
+  {
+   "title": "GenAI + Agent 的结合模式（如 GenClaw）是什么？与传统的 RAG 方案有何本质差异？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/21-multimodal-agents/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/21-multimodal-agents/README.md"
+  },
+  {
+   "title": "工具描述写得差，会导致哪些真实问题？",
+   "topic": "agent",
+   "repo": "didilili/ai-agents-from-zero",
+   "path": "17-Tools工具调用.md",
+   "url": "https://github.com/didilili/ai-agents-from-zero/blob/main/17-Tools%E5%B7%A5%E5%85%B7%E8%B0%83%E7%94%A8.md"
+  },
+  {
+   "title": "什么是 GitHub Copilot Workspace？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "对比两个不同 Prompt 版本的效果",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/23-agent-observability/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/23-agent-observability/README.md"
+  },
+  {
+   "title": "RAG 项目上线后怎么做灰度发布？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "DeepEval是什么？和RAGAS、TruLens有什么区别？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "embedding模型升级时还能用增量索引吗？",
+   "topic": "rag",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/rag/embedding-vector-1.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md"
+  },
+  {
+   "title": "如何量化 Multi-Agent 相比单 Agent 的净收益？",
+   "topic": "agent",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/multi-agent/evaluation.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/multi-agent/evaluation.md"
+  },
+  {
+   "title": "Agent 工作中的 HITL（Human-in-the-Loop）有哪些核心干预模式？如何在 LangGraph 中实现？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/22-agent-planning-reflection/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/22-agent-planning-reflection/README.md"
+  },
+  {
+   "title": "OpenAI Agents SDK v0.13.6有哪些更新？为什么它是2026年最值得关注的多框架SDK？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "Checkpointing ≠ Durable Execution——Agent 持久化执行的三个核心缺失是什么？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/22-agent-planning-reflection/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/22-agent-planning-reflection/README.md"
+  },
+  {
+   "title": "DiskANN 为什么适合超大规模向量库？",
+   "topic": "rag",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/rag/embedding-vector-1.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md"
+  },
+  {
+   "title": "LangGraph 和 LangChain 有什么区别？什么时候用 LangGraph？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/12-frameworks-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/12-frameworks-tools/README.md"
+  },
+  {
+   "title": "续训、微调和 RAG 都能让模型“更懂业务”，但代价和风险有什么不同？",
+   "topic": "rag",
+   "repo": "didilili/ai-agents-from-zero",
+   "path": "1-3-RAG、微调、续训与智能体选型.md",
+   "url": "https://github.com/didilili/ai-agents-from-zero/blob/main/1-3-RAG%E3%80%81%E5%BE%AE%E8%B0%83%E3%80%81%E7%BB%AD%E8%AE%AD%E4%B8%8E%E6%99%BA%E8%83%BD%E4%BD%93%E9%80%89%E5%9E%8B.md"
+  },
+  {
+   "title": "数据是自由文本为主吗？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/03-rag-system/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md"
+  },
+  {
+   "title": "当前信息能否回答问题？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/03-rag-system/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md"
+  },
+  {
+   "title": "Q: MCP和Function Calling有什么区别？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "什么是state-aware retrieval和agentic retrieval？2026年检索新趋势？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "什么时候选 Semantic Kernel / Microsoft Agent Framework？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/12-frameworks-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/12-frameworks-tools/README.md"
+  },
+  {
+   "title": "MCP的完整架构是怎样的？Client、Server、Transport三层如何协同？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "任务是否天然能拆成专业角色？",
+   "topic": "agent",
+   "repo": "didilili/ai-agents-from-zero",
+   "path": "26-LangGraph多智能体与A2A.md",
+   "url": "https://github.com/didilili/ai-agents-from-zero/blob/main/26-LangGraph%E5%A4%9A%E6%99%BA%E8%83%BD%E4%BD%93%E4%B8%8EA2A.md"
+  },
+  {
+   "title": "GitHub Copilot Workspace是什么？2026年有哪些新变化？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "BGE、E5、GTE有什么区别？",
+   "topic": "rag",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/rag/embedding-vector-1.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md"
+  },
+  {
+   "title": "MCP Server如何处理身份认证和安全？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "如何评估Embedding模型质量？",
+   "topic": "rag",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/rag/embedding-vector-1.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md"
+  },
+  {
+   "title": "Cursor May 2026有哪些重大更新？为什么Cursor SDK是企业级AI编程的新里程碑？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "Claude Code MCP 500K工具结果永续化是什么？解决了什么问题？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "Voice/音频模态如何与 VLM 整合形成真正的多模态 Agent？VLA（Vision-Language-Action）又是什么？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/21-multimodal-agents/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/21-multimodal-agents/README.md"
+  },
+  {
+   "title": "相似度高是否一定代表答案可用？为什么？",
+   "topic": "rag",
+   "repo": "didilili/ai-agents-from-zero",
+   "path": "18-向量数据库与Embedding实战.md",
+   "url": "https://github.com/didilili/ai-agents-from-zero/blob/main/18-%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8EEmbedding%E5%AE%9E%E6%88%98.md"
+  },
+  {
+   "title": "为什么企业级Agent需要Policy Engine？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/13-multi-agent-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/13-multi-agent-systems/README.md"
+  },
+  {
+   "title": "为什么 RAG 需要权限控制？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/03-rag-system/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md"
+  },
+  {
+   "title": "如何设计 A2A + MCP 混合架构？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/13-multi-agent-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/13-multi-agent-systems/README.md"
+  },
+  {
+   "title": "如何设计视觉Agent的工具集？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/21-multimodal-agents/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/21-multimodal-agents/README.md"
+  },
+  {
+   "title": "Qwen3-VL有哪些核心突破？和GPT-4V/Gemini 2.5 Pro如何对比？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/21-multimodal-agents/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/21-multimodal-agents/README.md"
+  },
+  {
+   "title": "生产环境多 Agent 编排有哪些反模式？客服工单场景怎么拆分？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/13-multi-agent-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/13-multi-agent-systems/README.md"
+  },
+  {
+   "title": "如何在企业中规模化部署MCP？架构是怎样的？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "Rerank 模型怎么选？Cross-Encoder 和 ColBERT 的差异是什么？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/03-rag-system/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md"
+  },
+  {
+   "title": "检索延迟过高如何优化？",
+   "topic": "rag",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/rag/embedding-vector-1.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md"
+  },
+  {
+   "title": "什么是上下文压缩?如何减少无效Token?",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/03-rag-system/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md"
+  },
+  {
+   "title": "MCP 使用 JSON-RPC 2.0 通信，标准错误码有哪些？服务端如何做错误处理和诊断？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "“模型负责决策，程序负责执行”在安全上意味着什么？",
+   "topic": "agent",
+   "repo": "didilili/ai-agents-from-zero",
+   "path": "17-Tools工具调用.md",
+   "url": "https://github.com/didilili/ai-agents-from-zero/blob/main/17-Tools%E5%B7%A5%E5%85%B7%E8%B0%83%E7%94%A8.md"
+  },
+  {
+   "title": "如何解决 RAG 的\"丢失中间信息\"问题（Lost in the Middle）？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "如何检测 Agent 输出质量下滑？什么是语义漂移（Semantic Drift）？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/23-agent-observability/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/23-agent-observability/README.md"
+  },
+  {
+   "title": "为什么 Agent 需要规划和反思？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/22-agent-planning-reflection/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/22-agent-planning-reflection/README.md"
+  },
+  {
+   "title": "什么是 LATS？它和 Reflexion 有什么区别？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/22-agent-planning-reflection/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/22-agent-planning-reflection/README.md"
+  },
+  {
+   "title": "Agent 治理工具应该解决哪些问题？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/13-multi-agent-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/13-multi-agent-systems/README.md"
+  },
+  {
+   "title": "问题：谁来决定\"何时扩大发布\"？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "为什么需要两阶段检索（向量检索 + Rerank）？ColBERT Late Interaction 模型详解",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/06-vector-index-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/06-vector-index-optimization/README.md"
+  },
+  {
+   "title": "什么是 Generator-Evaluator 架构？为什么需要反思？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/22-agent-planning-reflection/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/22-agent-planning-reflection/README.md"
+  },
+  {
+   "title": "Windsurf Cascade的跨会话记忆是如何实现的？Claude Code CLAUDE.md有什么不同？Copilot Spaces和BugBot是什么？四大工具详细定价和选型有什么新变化？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "生产环境中如何做 Agent 的自动评估？LLM-as-a-Judge 的正确姿势是什么？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/23-agent-observability/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/23-agent-observability/README.md"
+  },
+  {
+   "title": "为什么四层架构是2026年企业级AI的核心框架？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/13-multi-agent-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/13-multi-agent-systems/README.md"
+  },
+  {
+   "title": "Opik、Maxim AI、Latitude 三大2026新锐平台各有什么特点？如何选型？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/23-agent-observability/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/23-agent-observability/README.md"
+  },
+  {
+   "title": "LangGraph vs Semantic Kernel 2026年深度对比：微软新一代 Agent Framework 来了，如何选择？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/12-frameworks-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/12-frameworks-tools/README.md"
+  },
+  {
+   "title": "如何做职责划分和层级任务分解？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/13-multi-agent-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/13-multi-agent-systems/README.md"
+  },
+  {
+   "title": "为什么需要 Agent 成熟度模型？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/13-multi-agent-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/13-multi-agent-systems/README.md"
+  },
+  {
+   "title": "回答用户问题：视频的核心内容是什么？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/21-multimodal-agents/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/21-multimodal-agents/README.md"
+  },
+  {
+   "title": "Sentence Transformers v5.4 的多模态 Embedding 能力是什么？对 RAG 系统有什么影响？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "RAG 出现幻觉怎么办？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/03-rag-system/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md"
+  },
+  {
+   "title": "1 什么是智能体？",
+   "topic": "rag",
+   "repo": "didilili/ai-agents-from-zero",
+   "path": "1-3-RAG、微调、续训与智能体选型.md",
+   "url": "https://github.com/didilili/ai-agents-from-zero/blob/main/1-3-RAG%E3%80%81%E5%BE%AE%E8%B0%83%E3%80%81%E7%BB%AD%E8%AE%AD%E4%B8%8E%E6%99%BA%E8%83%BD%E4%BD%93%E9%80%89%E5%9E%8B.md"
+  },
+  {
+   "title": "Agent 生产环境的安全监控有哪些具体手段？如何防范 Prompt Injection？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/23-agent-observability/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/23-agent-observability/README.md"
+  },
+  {
+   "title": "问题是否包含多个子问题？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/03-rag-system/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md"
+  },
+  {
+   "title": "为什么 VLM 特别需要 CoVT？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/21-multimodal-agents/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/21-multimodal-agents/README.md"
+  },
+  {
+   "title": "为什么 Loop 更适合复杂任务？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/22-agent-planning-reflection/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/22-agent-planning-reflection/README.md"
+  },
+  {
+   "title": "Claude Code ultrareview是什么？为什么\"云端bug-hunting fleet\"是2026年AI代码审查的革命性突破？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "向量数据库有哪些索引？分别有什么区别和原理？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/06-vector-index-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/06-vector-index-optimization/README.md"
+  },
+  {
+   "title": "MCP Sampling 原语是什么？为什么它让 Server 实现 Agentic 行为成为可能？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "什么是二进制量化（Binary Quantization）？它和 PQ 有什么区别？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/06-vector-index-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/06-vector-index-optimization/README.md"
+  },
+  {
+   "title": "一个任务是否需要 Agent，你会看哪些信号？",
+   "topic": "agent",
+   "repo": "didilili/ai-agents-from-zero",
+   "path": "21-Agent智能体.md",
+   "url": "https://github.com/didilili/ai-agents-from-zero/blob/main/21-Agent%E6%99%BA%E8%83%BD%E4%BD%93.md"
+  },
+  {
+   "title": "Cursor 3 \"Glass\"有哪些重磅更新？和Claude Code有何区别？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "RAG 系统的语义缓存（Semantic Cache）如何实现？有哪些关键问题？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/03-rag-system/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md"
+  },
+  {
+   "title": "Agent Memory 短期记忆 vs 长期记忆怎么设计？各有哪些技术选型？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/12-frameworks-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/12-frameworks-tools/README.md"
+  },
+  {
+   "title": "Critic/Verifier Agent 为什么可能提升质量，又可能造成什么问题？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/13-multi-agent-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/13-multi-agent-systems/README.md"
+  },
+  {
+   "title": "向量维度越大效果一定越好吗？",
+   "topic": "rag",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/rag/embedding-vector-1.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md"
+  },
+  {
+   "title": "混合检索（BM25+向量检索）为什么效果更好？",
+   "topic": "rag",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/rag/embedding-vector-1.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md"
+  },
+  {
+   "title": "MCP协议有哪些特有的安全攻击向量？Confused Deputy、Token Passthrough、SSRF如何防御？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "GenericAgent 是什么？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "CrewAI 如何实现角色驱动的 Agent 协作？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/13-multi-agent-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/13-multi-agent-systems/README.md"
+  },
+  {
+   "title": "为什么需要 HyDE？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "Cursor 的 Composer 和 Tab 功能原理是什么？有哪些使用技巧？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "答案准确性（1-5）：答案是否正确？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "Agent 日志结构化设计：如何让日志可搜索、可分析？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/23-agent-observability/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/23-agent-observability/README.md"
+  },
+  {
+   "title": "为什么需要 Rerank？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "多语言场景如何设计Embedding方案？",
+   "topic": "rag",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/rag/embedding-vector-1.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md"
+  },
+  {
+   "title": "如何处理 RAG 中的模糊或多义用户查询？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "如何监控 AI 应用的成本？如何优化？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/12-frameworks-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/12-frameworks-tools/README.md"
+  },
+  {
+   "title": "多 Agent 如何进行任务分配？",
+   "topic": "agent",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/multi-agent/orchestration.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/multi-agent/orchestration.md"
+  },
+  {
+   "title": "为什么需要 Re-ranker？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/12-frameworks-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/12-frameworks-tools/README.md"
+  },
+  {
+   "title": "结构化输出 JSON Mode 为什么重要？各平台实现有什么差异？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/12-frameworks-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/12-frameworks-tools/README.md"
+  },
+  {
+   "title": "MCP Tool Poisoning 与服务端漏洞会形成怎样的攻击链？如何防御？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "什么时候必须 A2A + MCP 混合？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/13-multi-agent-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/13-multi-agent-systems/README.md"
+  },
+  {
+   "title": "多Agent系统如何进行链路追踪？",
+   "topic": "agent",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/multi-agent/multi-agent-basics.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/multi-agent/multi-agent-basics.md"
+  },
+  {
+   "title": "如果无法判断，应该如何回答用户？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "Pinecone Plugin for Claude Code 是什么？为什么它是2026年AI应用开发的工作流革命？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "工具是不是多到一个 Agent 容易选错？",
+   "topic": "agent",
+   "repo": "didilili/ai-agents-from-zero",
+   "path": "26-LangGraph多智能体与A2A.md",
+   "url": "https://github.com/didilili/ai-agents-from-zero/blob/main/26-LangGraph%E5%A4%9A%E6%99%BA%E8%83%BD%E4%BD%93%E4%B8%8EA2A.md"
+  },
+  {
+   "title": "Prompt Caching 是什么？为什么它能显著降低 API 成本？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/12-frameworks-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/12-frameworks-tools/README.md"
+  },
+  {
+   "title": "什么是\"可防御 RAG（Defensible RAG）\"？2026年企业 RAG 面临的五大结构性风险是什么？如何建立生产级 RAG 防御体系？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "什么是 Top-K vs Large-K 索引选择问题？为什么 k 很大时需要不同的策略？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/06-vector-index-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/06-vector-index-optimization/README.md"
+  },
+  {
+   "title": "为什么需要专门的 RAG 评估？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/03-rag-system/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md"
+  },
+  {
+   "title": "如何用 LangSmith 做 Agent 调试？有哪些高级用法？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/23-agent-observability/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/23-agent-observability/README.md"
+  },
+  {
+   "title": "MCP Triggers 和 Events 是什么？为什么它们让 AI Agent 从\"被动响应\"变成\"主动感知\"？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "Supervisor 和 Handoff 的差别，可以用什么业务场景解释？",
+   "topic": "agent",
+   "repo": "didilili/ai-agents-from-zero",
+   "path": "26-LangGraph多智能体与A2A.md",
+   "url": "https://github.com/didilili/ai-agents-from-zero/blob/main/26-LangGraph%E5%A4%9A%E6%99%BA%E8%83%BD%E4%BD%93%E4%B8%8EA2A.md"
+  },
+  {
+   "title": "知识库版本升级时如何处理历史数据？",
+   "topic": "rag",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/rag/embedding-vector-1.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md"
+  },
+  {
+   "title": "什么是Agent Governance Toolkit？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/13-multi-agent-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/13-multi-agent-systems/README.md"
+  },
+  {
+   "title": "Multi-Agent任务如何拆分？",
+   "topic": "agent",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/multi-agent/orchestration.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/multi-agent/orchestration.md"
+  },
+  {
+   "title": "什么是 RAG-Fusion？它解决了传统 RAG 的什么问题？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "2026年有哪些主流AI编程工具？Trae、Windsurf、GitHub Copilot Agent Mode 各有什么特点？如何根据场景选择？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "什么是 GraphRAG？它和传统向量 RAG 有什么区别？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "GraphRAG 是什么？与普通向量 RAG 的核心区别？何时选择？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/03-rag-system/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md"
+  },
+  {
+   "title": "有副作用的工具和只读工具，在设计上应该有什么不同？",
+   "topic": "agent",
+   "repo": "didilili/ai-agents-from-zero",
+   "path": "17-Tools工具调用.md",
+   "url": "https://github.com/didilili/ai-agents-from-zero/blob/main/17-Tools%E5%B7%A5%E5%85%B7%E8%B0%83%E7%94%A8.md"
+  },
+  {
+   "title": "答案相关性（1-5）：答案是否切题？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "RRF融合算法为什么效果好？",
+   "topic": "rag",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/rag/embedding-vector-1.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md"
+  },
+  {
+   "title": "MCP 2026年有哪些企业级 Readiness 问题需要解决？Audit Trails、Enterprise Auth、Gateway Patterns 最新进展？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "Parent-Document Retrieval 和 Sentence Window Retrieval 是什么？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/03-rag-system/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md"
+  },
+  {
+   "title": "为什么这是 2026年热点？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "什么是Perceiver Resampler？和线性投影比有什么优势？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/21-multimodal-agents/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/21-multimodal-agents/README.md"
+  },
+  {
+   "title": "早期决策被挤出上下文时，如何用结构化状态、证据引用和检查点避免漂移？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/13-multi-agent-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/13-multi-agent-systems/README.md"
+  },
+  {
+   "title": "单 Agent 什么时候应该升级成多 Agent？",
+   "topic": "agent",
+   "repo": "didilili/ai-agents-from-zero",
+   "path": "26-LangGraph多智能体与A2A.md",
+   "url": "https://github.com/didilili/ai-agents-from-zero/blob/main/26-LangGraph%E5%A4%9A%E6%99%BA%E8%83%BD%E4%BD%93%E4%B8%8EA2A.md"
+  },
+  {
+   "title": "为什么 Agent 需要 Memory？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/22-agent-planning-reflection/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/22-agent-planning-reflection/README.md"
+  },
+  {
+   "title": "设计一个企业级知识库问答系统，你会怎么架构？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/03-rag-system/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md"
+  },
+  {
+   "title": "MCP和OpenAI Tools API / GPTs有什么异同？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "Coding Agent 的“规划—执行—测试—修复”循环如何工作？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "MCP Client 有哪几种类型？Internal vs External Client 的区别？Sampling 如何实现回调？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "什么时候该用 CoVT？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/21-multimodal-agents/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/21-multimodal-agents/README.md"
+  },
+  {
+   "title": "评估是否已有足够信息",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/03-rag-system/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md"
+  },
+  {
+   "title": "向量数据库支持哪些增量更新策略？",
+   "topic": "rag",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/rag/embedding-vector-1.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md"
+  },
+  {
+   "title": "什么是 HyDE（Hypothetical Document Embeddings）？它的原理是什么？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "向量数据库的索引类型有哪些？怎么选？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/12-frameworks-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/12-frameworks-tools/README.md"
+  },
+  {
+   "title": "MCP、A2A、多智能体三者最容易混在哪里？",
+   "topic": "agent",
+   "repo": "didilili/ai-agents-from-zero",
+   "path": "26-LangGraph多智能体与A2A.md",
+   "url": "https://github.com/didilili/ai-agents-from-zero/blob/main/26-LangGraph%E5%A4%9A%E6%99%BA%E8%83%BD%E4%BD%93%E4%B8%8EA2A.md"
+  },
+  {
+   "title": "SQ（标量量化）和二进制量化、PQ 的区别是什么？什么时候选 SQ？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/06-vector-index-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/06-vector-index-optimization/README.md"
+  },
+  {
+   "title": "什么是Query改写?如何提升检索效果?",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/03-rag-system/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md"
+  },
+  {
+   "title": "多模态RAG和传统RAG有什么区别？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/21-multimodal-agents/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/21-multimodal-agents/README.md"
+  },
+  {
+   "title": "多Agent协同时如何实现链路关联？",
+   "topic": "agent",
+   "repo": "cdavid817/agent-interview",
+   "path": "docs/02-capabilities/multi-agent/multi-agent-basics.md",
+   "url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/multi-agent/multi-agent-basics.md"
+  },
+  {
+   "title": "NVIDIA Nemotron 3是什么？对多模态Agent生态有何影响？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/21-multimodal-agents/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/21-multimodal-agents/README.md"
+  },
+  {
+   "title": "基础 RAG 在哪些场景会失效？企业应如何选择增强方案？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "LangGraph 容错三件套——Retry、Timeout 和 Error Handler 如何组合使用？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/22-agent-planning-reflection/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/22-agent-planning-reflection/README.md"
+  },
+  {
+   "title": "这两个片段是否真的矛盾？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "Mobile-Agent-v3和AppAgent有什么区别？移动端GUI Agent有哪些独特挑战？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/21-multimodal-agents/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/21-multimodal-agents/README.md"
+  },
+  {
+   "title": "Archon是什么？2026年为什么\"AI编程工作流引擎\"成为新热点？claude-mem跨会话记忆有哪些最新实践？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "Sparse 向量（BM25/SPLADE）和 Dense 向量（Embedding）有什么区别？什么时候该用哪个？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/06-vector-index-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/06-vector-index-optimization/README.md"
+  },
+  {
+   "title": "一、Claude Mythos 是什么？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/17-ai-coding-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/17-ai-coding-tools/README.md"
+  },
+  {
+   "title": "为什么 RAG 要用向量数据库？其他数据库不行吗？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/03-rag-system/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md"
+  },
+  {
+   "title": "什么是 LLMLingua？它如何实现 Prompt/上下文压缩？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  },
+  {
+   "title": "关键设计决策：何时写入？何时遗忘？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/12-frameworks-tools/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/12-frameworks-tools/README.md"
+  },
+  {
+   "title": "MCP 授权流程（Authorization Flow）是怎么工作的？PRM、OAuth 2.1、DPoP 如何协同？",
+   "topic": "agent",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/14-mcp-skill-systems/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md"
+  },
+  {
+   "title": "如何系统化评估 RAG？换模型/embedding 导致的\"跷跷板效应\"怎么处理？",
+   "topic": "rag",
+   "repo": "guocong-bincai/ai-interview-guide",
+   "path": "docs/20-rag-advanced-optimization/README.md",
+   "url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md"
+  }
+ ]
+}

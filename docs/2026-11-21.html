@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI 面试题日报 · 2026-11-21</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:#3f3f3f;font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;letter-spacing:.4px;-webkit-font-smoothing:antialiased}
+main{width:80%;max-width:1080px;margin:0 auto;padding:44px 0 80px}
+.masthead{text-align:center}
+.kicker{display:inline-block;font-size:12px;letter-spacing:2px;color:#d4472a;border:1px solid #f0cfc6;background:#fdf5f2;padding:3px 12px;border-radius:2px}
+h1{font-size:24px;line-height:1.5;color:#1a1a1a;font-weight:700;margin:18px 0 6px}
+.masthead .meta{font-size:13px;color:#999;margin:0}
+.lede{font-size:15px;color:#8a8a8a;text-align:center;margin:14px 0 0}
+.orn{display:flex;align-items:center;gap:12px;margin:30px 0;color:#d8d8d8;font-size:10px;line-height:1}
+.orn:before,.orn:after{content:"";flex:1;height:1px;background:#eee}
+.topic-head{text-align:center;margin:46px 0 6px}
+.topic-head span{display:inline-block;font:600 13px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.22em;color:#d4472a;border-top:1px solid #f0cfc6;border-bottom:1px solid #f0cfc6;padding:7px 16px}
+.q{margin:34px 0 0}
+.no{display:inline-block;background:#d4472a;color:#fff;font-size:12px;font-weight:600;line-height:1;padding:5px 8px;border-radius:3px;margin-right:9px;vertical-align:3px;letter-spacing:1px}
+h2{font-size:19px;line-height:1.65;color:#1a1a1a;font-weight:700;margin:0 0 8px}
+.meta-line{font-size:13px;color:#9b9b9b;margin:0 0 16px;padding-left:2px}
+.meta-line a{color:#576b95;text-decoration:none}
+.tag{display:inline-block;border:1px solid #ececec;border-radius:2px;padding:0 6px;margin-right:5px;font-size:12px;color:#8a8a8a;line-height:1.9}
+p{margin:14px 0}
+.sub{font-size:15px;font-weight:700;color:#222;margin:24px 0 10px;padding-left:9px;border-left:3px solid #d4472a;line-height:1.5}
+.steps{list-style:none;margin:0;padding:0;counter-reset:s}
+.steps li{counter-increment:s;position:relative;padding-left:27px;margin:8px 0}
+.steps li:before{content:counter(s);position:absolute;left:0;top:0;color:#d4472a;font-weight:600;font-size:14px;line-height:1.9}
+.code{background:#f7f7f7;border-radius:4px;padding:14px 16px;margin:16px 0;overflow:auto}
+.code code{display:block;font:13px/1.7 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#2f2f2f;white-space:pre}
+.qa{background:#fbfbfb;border-radius:4px;padding:12px 16px;margin:0}
+.qa p{margin:6px 0;font-size:15px;color:#444}
+.qa strong{color:#1a1a1a}
+.diagram{background:#fbfbfb;border:1px solid #eee;border-radius:4px;padding:12px;margin:16px 0;overflow:auto}
+.diagram .mermaid{display:flex;justify-content:center}
+footer{margin-top:56px;text-align:center;color:#b0b0b0;font-size:12px;line-height:2.2}
+footer a{color:#8a9bbf;text-decoration:none}
+.empty{text-align:center;color:#9b9b9b;padding:48px 0}
+/* 题库页 */
+.search-box{margin:32px 0 0}
+input[type=search]{width:100%;padding:11px 14px;border:1px solid #e5e5e5;border-radius:4px;font-size:15px;color:#333;outline:none;background:#fff}
+input[type=search]:focus{border-color:#d4472a}
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 10px}
+.filter{border:1px solid #e5e5e5;border-radius:999px;padding:3px 12px;font-size:13px;color:#666;background:#fff;cursor:pointer;font-family:inherit}
+.filter.on{border-color:#d4472a;color:#d4472a;background:#fdf5f2}
+.count{color:#9b9b9b;font-size:13px;margin:6px 0 14px}
+.bank-item{border-top:1px solid #eee;padding:16px 0}
+.bank-item a{color:#1a1a1a;text-decoration:none;font-weight:600}
+.bank-item a:hover{color:#d4472a}
+.bank-item .meta{font-size:12px;color:#9b9b9b;margin-top:4px}
+@media (max-width:760px){main{width:auto;padding:32px 20px 64px}}
+@media (min-width:1200px){body{font-size:17px}h1{font-size:28px}h2{font-size:21px}.qa p{font-size:16px}}
+</style>
+</head>
+<body>
+<main>
+<header class="masthead">
+<span class="kicker">AI 面试题日报</span>
+<h1>11 月 21 日 · 10 道</h1>
+<p class="meta">2026-11-21 · 周六 · Agent 4 · RAG 4 · FastAPI 2 · 中高级</p>
+
+</header>
+<div class="orn"><span>◆</span></div>
+<div class="topic-head"><span>Agent 专题</span></div><section class="q" id="agent-20261121-01"><h2><span class="no">01</span>A2A 委派超时：子 Agent 已执行完却拿不到结果，幂等重放与状态对账怎么做</h2><p class="meta-line">资深 ｜ <span class="tag">multi-agent</span><span class="tag">a2a</span><span class="tag">幂等设计</span><span class="tag">故障定位</span> ｜ <a href="https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/13-multi-agent-systems/README.md" target="_blank" rel="noopener">面经来源 ↗</a></p><p class="sub">为什么会有这个问题</p><p>跨 Agent 委托本质是不可靠的远程调用：委托方只拿得到 task_id 和一次 HTTP 超时，而子 Agent 的执行时间由 LLM 生成加多次工具调用决定，常常是分钟级，远超网关或 SDK 的超时阈值。最常见的错误认知是「超时等于没执行」，于是直接重新委托，结果副作用被执行两遍（重复归档、重复扣款、重复发消息）。第二个错误是状态机里只有成功/失败两态，把「结果未知」折叠进失败，监控据此自动重跑，把偶发超时放大成系统性重复。第三是子 Agent 没有幂等键入口，重复提交就是新任务，无法去重。更麻烦的是，即使有了幂等键，「已执行但结果丢失」这一步仍需要靠外部系统的对账探测来确认，而不是靠重试。</p><p class="sub">怎么做</p><ol class="steps"><li>把委派拆成三段职责：submit 只负责拿 task_id 并立即返回 accepted；状态查询是独立只读接口；结果拉取是幂等读。委托方永远不再同步等最终结果，超时只代表「没拿到结果」。</li><li>委托方生成幂等键 idem = hash(parent_run_id + step_id)，随 submit 传递；子 Agent 侧对该键建唯一索引，重复提交直接返回原 task_id 与原状态，不重新执行。</li><li>状态机必须显式包含 unknown（截止时间已到但无法确认），不能折叠进 failed；只有 failed 才允许自动重放，unknown 只允许对账查询后人工或降级处理。</li><li>副作用改成两段提交：执行前写 intent 记录（幂等键加参数摘要），执行后写 outcome。恢复时先查 outcome，没有 outcome 但有 intent 的步骤走外部资源探测（查单、查消息发送记录）对账，而不是盲目重试。</li><li>委托方做带退避的对账循环：指数退避加 jitter，设置最大截止时间，超时后按 idempotency_key 兜底反查一次，仍 unknown 则升级人工或走降级分支。</li><li>可观测性把 parent_run_id、task_id、idempotency_key 三者贯穿 trace；核心指标看 unknown 占比、重放命中率、委派链路 p99，而不是只看成功率。</li></ol><div class="code"><code>import hashlib, random, time
+
+def idem_key(parent_run_id: str, step_id: str) -&gt; str:
+    return hashlib.sha256(f&quot;{parent_run_id}:{step_id}&quot;.encode()).hexdigest()[:32]
+
+def delegate(client, run_id: str, step_id: str, payload: dict, deadline_s: int = 600) -&gt; dict:
+    key = idem_key(run_id, step_id)
+    task = client.submit(payload, idempotency_key=key)  # 子 Agent 侧唯一索引，重复提交返回同一 task
+    end, backoff = time.time() + deadline_s, 1.0
+    while time.time() &lt; end:
+        st = client.get_task(task.task_id)  # 只读状态接口，不进执行队列
+        if st.state in (&quot;succeeded&quot;, &quot;failed&quot;, &quot;cancelled&quot;):
+            return {&quot;state&quot;: st.state, &quot;result&quot;: st.result, &quot;key&quot;: key}
+        time.sleep(backoff + random.random() * 0.2)
+        backoff = min(backoff * 2, 30.0)
+    return {&quot;state&quot;: &quot;unknown&quot;, &quot;task_id&quot;: task.task_id, &quot;key&quot;: key}
+
+def run_side_effect(store, run_id: str, step, execute, probe=None):
+    key = idem_key(run_id, step.id)
+    if (out := store.get_outcome(key)) is not None:
+        return out
+    store.put_intent(key, step.digest)          # 先落意图，再执行
+    if store.get_intent(key) and probe and probe():   # 已执行但结果丢失，走对账
+        return store.get_outcome(key)
+    out = execute()
+    store.put_outcome(key, out)
+    return out</code></div><p class="sub">真实场景</p><p>某项目里编排 Agent 委派子 Agent 完成「生成合规报告并归档」，子 Agent 端检索加生成长度在 80 到 180 秒之间，而委托方 HTTP 客户端超时设的是 60 秒。上线后偶发同一份报告被归档两次，且两次归档的时间差正好是一个客户端超时周期。排查路径：先确认子 Agent 侧是否收到两次 submit（是，两条 trace 仅 trace_id 不同、参数完全一致），说明是重放而非用户重复操作；再看监控把 ReadTimeout 计为 failed 并触发自动重跑，说明 unknown 态缺失；最后看归档接口无去重键，说明副作用层没做幂等。修复动作是三步：submit 带 idempotency_key 并在子 Agent 侧建唯一索引；状态机引入 unknown，超时不再计为失败；归档前按 report_id 做存在性检查，执行前写 intent 记录。</p><div class="diagram"><pre class="mermaid">sequenceDiagram
+    participant O as 编排Agent
+    participant S as 子Agent
+    participant X as 外部系统
+    O-&gt;&gt;S: 提交任务 携带 idempotency_key
+    S--&gt;&gt;O: 返回 task_id 与 accepted
+    Note over O,S: 客户端超时 但任务仍在执行
+    O-&gt;&gt;S: 按 task_id 查询状态
+    S--&gt;&gt;O: running
+    S-&gt;&gt;X: 写归档 携带幂等键
+    O-&gt;&gt;S: 超时后重提 同一 idempotency_key
+    S--&gt;&gt;O: 返回原 task_id 不重复执行
+    O-&gt;&gt;X: 对账探测 确认副作用是否已产生</pre></div><p class="sub">面试官追问</p><div class="qa"><p><strong>Q：</strong>如果子 Agent 是第三方黑盒、不支持传幂等键，怎么防止重复副作用？</p><p><strong>A：</strong>把幂等责任上移到副作用层：执行前后各探测一次外部资源状态（查单、查消息 ID、查文件是否已存在），探测得到明确「已存在」就直接复用结果；探测不到又无法确定时，该步骤标记为 non-retryable，超时只上报人工而不自动重放，同时把该工具纳入「必须人工确认」清单。根本原则是：不可探测的副作用不允许自动重试。</p><p><strong>Q：</strong>长任务用轮询查状态会不会把子 Agent 打爆？</p><p><strong>A：</strong>优先用 SSE 或回调通知，轮询只做兜底；退避从 1s 起指数增长、上限 30s、带 jitter 防止同步尖峰；状态查询走只读副本或缓存（同一 task_id 短 TTL 缓存），与执行队列物理隔离，避免查询流量挤占执行资源。</p></div></section><section class="q" id="agent-20261121-02"><h2><span class="no">02</span>MCP 工具失败：JSON-RPC error 与 isError 混用引发的重试风暴怎么止住</h2><p class="meta-line">进阶 ｜ <span class="tag">mcp</span><span class="tag">错误处理</span><span class="tag">重试熔断</span><span class="tag">可观测性</span> ｜ <a href="https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md" target="_blank" rel="noopener">面经来源 ↗</a></p><p class="sub">为什么会有这个问题</p><p>MCP 走 JSON-RPC 2.0，错误天然分两层：协议层 error（-32700 解析失败、-32601 方法或工具不存在、-32602 参数非法、-32603 内部错误，以及 -32000 到 -32099 的服务端自定义码）和工具执行层结果里的 isError 标记。问题在于两层的语义边界没人强制：把业务失败（余额不足、参数语义不对）当成 -32603 抛出，客户端 SDK 会当作传输故障自动重试；把真正的服务端崩溃包成 isError 的文本，模型看到「内部错误」就在 ReAct 循环里换个参数继续试。两边一叠加就是重试风暴：SDK 重试乘上 Agent 循环重试，一次会话打出上百次工具调用，把上游限流拖垮。更隐蔽的是错误信息只给一句 message，客户端无法判断 retryable，只能默认重试，也就无法做熔断决策。</p><p class="sub">怎么做</p><ol class="steps"><li>先划清语义边界：协议层 error 只用于「这次调用本身不成立」——方法或工具不存在、参数 schema 不合法、鉴权失败、服务不可用；工具确实执行了但业务失败，一律返回正常 result 加 isError:true。</li><li>错误结构化：isError 的 content 里放 {&quot;code&quot;,&quot;retryable&quot;,&quot;hint&quot;,&quot;details&quot;}。hint 面向模型（说明该改哪个字段、合法取值范围），details 里带 trace_id 面向人；不要把堆栈或原始异常文本丢给模型。</li><li>客户端按类型决定重试：retryable=true 且工具幂等才允许指数退避重试并设上限；retryable=false 直接终止并把 hint 回灌给模型改参数；未知 code 默认不重试，只上报。</li><li>在 Agent 循环层加指纹熔断：同一 run 内以 tool_name 加参数摘要为指纹，同指纹失败 N 次终止该分支；同一工具的整体失败率超阈值时把它从本次候选工具集中摘掉并降级。</li><li>服务端日志必须带 jsonrpc id、tool name、trace_id、耗时、错误分类；客户端把 error.data 原样透传到 trace，不要吞成一句 tool failed。</li><li>监控按错误码分布看：工具失败率、重试占比、平均尝试次数、参数非法型失败占比。后者持续偏高通常不是模型笨，而是工具 description 或 schema 描述不足。</li></ol><div class="code"><code>RETRYABLE_CODES = {-32603, -32001}
+
+def call_tool(client, name, args, max_attempts=3):
+    fp = fingerprint(name, args)
+    for attempt in range(1, max_attempts + 1):
+        try:
+            res = client.call(&quot;tools/call&quot;, {&quot;name&quot;: name, &quot;arguments&quot;: args})
+        except JsonRpcError as e:
+            if e.code == -32602 or breaker.hit(fp):
+                raise ToolFatal(name, e.code, e.message)      # 参数错 或 已熔断 不重试
+            if e.code in RETRYABLE_CODES and attempt &lt; max_attempts:
+                time.sleep(min(2 ** attempt, 10) * (0.5 + random.random()))
+                continue
+            raise ToolFatal(name, e.code, e.message)
+        if res.get(&quot;isError&quot;):
+            payload = json.loads(res[&quot;content&quot;][0][&quot;text&quot;])
+            if payload.get(&quot;retryable&quot;) and attempt &lt; max_attempts:
+                time.sleep(min(2 ** attempt, 10)); continue
+            breaker.record(fp)
+            raise ToolBusinessError(payload[&quot;code&quot;], payload.get(&quot;hint&quot;))
+        return res
+
+def handle_tools_call(req):
+    tool = registry.get(req.params[&quot;name&quot;])
+    if tool is None:
+        return error(req.id, -32601, &quot;unknown tool&quot;)
+    if (fields := tool.schema.check(req.params.get(&quot;arguments&quot;, {}))):
+        return error(req.id, -32602, &quot;invalid params&quot;, data={&quot;fields&quot;: fields})
+    try:
+        out = tool.run(req.params[&quot;arguments&quot;])
+    except ToolBusinessError as e:
+        return result(req.id, {&quot;isError&quot;: True, &quot;content&quot;: [{&quot;type&quot;: &quot;text&quot;, &quot;text&quot;: json.dumps(
+            {&quot;code&quot;: e.code, &quot;retryable&quot;: e.retryable, &quot;hint&quot;: e.hint})}]})
+    except Exception:
+        return error(req.id, -32603, &quot;internal error&quot;, data={&quot;trace_id&quot;: current_trace()})
+    return result(req.id, {&quot;isError&quot;: False, &quot;content&quot;: out})</code></div><p class="sub">真实场景</p><p>某项目里 Agent 调用内部的订单查询 MCP 工具。工具端把所有上游异常都统一包成 -32603 抛出，包括上游 401 和参数缺字段；客户端 SDK 视 -32603 为传输类错误自动重试 3 次，Agent 又在 ReAct 循环里再试。典型现象是单次会话对同一工具打出上百次调用，QPS 突增后触发上游限流，连带其他工具一起超时。排查路径：先看服务端日志里同一 jsonrpc id 反复到达，确认是重试而非用户行为；再看错误 message 全是 -32603、没有可判定的 code，说明客户端根本无法区分可重试与不可重试；最后核对 Agent 侧无指纹熔断，同参数失败会一直循环。修复是把业务失败改成 isError 加 retryable=false 并附 hint、参数校验改回 -32602、客户端加指纹熔断与尝试上限。</p><div class="diagram"><pre class="mermaid">flowchart TD
+    A[工具调用失败] --&gt; B{调用本身是否成立}
+    B -- 否 --&gt; C[JSON-RPC error 带标准错误码]
+    B -- 是 --&gt; D[正常 result 加 isError 为真]
+    D --&gt; E{retryable 为真且工具幂等}
+    E -- 是 --&gt; F[指数退避重试 有次数上限]
+    E -- 否 --&gt; G[不重试 把 hint 回灌给模型改参数]
+    C --&gt; H{错误码是否可重试}
+    H -- 是 --&gt; F
+    H -- 否 --&gt; G
+    F --&gt; I[同指纹失败达阈值 熔断该分支]</pre></div><p class="sub">面试官追问</p><div class="qa"><p><strong>Q：</strong>怎么区分是模型参数填错，还是工具 schema 描述不清导致的调用失败？</p><p><strong>A：</strong>看同一工具参数非法型失败占比与错误字段分布。若失败集中在一个字段且模型反复换写法去猜，通常是工具 description 缺单位、缺枚举、缺示例，应改 schema（加 enum、把格式和单位写进描述、附一个正确调用样例），而不是在系统提示词里反复强调。反之若失败字段分散且与用户输入强相关，才是模型理解问题。</p><p><strong>Q：</strong>工具需要执行超过 60 秒时，怎么和 JSON-RPC 的错误处理配合？</p><p><strong>A：</strong>不要靠拉长 HTTP 超时。改成异步任务模式：tools/call 立即返回 task id，后续用状态查询或服务端通知拿结果。客户端侧超时记为 unknown 而不是失败，配合幂等键避免误重放；真正的失败由任务的终态返回，并沿用同一套 code 与 retryable 语义，保证两层的判定逻辑一致。</p></div></section><section class="q" id="agent-20261121-03"><h2><span class="no">03</span>Critic Agent 反复打回同一份草稿：重写震荡、验证预算与异构校验怎么设计</h2><p class="meta-line">资深 ｜ <span class="tag">critic-verifier</span><span class="tag">成本控制</span><span class="tag">多轮循环</span><span class="tag">可观测性</span> ｜ <a href="https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/13-multi-agent-systems/README.md" target="_blank" rel="noopener">面经来源 ↗</a></p><p class="sub">为什么会有这个问题</p><p>Critic/Verifier 不是一次性的检查，它把「生成」变成「生成—判定—重写」的闭环：每 reject 一次就多一次生成调用，成本随轮次线性增长，尾部延迟被严重放大。更常见的错误认知是「多一个 critic 一定更准」，但实践中 generator 与 verifier 往往是同模型、同上下文、同风格偏好，两者错误高度相关，verifier 真正能纠的是「可判定错误」（schema 不合法、引用 id 不存在、缺必填字段、违反策略），对开放式质量却容易退化成「表达不够专业」这类风格改写，改完语义不变。由于 false reject 率几乎没人度量，线上就出现「成本翻倍、质量曲线不动」的典型现象；而连续 reject 还会引起重写震荡，同一份草稿被反复改写，最终 P95 延迟和 token 双双超标。</p><p class="sub">怎么做</p><ol class="steps"><li>先做分层校验：把 schema 校验、引用存在性、敏感词/合规、单测执行等确定性检查放在最前面，这类检查拦截了绝大多数硬错误且不花钱；LLM judge 只负责语义类判断，并且必须输出结构化 verdict（passed / reason_code / fix_hint / confidence），禁止自由文本。</li><li>按风险路由验证：只对写操作、对外发送、金额与合规相关的高风险样本启用语义校验；低风险任务走确定性校验后直接放行，用路由把验证成本压在真正需要的地方。</li><li>给验证设预算和熔断：默认 max_verifier_rounds=1，限制验证消耗的时间与 token；当连续两轮 reject 且草稿相似度（如 Jaccard/embedding 距离）超过阈值，判定为震荡，立即止损并降级为「带 verdict 的人工复核」或「带警告返回」，而不是继续重写。</li><li>降低错误相关性：verifier 与 generator 异构化——换模型、换上下文（verifier 只看 rubric 与待验证片段而非全对话）、或者用可执行工具（跑测试、回查检索原文）替代 LLM 判断，这样验证才提供独立信息量。</li><li>用收益判据决定去留：做离线回放与小流量 A/B，观察任务成功率、人工返工率、P95 延迟、每「被采纳结果」的成本；同时用人工抽检标签算 verifier 的 precision/recall，重点是 false reject 率——它直接决定成本浪费。</li><li>补齐观测：trace 上记录 verifier_round、verdict.reason_code、judge 模型与 prompt 版本、每轮 diff 相似度，方便事后按 reason_code 拆解「哪类打回是无效的」。</li></ol><div class="code"><code>from dataclasses import dataclass
+
+@dataclass
+class Verdict:
+    passed: bool
+    code: str
+    fix_hint: str = &quot;&quot;
+
+def validate(task, draft, budget):
+    for chk in HARD_CHECKS:                 # schema / 引用 / 合规，不花钱
+        v = chk(draft)
+        if not v.passed:
+            return v
+    if not risky(task):                     # 低风险直接放行
+        return Verdict(True, &quot;skipped&quot;)
+    if budget.exhausted():
+        return Verdict(True, &quot;budget_exhausted&quot;)
+    return llm_judge(task, draft, rubric=RUBRIC)
+
+def run(task, budget):
+    draft, v, prev = generate(task), None, None
+    for _ in range(max_rounds(task)):
+        v = validate(task, draft, budget)
+        if v.passed or v.code == &quot;budget_exhausted&quot;:
+            break
+        if prev is not None and jaccard(prev, draft) &gt; 0.9:
+            return draft, &quot;needs_human&quot;, v      # 重写震荡，止损
+        prev = draft
+        draft = rewrite(task, draft, v.fix_hint, budget)
+    return draft, &quot;ok&quot;, v</code></div><p class="sub">真实场景</p><p>某项目在报告生成 Agent 后串了一个 critic，上线后端到端 P95 明显变长、每任务 token 成本接近翻倍，但人工抽检的通过率与未加 critic 时基本持平。排查路径：先按 verdict.reason_code 统计打回原因，发现大部分集中在「措辞/专业度」这类主观项；再取打回前后的草稿算相似度，多数超过 0.9，即改的是同义表达；最后用人工抽检标签对齐，算出 false reject 比例偏高，说明成本主要消耗在无效重写上。改造方向是把 critic 收缩到硬校验 + 高风险样本，并加相似度熔断，之后延迟回落到接近基线，人工返工率没有变差。</p><div class="diagram"><pre class="mermaid">flowchart TD
+    A[任务进入] --&gt; B[生成草稿]
+    B --&gt; C[确定性校验 schema 引用 合规]
+    C --&gt;|不通过| D[按 fix_hint 定向重写]
+    C --&gt;|通过| E{风险路由}
+    E --&gt;|低风险| F[直接放行]
+    E --&gt;|高风险| G{验证预算是否耗尽}
+    G --&gt;|是| H[放行并打降级标记]
+    G --&gt;|否| I[LLM 语义校验 输出 verdict]
+    I --&gt;|通过| F
+    I --&gt;|不通过| J{与上轮草稿相似度过高}
+    J --&gt;|是| K[止损 转人工并附 verdict]
+    J --&gt;|否| D
+    D --&gt; B</pre></div><p class="sub">面试官追问</p><div class="qa"><p><strong>Q：</strong>怎么证明这个 verifier 值得保留，而不是纯粹的成本？</p><p><strong>A：</strong>不要用「每请求成本」，要用「每被采纳结果的成本」：对比有/无 verifier 时的任务成功率、人工返工率与返工工时，换算成等效人力成本再做比较。同时对高风险子集单独看漏检率（verifier 放过但人工判错的样本），低风险子集看 false reject 率。如果质量增益只出现在少数高风险场景，就把它收敛成路由而不是全局串联。</p><p><strong>Q：</strong>verifier 和 generator 用同一个模型是不是就废了？</p><p><strong>A：</strong>不一定废，但独立信息量会显著下降，尤其开放式质量判断容易变成风格共识。可行的异构手段：换模型家族、给 verifier 裁剪上下文（只看 rubric 和片段，避免被 generator 的长篇叙述锚定）、引入可执行校验（跑单测、回查引用原文、schema 与数值一致性检查）。判断标准是 verifier 抓到的错误中，generator 自评抓不到的比例有多少。</p></div></section><section class="q" id="agent-20261121-04"><h2><span class="no">04</span>运行时参数覆盖被 falsy 吞掉：think=False 与 temperature=0 静默失效怎么定位</h2><p class="meta-line">进阶 ｜ <span class="tag">配置合并</span><span class="tag">参数透传</span><span class="tag">可观测性</span><span class="tag">回归测试</span> ｜ <a href="https://github.com/run-llama/llama_index/issues/22970" target="_blank" rel="noopener">issue来源 ↗</a></p><p class="sub">为什么会有这个问题</p><p>Agent 运行时的模型参数通常有多个层级来源：代码里的默认值、模型 profile、任务/用户级 override、以及高峰降级策略。很多实现为了省事写成 `override.get(k) or default` 或 `if not v: v = default`，而在 Python 里 0、0.0、False、空字符串都是 falsy，于是「显式关闭」被当成「没有设置」，直接回落到默认值。这类 bug 的可怕之处在于不报错：think=False 本意是关掉 reasoning 以压首 token 延迟，结果模型继续思考；stream=False 本意是批量聚合，结果还在流式；temperature=0 本意是让评测可复现，结果输出抖动导致回归对比失真。更隐蔽的一层是 None 的双重语义——既可能是「没传」，也可能是「交给 provider 用默认值」，缺少 sentinel 就无法表达三态，再叠加 pydantic 的 exclude_unset/exclude_none 误用，会出现显式 False 被丢弃或显式 None 反向覆盖默认值。</p><p class="sub">怎么做</p><ol class="steps"><li>先取证再改代码：在真正发往 provider 的出口处打印脱敏后的完整 payload，同时打印各层配置对象，逐字段对比「请求层给的」与「最终生效的」。只看配置对象永远发现不了被合并逻辑吞掉的值。</li><li>定位合并点：全局搜索 `or `、`.get(...) or`、`if not value` 这类写法，把分散在各处的合并逻辑收敛到一个 resolver 函数，禁止业务代码自己拼 kwargs。</li><li>引入三态语义：用 sentinel（如 `UNSET = object()`）或 pydantic 的 `model_fields_set` 区分「未提供」「显式 None」「显式值（含 False/0）」。合并时只跳过 UNSET，显式值一律照写；显式 None 是否下发给 provider 由出口层决定。</li><li>显式化合并优先级并绑定作用域：default &lt; profile &lt; request &lt; runtime-policy（降级/限流），override 通过请求对象或 contextvar 传递，绝对不要写全局单例，否则并发请求会互相污染，出现「A 请求的参数跑到 B 请求」。</li><li>加防护网：为每个关键字段写参数矩阵单测（unset / None / True / False / 0 五态 × 合并顺序），并对最终 payload 做 snapshot 断言；出口处再加一条断言，例如 think 必须是 bool 或不存在，不允许是 None 混进请求体。</li><li>补观测：trace 里记录 effective_params 与 params_source（哪个层级提供了该字段），这样线上出现延迟或成本异常时可以直接归因到某次配置下发，而不是靠猜。</li></ol><div class="code"><code>UNSET = object()
+
+def resolve(defaults, profile, request):
+    out = dict(defaults)
+    for layer in (profile, request):
+        for k, v in layer.items():
+            if v is UNSET:
+                continue
+            out[k] = v          # False / 0 是合法值，不能被 or 吞掉
+    return out
+
+# 旧写法：{k: (req.get(k) or v) for k, v in defaults.items()}
+# resolve({&quot;think&quot;: True}, {}, {&quot;think&quot;: False}) -&gt; {&quot;think&quot;: False}
+
+from pydantic import BaseModel
+
+class ModelArgs(BaseModel):
+    think: bool | None = None
+    temperature: float | None = None
+
+def to_payload(args: ModelArgs, defaults: dict) -&gt; dict:
+    explicit = args.model_dump(exclude_unset=True)   # 区分「没传」与「传了 False」
+    return {**defaults, **{k: v for k, v in explicit.items() if v is not None}}</code></div><p class="sub">真实场景</p><p>某项目为压高峰延迟，按任务给支持 thinking 的模型下发 think=False，但上线后监控显示首 token 延迟与 reasoning token 占比几乎没变化。排查路径：先确认降级策略确实命中（策略日志有记录），再把出口 payload 打出来，发现 think 字段实际是 True——实例默认 True，合并时用了 `override.get(&#x27;think&#x27;) or default`，False 被吞成默认值。同类问题还出现在批处理任务上：显式 stream=False 未生效仍在流式；以及评测流水线中 temperature=0 不生效，导致同一 prompt 回归结果不可复现、误判为模型退化。修复方式是把分散的合并收敛到一个 resolver + sentinel，并在 CI 里加五态参数矩阵测试与 payload snapshot。</p><p class="sub">面试官追问</p><div class="qa"><p><strong>Q：</strong>为什么不能简单用 `is not None` 判断就完事？</p><p><strong>A：</strong>因为 None 本身可能是有语义的：调用方可能想显式表达「这一项交给 provider 用默认值」，而「完全没传」应当继承上一层配置。所以要区分三态——UNSET（未提供，继续继承）、None（显式交给下游默认）、具体值（含 False/0，必须透传）。用 sentinel 配合 pydantic 的 model_fields_set 才能无损表达，`is not None` 会把显式 None 和未提供混为一谈。</p><p><strong>Q：</strong>怎么防止这类问题再犯？</p><p><strong>A：</strong>三层防护：一是合并逻辑单点化，业务代码不允许自己拼参数；二是 CI 跑参数矩阵测试（unset/None/True/False/0）并对最终 payload 做 snapshot 断言，任何字段语义变化都会让测试红；三是出口处记录 effective_params 与 params_source 到 trace，线上出现「降级没生效」时能一眼定位是哪一层覆盖出了问题，而不是重新发版加日志排查。</p></div></section><div class="topic-head"><span>RAG 专题</span></div><section class="q" id="rag-20261121-01"><h2><span class="no">05</span>索引从百万级扩到亿级后内存打满、recall 下滑：量化与 GPU 的收益边界怎么量化</h2><p class="meta-line">资深 ｜ <span class="tag">向量库</span><span class="tag">量化</span><span class="tag">容量规划</span><span class="tag">成本取舍</span> ｜ <a href="https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-2.md" target="_blank" rel="noopener">面经来源 ↗</a></p><p class="sub">为什么会有这个问题</p><p>向量检索的成本上限通常取决于「索引是否放得进内存」，而非峰值 QPS。float32 下裸向量占 N×dim×4 字节，HNSW 还要额外存图结构（与 M 参数成正比），再加副本与段合并的临时放大，实际内存常是理论值的 1.5 倍以上。上量之后必然要动量化（SQ8 / PQ / BQ），但量化会扰动相似度排序，被换掉的往往正是 top-k 尾部那些「差一点」的段落，表现为答案缺漏而不是报错，所以只盯平均延迟会漏掉质量回退。GPU 的收益来自大 batch 并行与高显存带宽，在 QPS 低、batch 只有个位数时，kernel launch 与 H2D 拷贝会把收益吃光；且显存不能超卖，多租户隔离与分片弹性都更差。常见错误认知有三个：把换索引类型当成唯一旋钮；拿平均延迟代替 recall 与 p99；以为换 GPU 就能解决所有慢查询。</p><p class="sub">怎么做</p><ol class="steps"><li>先建容量模型：N×dim×4 字节裸向量 + 图结构开销 + 副本数 + 段合并余量，算出单节点可承载上限，再和实际占用的磁盘、内存水位对照，先找出「非必要占用」（历史向量、未使用的命名向量字段、重复副本）。</li><li>按量级选形态：百万级用单节点全内存 HNSW 即可；千万级做分片 + SQ8 或 PQ 量化 + mmap 磁盘索引，把热数据留在 page cache；亿级必须多分片多副本，二值或 PQ 粗召回 + 原始向量 rescore 精排，并按访问频次做冷热分层。</li><li>把量化当作带参数的开关而不是一次性决策：固定同一批真实 query，用 exact 检索结果作为上界，对比量化前后与开启 rescore 后的 recall@k，扫描 oversample 倍数（2/4/8），画出「内存节省 vs recall 损失」曲线再定参。</li><li>CPU 与 GPU 的取舍用同一 recall 目标下的单位查询成本衡量：分别压测空载与带 filter 的场景，记录 p50/p99、每秒可承载查询数、以及索引重建耗时，GPU 一般只在索引构建和高 QPS 大 batch 查询上占优。</li><li>加护栏再上线：容量水位、段数量、慢查询比例、以及定期跑的 recall 抽样对比组成监控项；把量化参数和 oversample 写进配置而非代码，便于回退。</li><li>上线后按季度复核：数据分布会漂移，原先选定的 oversample 与量化档位在语料变长、变稠密后可能不再达标。</li></ol><div class="code"><code>import numpy as np
+
+def recall_at_k(ref_ids, got_ids, k=10):
+    return len(set(ref_ids[:k]) &amp; set(got_ids[:k])) / k
+
+def compare_configs(store, queries, k=10, oversample=4):
+    rows = []
+    for q in queries:
+        ref = store.search(q, limit=k, exact=True)
+        sq = store.search(q, limit=k, quant=&quot;sq8&quot;, rescore=False)
+        sq_r = store.search(q, limit=k, quant=&quot;sq8&quot;,
+                            oversample=oversample, rescore=True)
+        rows.append([recall_at_k(ref, sq, k), recall_at_k(ref, sq_r, k)])
+    mean = np.mean(rows, axis=0)
+    return {&quot;sq8&quot;: round(float(mean[0]), 4),
+            &quot;sq8_rescore&quot;: round(float(mean[1]), 4)}</code></div><p class="sub">真实场景</p><p>某项目的知识库从百万级文档涨到几千万 chunk 后，节点内存水位长期在 85% 以上，检索 p99 开始出现秒级抖动，同时业务侧反馈「答案里少了关键那条」。排查顺序是：先算理论内存与实际占用的缺口，发现 collection 里为多路召回建了若干个 optional 命名向量，每个都按最大维度占位，实际容量是最小必要集合的数倍；把离线才用到的向量字段迁到独立冷集合后内存回落。再看质量，用同一批线上 query 跑 exact 检索作对照，发现开启 SQ8 后 top-10 与 exact 的交集明显下降，而打开 rescore 并把 oversample 提到 4 后基本追平。最后压测 CPU 与 GPU：该业务 QPS 不高、单请求 batch 很小，GPU 方案 p99 反而更差且成本更高，最终维持 CPU + 量化 + rescore，只把索引重建挪到批处理窗口。</p><div class="diagram"><pre class="mermaid">flowchart TD
+    A[向量规模与内存水位评估] --&gt; B{数量级}
+    B --&gt;|百万级| C[单节点全内存 HNSW]
+    B --&gt;|千万级| D[分片 加 SQ8 或 PQ 加 mmap]
+    B --&gt;|亿级| E[多分片多副本 粗召回 加 rescore 精排]
+    D --&gt; F[同一批 query 对比 exact 与量化后的 recall]
+    E --&gt; F
+    F --&gt; G{recall 是否达标}
+    G --&gt;|否| H[提高 oversample 打开 rescore 或回退精度]
+    G --&gt;|是| I[压测 CPU 与 GPU 的 p99 与单位查询成本]</pre></div><p class="sub">面试官追问</p><div class="qa"><p><strong>Q：</strong>量化后 recall 掉了几个点，怎么判断是量化误差还是切分、embedding 本身的问题？</p><p><strong>A：</strong>先用 exact 检索当上界：如果 exact 也召不回目标段落，问题在切分粒度或 embedding 模型，跟量化无关。若 exact 能召回而量化后丢失，再看被挤出 top-k 的样本是否集中在长文档、跨段答案这类边界样本上，并扫 oversample 与 rescore 观察是否可恢复；同时确认评测 query 集与线上分布一致，避免用离线标注集自欺。</p><p><strong>Q：</strong>亿级数据量下要不要直接上 GPU 检索？</p><p><strong>A：</strong>先分清瓶颈在建索引还是在线查询。建索引阶段 GPU 的批量构图收益明确；在线查询阶段只有当 QPS 高、单批候选多、且显存足以容纳分片时才划算。低 QPS 场景下 kernel launch、数据拷贝和显存不能超卖带来的分片刚性，会让 GPU 的成本与运维复杂度都高于 CPU + 量化 + 分片，多数业务先做量化与冷热分层更划算。</p></div></section><section class="q" id="rag-20261121-02"><h2><span class="no">06</span>在线 embedding 成了写入与查询的公共瓶颈：micro-batch、缓存与降级的组合怎么落地</h2><p class="meta-line">进阶 ｜ <span class="tag">embedding</span><span class="tag">micro-batch</span><span class="tag">缓存</span><span class="tag">降级</span> ｜ <a href="https://github.com/didilili/ai-agents-from-zero/blob/main/19-RAG%E6%A3%80%E7%B4%A2%E5%A2%9E%E5%BC%BA%E7%94%9F%E6%88%90.md" target="_blank" rel="noopener">面经来源 ↗</a></p><p class="sub">为什么会有这个问题</p><p>在 RAG 系统里 embedding 服务是查询链路和入库链路的共享依赖：用户 query 要实时转向量，文档导入也要批量转向量，两条链路争同一份推理配额。批量合并能抬高吞吐，但会把请求攒在队列里，直接抬高尾延迟，吞吐和 p99 天然对立。常见错误有四个：每个请求单独调一次 embedding，batch 恒为 1，加速卡利用率极低；不做任何缓存，热门 query 和重复文档反复计算；在 async 路由里直接调用同步 SDK，阻塞 event loop，让并发数上不去；对下游没有并发上限和超时，一旦排队就开始雪崩式超时。此外缓存一致性也要小心：文档更新后旧向量若未失效，会持续召回过期内容。</p><p class="sub">怎么做</p><ol class="steps"><li>先量化现状：分开统计 query embedding 与文档 embedding 的 QPS、batch 分布、单次耗时、队列等待时间与加速卡利用率，判断是算力不够还是调用粒度太碎。</li><li>在服务端做 micro-batching：设定 max_batch 与 max_delay 两个参数，收到第一个请求后最多等 max_delay 或凑满 max_batch 就发车，用线上 p99 预算减去下游耗时反推 max_delay，而不是凭感觉设 50ms。</li><li>加两级缓存：query 向量按规范化后的文本哈希缓存（做大小写、空白、语言归一，多租户加 tenant 前缀），文档向量按 content hash 持久化，模型或维度变更时整体版本化失效，避免串用旧向量。</li><li>把两条链路做隔离：导入任务走独立队列与独立配额、低优先级、可中断重跑；在线查询保留最小配额，防止一次全量重建把线上打挂。</li><li>在 FastAPI 侧保证非阻塞：用 async client 或把同步调用放进线程池，设置明确的超时与取消，超时后降级到缓存或关键词召回而不是无限等待。</li><li>补观测：embedding 服务 p99、平均 batch 大小、队列长度、缓存命中率、降级触发率、超时率，任一指标恶化都能定位到是批量策略还是容量问题。</li></ol><div class="code"><code>import asyncio, hashlib
+
+class BatchedEmbedder:
+    def __init__(self, embed_fn, cache, max_batch=64, max_delay=0.01, workers=2):
+        self.embed_fn, self.cache = embed_fn, cache
+        self.max_batch, self.max_delay = max_batch, max_delay
+        self.q, self.sem = asyncio.Queue(), asyncio.Semaphore(workers)
+
+    async def embed(self, text):
+        key = hashlib.sha256(text.encode()).hexdigest()
+        if (hit := self.cache.get(key)) is not None:
+            return hit
+        fut = asyncio.get_running_loop().create_future()
+        await self.q.put((text, key, fut))
+        return await asyncio.wait_for(fut, timeout=2.0)
+
+    async def run(self):
+        loop = asyncio.get_running_loop()
+        while True:
+            batch = [await self.q.get()]
+            deadline = loop.time() + self.max_delay
+            while len(batch) &lt; self.max_batch:
+                left = deadline - loop.time()
+                if left &lt;= 0:
+                    break
+                try:
+                    batch.append(await asyncio.wait_for(self.q.get(), left))
+                except asyncio.TimeoutError:
+                    break
+            async with self.sem:
+                try:
+                    vecs = await self.embed_fn([t for t, _, _ in batch])
+                    for (_, k, fut), v in zip(batch, vecs):
+                        self.cache[k] = v
+                        fut.set_result(v)
+                except Exception as e:
+                    for _, _, fut in batch:
+                        if not fut.done():
+                            fut.set_exception(e)</code></div><p class="sub">真实场景</p><p>某项目的知识库导入任务一启动，线上问答 p99 就从几百毫秒涨到数秒，超时率明显上升，而加速卡利用率却在 30% 与 100% 之间锯齿波动。排查发现三点：一是导入链路逐条调用 embedding，batch 恒为 1；二是在线查询与导入共用同一个 endpoint，没有配额隔离；三是 FastAPI 路由里直接调用了同步 SDK，event loop 被阻塞，并发上不去，只能靠客户端重试，重试又进一步放大队列。改造后：上线 micro-batching 把 batch 抬到几十，在线 query 向量加缓存，导入改走异步任务队列并限流到低优先级，同步调用挪进线程池并设置超时，超时直接降级为缓存命中或关键词召回。锯齿消失，导入期间线上 p99 恢复平稳。</p><div class="diagram"><pre class="mermaid">sequenceDiagram
+    participant API as 检索接口
+    participant C as 向量缓存
+    participant B as 批量合并器
+    participant M as Embedding 服务
+    API-&gt;&gt;C: 按文本哈希查缓存
+    C--&gt;&gt;API: 命中则直接返回
+    API-&gt;&gt;B: 未命中则入队等待
+    B-&gt;&gt;B: 攒批或等到 max_delay
+    B-&gt;&gt;M: 一次前向计算整批
+    M--&gt;&gt;B: 返回向量列表
+    B-&gt;&gt;C: 回写缓存
+    B--&gt;&gt;API: 唤醒等待中的请求</pre></div><p class="sub">面试官追问</p><div class="qa"><p><strong>Q：</strong>query 向量缓存值不值得做，边界在哪？</p><p><strong>A：</strong>收益取决于 query 重复率与规范化质量。高频问法、多轮会话里的复述、以及多租户共用模板句式重复率高，收益明显；长尾自由文本为主、几乎没有重复的业务收益有限，还要承担一致性与内存成本。落地时要先统计文本归一化后的重复率，再决定缓存容量与 TTL，并保证模型或维度升级时整体失效。</p><p><strong>Q：</strong>max_delay 调大吞吐更好但延迟更差，怎么定这个值？</p><p><strong>A：</strong>用 p99 预算倒推：总预算减去检索、rerank、生成各段耗时，剩下的才是允许排队时间。再在压测里扫描几档 max_delay 与 max_batch，画吞吐-延迟曲线取拐点；线上按负载动态调整，高峰期把 max_delay 调小保尾延迟，低峰期放大提吞吐，同时监控平均 batch 大小作为策略是否生效的信号。</p></div></section><section class="q" id="rag-20261121-03"><h2><span class="no">07</span>检索命中高相似度片段却答非所问：answerability 判定、拒答阈值与证据覆盖率怎么落地</h2><p class="meta-line">资深 ｜ <span class="tag">向量检索</span><span class="tag">拒答策略</span><span class="tag">评估体系</span><span class="tag">rerank</span> ｜ <a href="https://github.com/didilili/ai-agents-from-zero/blob/main/18-%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8EEmbedding%E5%AE%9E%E6%88%98.md" target="_blank" rel="noopener">面经来源 ↗</a></p><p class="sub">为什么会有这个问题</p><p>余弦相似度衡量的是 query 与 chunk 在 embedding 空间里的接近程度，它既不代表片段里含有答案，也不能跨语料、跨模型比较。工程上常见的四类误判：一是 chunk 切分把答案切到了相邻块，命中的块只有铺垫；二是 query 短、doc 长，非对称语义下「话题相关」被算成高相似；三是问题含多个约束（时间、主体、口径），单个片段只覆盖一部分；四是换 embedding 模型或换语料后分数分布整体漂移，写死的 0.8 阈值直接失效。典型错误认知是把 top1 分数当置信度、把「模型回答流畅且带了引用」当作答对，结果是在没有证据时也强行生成，错误答案比检索不到更难被发现。</p><p class="sub">怎么做</p><ol class="steps"><li>先分离两类失败：用带标注的评估集算 recall@k 与 MRR，判断是「gold 片段根本没召回」还是「召回了但没用上」，两者优化手段完全不同，不要一上来就调 prompt。</li><li>用 cross-encoder 做精排，把判定阈值建在 rerank 分数上而不是 bi-encoder 余弦上；rerank 分数对「片段是否真的回答问题」判别力更强，且量纲相对稳定。</li><li>阈值分层而非全局：按 query 类型（单跳事实、多跳比较、流程步骤）分别标定基线，用评估集上的分数分布取分位点，并定期用新采样重标。</li><li>引入证据覆盖率：从 query 抽取关键实体与约束，检查 top-n 片段是否覆盖；覆盖率不足时不要直接作答，先做 query 改写或分解后重检索。</li><li>设计降级路径：一次改写 + 扩 k 重试，仍不达标就拒答并给出「未找到依据」的明确回复，同时把该 query 落盘进未命中池，供后续补文档。</li><li>把「引用段落命中率」「unanswerable 集合上的误答率」纳入线上看板，用抽样人工复核校准自动指标。</li></ol><div class="code"><code>def gate(query, chunks, reranker, coverage_fn, cfg):
+    scored = sorted(
+        ((reranker.score(query, c.text), c) for c in chunks),
+        key=lambda x: x[0], reverse=True,
+    )[: cfg.top_n]
+    if not scored:
+        return {&quot;action&quot;: &quot;refuse&quot;, &quot;reason&quot;: &quot;empty_recall&quot;}
+
+    top_score = scored[0][0]
+    cov = coverage_fn(query, [c for _, c in scored])
+    base = cfg.thresholds.get(classify(query), cfg.thresholds[&quot;default&quot;])
+
+    if top_score &lt; base or cov &lt; cfg.min_coverage:
+        return {
+            &quot;action&quot;: &quot;retry_or_refuse&quot;,
+            &quot;top_score&quot;: top_score,
+            &quot;coverage&quot;: cov,
+            &quot;rewrite&quot;: True,
+        }
+    return {
+        &quot;action&quot;: &quot;answer&quot;,
+        &quot;context&quot;: [c for _, c in scored],
+        &quot;top_score&quot;: top_score,
+        &quot;coverage&quot;: cov,
+    }</code></div><p class="sub">真实场景</p><p>某项目上线知识库问答后，用户反馈「答得像模像样但引用的段落跟问题无关」。抽样回捞发现 top1 相似度普遍在 0.85 以上，pass 了原有 0.8 阈值，但引用段落命中率很低，且在被标注为「库里没有答案」的问题上几乎从不拒答。排查路径：先在评估集上算 recall@5，发现 gold 片段多数能召回，说明不是索引问题；再看精排后 top1 片段是否含答案，命中率低，确认是「相关但不可答」；同时核对分数分布，发现新语料接入后整体分数上移，旧阈值等价于失效。改造为 rerank 分数 + 分层阈值 + 覆盖率门控后，拒答率与误答率同时下降。</p><div class="diagram"><pre class="mermaid">flowchart TD
+    A[用户 query] --&gt; B[多路召回候选片段]
+    B --&gt; C[交叉编码器精排]
+    C --&gt; D{最高分是否高于分层阈值}
+    D -- 否 --&gt; E[改写 query 并扩 k 重试一次]
+    E --&gt; F{重试后是否达标}
+    F -- 否 --&gt; G[拒答并提示未找到依据]
+    D -- 是 --&gt; H{关键约束覆盖率是否达标}
+    H -- 否 --&gt; G
+    H -- 是 --&gt; I[带引用生成答案]</pre></div><p class="sub">面试官追问</p><div class="qa"><p><strong>Q：</strong>为什么不直接用余弦相似度设一个固定阈值做拒答？</p><p><strong>A：</strong>分数分布依赖 embedding 模型、语料长度分布和 chunk 策略，任何一项变化都会整体平移；且不同 query 类型尺度不同。做法是分层标定 + 用 rerank 分数做主判据 + 覆盖率做辅助判据，并保留一个定期重标流程。</p><p><strong>Q：</strong>多跳问题在这种门控下会被误拒，怎么处理？</p><p><strong>A：</strong>先做 query 分解，把子问题分别检索再融合去重，覆盖率按子问题维度分别计算而不是整体算；只有全部子问题都无证据时才拒答，部分缺失时在答案里显式标注哪部分无依据。</p></div></section><section class="q" id="rag-20261121-04"><h2><span class="no">08</span>给每个字段都建 named vector 后存储翻了好几倍：多向量集合的成本建模与拆分策略</h2><p class="meta-line">进阶 ｜ <span class="tag">向量库选型</span><span class="tag">存储成本</span><span class="tag">混合检索</span><span class="tag">容量规划</span> ｜ <a href="https://github.com/qdrant/qdrant/issues/11512" target="_blank" rel="noopener">issue来源 ↗</a></p><p class="sub">为什么会有这个问题</p><p>向量库的实际占用远不止「维度 × 条数 × 4 字节」。一是命名向量的 slot 对齐：部分引擎在同一 collection 内对多路命名向量按最大维度统一分配，小维度向量并不省空间，可选命名的稀疏写入也会被放大；二是每路向量都带一份独立的图索引，HNSW 的邻接表随 m 线性增长；三是 payload 与标量索引、副本数、WAL 与快照会叠加放大。常见错误认知是按理论 raw 字节做容量规划，然后把「多模型对照」「title/summary/content 多路」长期堆在同一个 collection 里，上线后磁盘、内存、快照时间一起失控。</p><p class="sub">怎么做</p><ol class="steps"><li>先做分层估算：raw 向量 + 每路图索引 + 元数据与 payload + 副本 + 快照留存，得出 bytes/point 的量级，再乘写入增速和保留周期。</li><li>用实测校准估算：在一个测试 collection 上写入固定批量的点，比较写入前后磁盘增量的差值，得到真实 bytes/point，与理论值比对找出放大来源。</li><li>对每路向量做边际收益评估：在评估集上分别移除某一路，看 recall@k 与答案质量的下降幅度，对无增益的路直接下线。</li><li>按用途决定布局：需要一次请求内多路召回的（dense + sparse、title + content）放同一 collection 用命名向量；只是离线对照实验或生命周期不同的放独立 collection，便于整体删除与独立重建。</li><li>用稀疏向量 + 单路稠密替代「多稠密向量堆叠」，必要时对存量向量做量化或降维，先在小流量验证 recall 损失。</li><li>建成本护栏：collection 级存储与增速告警、按租户分片、冷数据下沉，并定期跑一次「删除某路后指标变化」的复盘。</li></ol><div class="code"><code>def estimate_bytes(n_points, named_dims, payload_bytes=256, m=16, replicas=1):
+    slot = max(named_dims.values())
+    n_vec = len(named_dims)
+    raw = n_points * n_vec * slot * 4
+    graph = n_points * n_vec * m * 2 * 4
+    meta = n_points * (32 + payload_bytes)
+    return (raw + graph + meta) * replicas
+
+# 实测校准：写入前后磁盘增量的差值
+def measure(client, coll, batch):
+    before = client.stats(coll)[&quot;disk_bytes&quot;]
+    client.upsert(coll, batch)
+    after = client.stats(coll)[&quot;disk_bytes&quot;]
+    return (after - before) / len(batch)
+
+print(estimate_bytes(10_000, {&quot;title&quot;: 256, &quot;summary&quot;: 768, &quot;body&quot;: 1536}))
+print(&quot;actual bytes/point:&quot;, measure(client, &quot;kb&quot;, points))</code></div><p class="sub">真实场景</p><p>某项目为了做多路召回，对 title、summary、body 以及两个不同 embedding 模型各建一路命名向量，容量按「各路维度之和 × 条数 × 4」估算并申请了磁盘。上线一段时间后发现磁盘用量显著超过预估、节点内存吃紧、快照耗时明显变长。排查路径：统计 collection 的 disk_bytes 与累计写入点数，算出真实 bytes/point，与理论 raw 值对比，发现最小的那路向量占用与最大维度那路基本一致，确认存在 slot 对齐放大；再在测试 collection 上逐路删除做对照，发现其中两路对 recall 几乎无贡献。最终下线无增益向量、把对照实验迁到独立 collection，并把稠密多路收敛为 dense + sparse。</p><p class="sub">面试官追问</p><div class="qa"><p><strong>Q：</strong>多路向量召回的结果该怎么融合才不引入新的偏差？</p><p><strong>A：</strong>优先用 RRF 这类基于排名的融合，规避不同模型分数量纲不可比的问题；若要用加权分数，必须先做归一化并在一批带标注 query 上调权重；融合之后再过一次 cross-encoder 精排，避免靠融合权重硬扛排序质量。</p><p><strong>Q：</strong>什么情况下应该拆成多个 collection，而不是继续加命名向量？</p><p><strong>A：</strong>当各路数据的生命周期或重建频率不同、需要按租户或权限隔离、需要不同的索引参数与量化策略、或需要独立扩缩容与独立删除时，拆 collection 更合适；代价是无法在一次请求里完成跨 collection 多路召回，需要在应用层并行查询再合并，注意超时与部分失败的降级。</p></div></section><div class="topic-head"><span>FastAPI 专题</span></div><section class="q" id="fastapi-20261121-01"><h2><span class="no">09</span>返回 200 之后，后台任务写入已关闭的会话：审计记录丢失且没有重试，怎么补</h2><p class="meta-line">资深 ｜ <span class="tag">BackgroundTasks</span><span class="tag">依赖生命周期</span><span class="tag">幂等写入</span><span class="tag">可观测性</span></p><p class="sub">为什么会有这个问题</p><p>FastAPI 从 0.106 起把 yield 依赖的退出（exit stack 关闭）提前到响应发送之前，请求作用域的 Session、HTTP client 在 BackgroundTasks 真正执行时已经关闭；而 BackgroundTasks 仍跑在同一个 worker 进程内，没有持久化、没有重试、没有背压，任务抛出的异常不会改变已经发出的状态码。很多团队在旧版本上“本来能跑”，升级后变成静默失败：接口全部返回 200，业务数据一条没写入，监控里看不到 5xx，最后靠对账才发现。</p><p class="sub">怎么做</p><ol class="steps"><li>先用时间线确认顺序：在 yield 依赖的 finally 与后台任务的首尾各打一条带 trace id 的时间戳日志，确认会话关闭发生在任务执行之前，并对照 FastAPI 0.106 的 release note。</li><li>切断任务对请求作用域资源的依赖：add_task 只传不可变的标量或 DTO（业务键、id、快照字段），绝不传 ORM 实例或 Session，因为实例此时已 detached。</li><li>任务内部自建资源：在 lifespan 中创建独立的 engine、sessionmaker 与 httpx client，任务用 async with session_factory() 拿到自己的会话；同时设置连接池上限与获取超时，避免长任务耗尽连接池。</li><li>按可丢与不可丢分流：不可丢的副作用改为在同一事务里写 outbox 表，再由独立消费者（定时任务或队列 worker）处理并回写状态；BackgroundTasks 只保留埋点、缓存预热这类可丢动作。</li><li>幂等兜底：写入用业务唯一键 upsert，或状态机条件更新（where status=&#x27;pending&#x27;），保证重放与并发都安全。</li><li>可观测性单独建：任务失败计数、耗时、积压量单独埋点与告警，不依赖 HTTP 状态码；再加一个对账任务比对业务表与 outbox 的差异。</li></ol><div class="code"><code>from contextlib import asynccontextmanager
+from fastapi import BackgroundTasks, Depends, FastAPI, Request
+from sqlalchemy.dialects.postgresql import insert as pg_insert
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    app.state.engine = create_async_engine(DSN, pool_size=5, max_overflow=5)
+    app.state.session_factory = async_sessionmaker(app.state.engine, expire_on_commit=False)
+    yield
+    await app.state.engine.dispose()
+
+app = FastAPI(lifespan=lifespan)
+
+async def write_audit(session_factory, order_id: int, biz_key: str) -&gt; None:
+    async with session_factory() as s, s.begin():
+        stmt = pg_insert(Audit).values(order_id=order_id, biz_key=biz_key)
+        await s.execute(stmt.on_conflict_do_nothing(index_elements=[&#x27;biz_key&#x27;]))
+
+@router.post(&#x27;/orders&#x27;)
+async def create_order(payload: OrderIn, request: Request, bg: BackgroundTasks,
+                       session: AsyncSession = Depends(get_session)):
+    order = await save_order(session, payload)
+    await session.commit()
+    bg.add_task(write_audit, request.app.state.session_factory, order.id, payload.biz_key)
+    return {&#x27;id&#x27;: order.id}</code></div><p class="sub">真实场景</p><p>某项目把 FastAPI 升级到 0.106 以上后上线，订单接口的错误率与 P99 都没有变化（全是 200），但对账发现审计表当天新增为 0；日志里散落着 Session is closed 一类告警，被当成噪音忽略。排查路径：先找后台任务的失败计数（通常没埋点，只能 grep 日志并关联 trace id）→ 在依赖 finally 与任务内部打时间戳，确认会话先关闭、任务后执行 → 最后定位到任务里复用了 Depends 注入的会话，改成任务内自建 sessionmaker 并补上 upsert 幂等。</p><div class="diagram"><pre class="mermaid">sequenceDiagram
+    participant C as 客户端
+    participant H as 路由函数
+    participant E as 依赖退出栈
+    participant BG as 后台任务
+    C-&gt;&gt;H: 提交订单请求
+    H-&gt;&gt;H: 写业务数据并提交事务
+    H-&gt;&gt;E: 返回响应前关闭会话
+    E--&gt;&gt;C: 发送 200 响应
+    H-&gt;&gt;BG: 触发后台任务
+    BG-&gt;&gt;BG: 使用已关闭会话 写入失败</pre></div><p class="sub">面试官追问</p><div class="qa"><p><strong>Q：</strong>把后台任务改成同步阻塞函数，让它赶在依赖关闭前执行，可行吗？</p><p><strong>A：</strong>不可行。BackgroundTasks 无论同步还是异步，都在响应发送之后执行，顺序不会改变；同步函数还会占用 anyio 线程池，长任务会拖慢其他请求的依赖执行。正确做法是任务内自建资源，或者换成 outbox 加独立消费者。</p><p><strong>Q：</strong>那为什么不直接用 asyncio.create_task 后台跑？</p><p><strong>A：</strong>create_task 没有生命周期归属：worker 重启、滚动发布、进程被 SIGKILL 时任务直接丢失；异常没有人去 await 会静默吞掉；也没有背压与并发上限。它只适合可以丢的短副作用，而且要 add_done_callback 记录异常。</p></div></section><section class="q" id="fastapi-20261121-02"><h2><span class="no">10</span>handler 很快但 P99 高：response_model 在序列化阶段触发隐式懒加载与 N+1，怎么根治</h2><p class="meta-line">进阶 ｜ <span class="tag">response_model</span><span class="tag">SQLAlchemy</span><span class="tag">懒加载</span><span class="tag">序列化性能</span></p><p class="sub">为什么会有这个问题</p><p>把 ORM 实体直接交给 response_model 时，属性访问被推迟到响应构建阶段。异步会话下，同步懒加载会直接抛 MissingGreenlet 变成 500；同步会话（跑在线程池里的依赖）下，则是每条记录补一次查询，形成 N+1。这两类问题都发生在框架层，应用自身的 handler 计时看起来很短，于是被误判成“查询没问题、框架慢”。再叠加 Pydantic v2 的校验与序列化两遍遍历，大列表的开销会成倍放大。</p><p class="sub">怎么做</p><ol class="steps"><li>分阶段计时：用中间件或自定义 APIRoute 记录请求进入、handler 返回、响应序列化完成三个时间点，把耗时拆成 handler 与序列化两段，先确认慢在哪一段。</li><li>统计 SQL 条数：在测试里挂 before_cursor_execute 监听，对每个接口断言 SQL 条数上限（详情类不超过 3、列表类不超过 2），N+1 会在 CI 直接暴露，而不是等到线上 P99 恶化。</li><li>显式预加载加显式 DTO：查询用 selectinload 或 joinedload，路由内部把 ORM 实例构造成独立的 Pydantic DTO，schema 不开 from_attributes，从结构上杜绝序列化期的隐式属性访问。</li><li>控制 response_model 成本：列表接口强制分页、裁剪字段、避免多层嵌套递归校验；极热路径改用 ORJSONResponse 加 model_dump_json，绕过二次编码。</li><li>防回归：路由返回类型里不再出现 ORM 实体，配合 lint 规则或单测断言，review 时一眼能看出谁又返回了实体。</li></ol><div class="code"><code>class ItemOut(BaseModel):
+    sku: str
+    qty: int
+
+class OrderOut(BaseModel):
+    id: int
+    items: list[ItemOut]
+
+@router.get(&#x27;/orders&#x27;, response_model=list[OrderOut])
+async def list_orders(session: AsyncSession = Depends(get_session)):
+    stmt = select(Order).options(selectinload(Order.items)).order_by(Order.id).limit(50)
+    orders = (await session.scalars(stmt)).all()
+    return [
+        OrderOut(id=o.id, items=[ItemOut(sku=i.sku, qty=i.qty) for i in o.items])
+        for o in orders
+    ]
+
+_counter: list[str] = []
+
+@event.listens_for(engine.sync_engine, &#x27;before_cursor_execute&#x27;)
+def _count(conn, cursor, statement, params, context, executemany):
+    _counter.append(statement)
+
+def test_list_orders_sql_budget(client):
+    _counter.clear()
+    assert client.get(&#x27;/orders&#x27;).status_code == 200
+    assert len(_counter) &lt;= 2</code></div><p class="sub">真实场景</p><p>某项目的订单列表在数据量从百级涨到万级后，P99 从毫秒级抬到秒级，但 APM 显示 handler 耗时只占很小一截，慢在框架层，日志里偶发 MissingGreenlet。排查路径：先按请求量对齐 SQL 条数，发现每返回一条 order 就多一次 items 查询 → 确认路由返回的是 ORM 实体而非 DTO → 改成 selectinload 预加载加显式构造 DTO 后，SQL 条数恒定为 2，P99 回落 → 再在 CI 加 SQL 预算断言防止回归。</p><div class="diagram"><pre class="mermaid">flowchart TD
+    A[请求进入] --&gt; B[路由函数 执行查询]
+    B --&gt; C[返回 ORM 实体]
+    C --&gt; D[response_model 校验与序列化]
+    D --&gt; E{是否访问未加载关系}
+    E --&gt;|是| F[异步会话抛 MissingGreenlet 或同步会话逐条补查]
+    E --&gt;|否| G[正常输出]
+    F --&gt; H[handler 计时很短 整体耗时高]</pre></div><p class="sub">面试官追问</p><div class="qa"><p><strong>Q：</strong>直接给 schema 配 from_attributes=True 让它自己读属性不行吗？</p><p><strong>A：</strong>能跑通，但把 IO 藏进了序列化：异步会话下直接 MissingGreenlet 报错，同步会话下变成 N+1，而且报错栈指向框架内部，定位成本高。显式构造把这类失败提前到查询阶段，也顺便固定了对外契约。</p><p><strong>Q：</strong>selectinload 和 joinedload 怎么选？</p><p><strong>A：</strong>一对多并且带分页时用 selectinload，避免 join 造成行膨胀、limit 失真与计数错误；一对一或集合很小时 joinedload 少一次往返。两者都不要和多层嵌套叠加，容易产生笛卡尔积，必要时拆成两次查询在应用层拼装。</p></div></section>
+<footer>
+<p>每天 08:00 更新 ｜ 面向 3–5 年经验的应用开发 ｜ 题目永久去重，持续累积</p>
+<p>往期：<a href="2026-11-20.html">11-20</a> ｜ <a href="bank/index.html">题库</a></p>
+</footer>
+</main>
+<script src="vendor/mermaid.min.js"></script><script>mermaid.initialize({startOnLoad:true,theme:"neutral",securityLevel:"loose"});</script>
+</body>
+</html>

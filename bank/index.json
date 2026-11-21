@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-20 15:28",
+ "updated": "2026-11-21 12:18",
  "questions": [
   {
    "id": "agent-20261120-01",
@@ -169,6 +169,176 @@
    "source_type": "文档",
    "source_url": "",
    "path": "fastapi/fastapi-20261120-02.md",
+   "has_diagram": true
+  },
+  {
+   "id": "agent-20261121-01",
+   "title": "A2A 委派超时：子 Agent 已执行完却拿不到结果，幂等重放与状态对账怎么做",
+   "topic": "agent",
+   "difficulty": "资深",
+   "tags": [
+    "multi-agent",
+    "a2a",
+    "幂等设计",
+    "故障定位"
+   ],
+   "date": "2026-11-21",
+   "source_type": "面经",
+   "source_url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/13-multi-agent-systems/README.md",
+   "path": "agent/agent-20261121-01.md",
+   "has_diagram": true
+  },
+  {
+   "id": "agent-20261121-02",
+   "title": "MCP 工具失败：JSON-RPC error 与 isError 混用引发的重试风暴怎么止住",
+   "topic": "agent",
+   "difficulty": "进阶",
+   "tags": [
+    "mcp",
+    "错误处理",
+    "重试熔断",
+    "可观测性"
+   ],
+   "date": "2026-11-21",
+   "source_type": "面经",
+   "source_url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md",
+   "path": "agent/agent-20261121-02.md",
+   "has_diagram": true
+  },
+  {
+   "id": "agent-20261121-03",
+   "title": "Critic Agent 反复打回同一份草稿：重写震荡、验证预算与异构校验怎么设计",
+   "topic": "agent",
+   "difficulty": "资深",
+   "tags": [
+    "critic-verifier",
+    "成本控制",
+    "多轮循环",
+    "可观测性"
+   ],
+   "date": "2026-11-21",
+   "source_type": "面经",
+   "source_url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/13-multi-agent-systems/README.md",
+   "path": "agent/agent-20261121-03.md",
+   "has_diagram": true
+  },
+  {
+   "id": "agent-20261121-04",
+   "title": "运行时参数覆盖被 falsy 吞掉：think=False 与 temperature=0 静默失效怎么定位",
+   "topic": "agent",
+   "difficulty": "进阶",
+   "tags": [
+    "配置合并",
+    "参数透传",
+    "可观测性",
+    "回归测试"
+   ],
+   "date": "2026-11-21",
+   "source_type": "issue",
+   "source_url": "https://github.com/run-llama/llama_index/issues/22970",
+   "path": "agent/agent-20261121-04.md",
+   "has_diagram": false
+  },
+  {
+   "id": "rag-20261121-01",
+   "title": "索引从百万级扩到亿级后内存打满、recall 下滑：量化与 GPU 的收益边界怎么量化",
+   "topic": "rag",
+   "difficulty": "资深",
+   "tags": [
+    "向量库",
+    "量化",
+    "容量规划",
+    "成本取舍"
+   ],
+   "date": "2026-11-21",
+   "source_type": "面经",
+   "source_url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-2.md",
+   "path": "rag/rag-20261121-01.md",
+   "has_diagram": true
+  },
+  {
+   "id": "rag-20261121-02",
+   "title": "在线 embedding 成了写入与查询的公共瓶颈：micro-batch、缓存与降级的组合怎么落地",
+   "topic": "rag",
+   "difficulty": "进阶",
+   "tags": [
+    "embedding",
+    "micro-batch",
+    "缓存",
+    "降级"
+   ],
+   "date": "2026-11-21",
+   "source_type": "面经",
+   "source_url": "https://github.com/didilili/ai-agents-from-zero/blob/main/19-RAG%E6%A3%80%E7%B4%A2%E5%A2%9E%E5%BC%BA%E7%94%9F%E6%88%90.md",
+   "path": "rag/rag-20261121-02.md",
+   "has_diagram": true
+  },
+  {
+   "id": "rag-20261121-03",
+   "title": "检索命中高相似度片段却答非所问：answerability 判定、拒答阈值与证据覆盖率怎么落地",
+   "topic": "rag",
+   "difficulty": "资深",
+   "tags": [
+    "向量检索",
+    "拒答策略",
+    "评估体系",
+    "rerank"
+   ],
+   "date": "2026-11-21",
+   "source_type": "面经",
+   "source_url": "https://github.com/didilili/ai-agents-from-zero/blob/main/18-%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8EEmbedding%E5%AE%9E%E6%88%98.md",
+   "path": "rag/rag-20261121-03.md",
+   "has_diagram": true
+  },
+  {
+   "id": "rag-20261121-04",
+   "title": "给每个字段都建 named vector 后存储翻了好几倍：多向量集合的成本建模与拆分策略",
+   "topic": "rag",
+   "difficulty": "进阶",
+   "tags": [
+    "向量库选型",
+    "存储成本",
+    "混合检索",
+    "容量规划"
+   ],
+   "date": "2026-11-21",
+   "source_type": "issue",
+   "source_url": "https://github.com/qdrant/qdrant/issues/11512",
+   "path": "rag/rag-20261121-04.md",
+   "has_diagram": false
+  },
+  {
+   "id": "fastapi-20261121-01",
+   "title": "返回 200 之后，后台任务写入已关闭的会话：审计记录丢失且没有重试，怎么补",
+   "topic": "fastapi",
+   "difficulty": "资深",
+   "tags": [
+    "BackgroundTasks",
+    "依赖生命周期",
+    "幂等写入",
+    "可观测性"
+   ],
+   "date": "2026-11-21",
+   "source_type": "文档",
+   "source_url": "",
+   "path": "fastapi/fastapi-20261121-01.md",
+   "has_diagram": true
+  },
+  {
+   "id": "fastapi-20261121-02",
+   "title": "handler 很快但 P99 高：response_model 在序列化阶段触发隐式懒加载与 N+1，怎么根治",
+   "topic": "fastapi",
+   "difficulty": "进阶",
+   "tags": [
+    "response_model",
+    "SQLAlchemy",
+    "懒加载",
+    "序列化性能"
+   ],
+   "date": "2026-11-21",
+   "source_type": "文档",
+   "source_url": "",
+   "path": "fastapi/fastapi-20261121-02.md",
    "has_diagram": true
   }
  ]

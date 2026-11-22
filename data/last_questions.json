@@ -1,375 +1,370 @@
 {
- "date": "2026-11-21",
+ "date": "2026-11-22",
  "note": "",
  "questions": [
   {
-   "title": "A2A 委派超时：子 Agent 已执行完却拿不到结果，幂等重放与状态对账怎么做",
+   "title": "工具从 8 个涨到 40 个后误选与越权执行：工具准入标准、描述契约与决策执行分离怎么落地",
+   "topic": "agent",
+   "difficulty": "资深",
+   "tags": [
+    "tool-use",
+    "function-calling",
+    "权限与幂等",
+    "工具治理"
+   ],
+   "why": "工具是模型唯一的行动接口，但它能被正确使用的前提，完全取决于描述文本和参数 schema；而模型对语义相近的工具没有可靠的区分能力。很多团队把内部细粒度函数原样暴露（get_order / search_order / update_order_note），工具数量随业务线性增长，模型在几十个近似选项里做选择，误选和参数幻觉几乎必然发生。更危险的是把决策与执行混在一起：工具内部直接写入副作用，模型一次错误的 function call 就变成真实写操作。常见错误认知是『在 system prompt 里写清楚不要调用危险工具就行』——prompt 只是概率性约束，执行层的确定性校验才是真正的边界。",
+   "how": [
+    "准入判定：只暴露意图级动作（业务动词），要求参数可枚举或可校验、结果可幂等或可补偿；不可逆且没有补偿路径的操作不直接暴露，改造成『提交申请』类工具。把多个细粒度函数合并成一个带 action 枚举的粗粒度工具，让模型做选择题而不是记忆题。",
+    "描述契约：每个工具写清做什么、何时该用、何时不该用（给出负例）、参数语义与取值范围、返回结构与失败语义；同一个字段在各工具中的含义必须一致。描述里带负例能显著降低相邻工具的混淆。",
+    "分层挂载：按 Agent 角色只挂 5–12 个工具，其余通过 tool retrieval 预筛或转交给子 Agent；用命名空间前缀（order.* / user.*）帮模型建立语义分组，避免同名工具互相干扰。",
+    "执行层收口：模型只产出 tool_name + args 的 intent，执行层做严格 schema 校验、权限判断、预算控制、幂等键、写操作 dry-run 或审批；校验失败返回结构化错误让模型自我修正，而不是直接抛 500。",
+    "度量与回归：采集工具调用分布、参数校验失败率、误选样本、人工纠正率；描述每次改动都跑固定评测集，看是否引入回退，否则改描述等于盲改 prompt。"
+   ],
+   "code": "from pydantic import BaseModel, Field, ValidationError\nfrom enum import Enum\n\nclass OrderAction(str, Enum):\n    query = 'query'\n    cancel = 'cancel'\n\nclass OrderArgs(BaseModel):\n    action: OrderAction\n    order_id: str = Field(pattern=r'^SO\\d{10}$')\n    reason: str | None = Field(default=None, max_length=200)\n\nWRITE_ACTIONS = {OrderAction.cancel}\n\ndef execute_tool(name: str, raw: dict, ctx) -> dict:\n    if name != 'order_op':\n        return {'ok': False, 'error': 'unknown_tool'}\n    try:\n        args = OrderArgs(**raw)\n    except ValidationError as e:\n        return {'ok': False, 'error': 'invalid_args', 'detail': e.errors()}\n    if args.action in WRITE_ACTIONS:\n        if not ctx.has_permission('order:write'):\n            return {'ok': False, 'error': 'forbidden'}\n        key = f'{ctx.trace_id}:{name}:{args.action}:{args.order_id}'\n        if not ctx.idempotency.acquire(key):\n            return {'ok': False, 'error': 'duplicate'}\n        return ctx.apply(args)\n    return ctx.read(args)",
+   "scenario": "某项目接入订单与售后能力后，工具从 8 个涨到 40 余个。线上出现三类症状：用户问『订单到哪了』时偶尔触发了修改备注类工具；参数里出现 schema 之外的枚举值，服务端直接 500；客户端重试导致同一个取消动作重复提交。排查路径是：先从 trace 里按 tool_name 聚合调用分布，找出被误选的高频工具对；再统计 invalid_args 的错误占比和具体出错字段；最后对比工具描述文本，发现三个订单相关工具的描述都以『订单相关操作』开头，参数名一个叫 id 一个叫 order_no。修复方向是把三个工具合并为带 action 枚举的单一工具、补负例描述、执行层加 schema 校验与幂等键。",
+   "followups": [
+    {
+     "q": "工具描述改了一版，怎么证明没有引入回退？",
+     "a": "把线上真实请求采样成带标注的评测集（请求 → 期望工具与关键参数），每次改描述或增删工具都跑一遍，重点看误选率和参数校验失败率两个指标；同时灰度对比转人工率和错误率。没有评测集就改描述，等于盲改 prompt，问题只会在下一个流量高峰暴露。"
+    },
+    {
+     "q": "先查后写的两步操作怎么保证一致性？",
+     "a": "不要把两步都交给模型自由编排。把『查+写』收敛成一个服务端事务型工具，或让模型只产出写意图并携带业务主键，由执行层先校验前置条件再落库；需要用户确认的写操作走确认态或审批，模型只负责发起意图，不负责决定是否最终生效。"
+    }
+   ],
+   "diagram": "flowchart TD\n    A[用户请求] --> B[模型决策层 产出 intent]\n    B --> C{执行层参数校验}\n    C -->|不合法| D[返回结构化错误 模型重试或澄清]\n    C -->|合法| E{是否写操作}\n    E -->|否| F[只读执行 直接返回]\n    E -->|是| G[权限校验与幂等键]\n    G --> H[dry run 或审批]\n    H --> I[落库执行]\n    I --> J[审计日志与指标]",
+   "source_type": "面经",
+   "source_url": "https://github.com/didilili/ai-agents-from-zero/blob/main/17-Tools%E5%B7%A5%E5%85%B7%E8%B0%83%E7%94%A8.md",
+   "source_excerpt": "考点是函数是否该暴露为 Tool 的判断标准，以及『模型负责决策、程序负责执行』在安全上的含义，还有工具描述写差会引发的真实问题。",
+   "id": "agent-20261122-01"
+  },
+  {
+   "title": "多 Agent 互相委派形成环：任务签名环检测、预算随链递减与降级策略",
    "topic": "agent",
    "difficulty": "资深",
    "tags": [
     "multi-agent",
-    "a2a",
-    "幂等设计",
-    "故障定位"
-   ],
-   "why": "跨 Agent 委托本质是不可靠的远程调用：委托方只拿得到 task_id 和一次 HTTP 超时，而子 Agent 的执行时间由 LLM 生成加多次工具调用决定，常常是分钟级，远超网关或 SDK 的超时阈值。最常见的错误认知是「超时等于没执行」，于是直接重新委托，结果副作用被执行两遍（重复归档、重复扣款、重复发消息）。第二个错误是状态机里只有成功/失败两态，把「结果未知」折叠进失败，监控据此自动重跑，把偶发超时放大成系统性重复。第三是子 Agent 没有幂等键入口，重复提交就是新任务，无法去重。更麻烦的是，即使有了幂等键，「已执行但结果丢失」这一步仍需要靠外部系统的对账探测来确认，而不是靠重试。",
-   "how": [
-    "把委派拆成三段职责：submit 只负责拿 task_id 并立即返回 accepted；状态查询是独立只读接口；结果拉取是幂等读。委托方永远不再同步等最终结果，超时只代表「没拿到结果」。",
-    "委托方生成幂等键 idem = hash(parent_run_id + step_id)，随 submit 传递；子 Agent 侧对该键建唯一索引，重复提交直接返回原 task_id 与原状态，不重新执行。",
-    "状态机必须显式包含 unknown（截止时间已到但无法确认），不能折叠进 failed；只有 failed 才允许自动重放，unknown 只允许对账查询后人工或降级处理。",
-    "副作用改成两段提交：执行前写 intent 记录（幂等键加参数摘要），执行后写 outcome。恢复时先查 outcome，没有 outcome 但有 intent 的步骤走外部资源探测（查单、查消息发送记录）对账，而不是盲目重试。",
-    "委托方做带退避的对账循环：指数退避加 jitter，设置最大截止时间，超时后按 idempotency_key 兜底反查一次，仍 unknown 则升级人工或走降级分支。",
-    "可观测性把 parent_run_id、task_id、idempotency_key 三者贯穿 trace；核心指标看 unknown 占比、重放命中率、委派链路 p99，而不是只看成功率。"
-   ],
-   "code": "import hashlib, random, time\n\ndef idem_key(parent_run_id: str, step_id: str) -> str:\n    return hashlib.sha256(f\"{parent_run_id}:{step_id}\".encode()).hexdigest()[:32]\n\ndef delegate(client, run_id: str, step_id: str, payload: dict, deadline_s: int = 600) -> dict:\n    key = idem_key(run_id, step_id)\n    task = client.submit(payload, idempotency_key=key)  # 子 Agent 侧唯一索引，重复提交返回同一 task\n    end, backoff = time.time() + deadline_s, 1.0\n    while time.time() < end:\n        st = client.get_task(task.task_id)  # 只读状态接口，不进执行队列\n        if st.state in (\"succeeded\", \"failed\", \"cancelled\"):\n            return {\"state\": st.state, \"result\": st.result, \"key\": key}\n        time.sleep(backoff + random.random() * 0.2)\n        backoff = min(backoff * 2, 30.0)\n    return {\"state\": \"unknown\", \"task_id\": task.task_id, \"key\": key}\n\ndef run_side_effect(store, run_id: str, step, execute, probe=None):\n    key = idem_key(run_id, step.id)\n    if (out := store.get_outcome(key)) is not None:\n        return out\n    store.put_intent(key, step.digest)          # 先落意图，再执行\n    if store.get_intent(key) and probe and probe():   # 已执行但结果丢失，走对账\n        return store.get_outcome(key)\n    out = execute()\n    store.put_outcome(key, out)\n    return out",
-   "scenario": "某项目里编排 Agent 委派子 Agent 完成「生成合规报告并归档」，子 Agent 端检索加生成长度在 80 到 180 秒之间，而委托方 HTTP 客户端超时设的是 60 秒。上线后偶发同一份报告被归档两次，且两次归档的时间差正好是一个客户端超时周期。排查路径：先确认子 Agent 侧是否收到两次 submit（是，两条 trace 仅 trace_id 不同、参数完全一致），说明是重放而非用户重复操作；再看监控把 ReadTimeout 计为 failed 并触发自动重跑，说明 unknown 态缺失；最后看归档接口无去重键，说明副作用层没做幂等。修复动作是三步：submit 带 idempotency_key 并在子 Agent 侧建唯一索引；状态机引入 unknown，超时不再计为失败；归档前按 report_id 做存在性检查，执行前写 intent 记录。",
-   "followups": [
-    {
-     "q": "如果子 Agent 是第三方黑盒、不支持传幂等键，怎么防止重复副作用？",
-     "a": "把幂等责任上移到副作用层：执行前后各探测一次外部资源状态（查单、查消息 ID、查文件是否已存在），探测得到明确「已存在」就直接复用结果；探测不到又无法确定时，该步骤标记为 non-retryable，超时只上报人工而不自动重放，同时把该工具纳入「必须人工确认」清单。根本原则是：不可探测的副作用不允许自动重试。"
-    },
-    {
-     "q": "长任务用轮询查状态会不会把子 Agent 打爆？",
-     "a": "优先用 SSE 或回调通知，轮询只做兜底；退避从 1s 起指数增长、上限 30s、带 jitter 防止同步尖峰；状态查询走只读副本或缓存（同一 task_id 短 TTL 缓存），与执行队列物理隔离，避免查询流量挤占执行资源。"
-    }
-   ],
-   "diagram": "sequenceDiagram\n    participant O as 编排Agent\n    participant S as 子Agent\n    participant X as 外部系统\n    O->>S: 提交任务 携带 idempotency_key\n    S-->>O: 返回 task_id 与 accepted\n    Note over O,S: 客户端超时 但任务仍在执行\n    O->>S: 按 task_id 查询状态\n    S-->>O: running\n    S->>X: 写归档 携带幂等键\n    O->>S: 超时后重提 同一 idempotency_key\n    S-->>O: 返回原 task_id 不重复执行\n    O->>X: 对账探测 确认副作用是否已产生",
-   "source_type": "面经",
-   "source_url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/13-multi-agent-systems/README.md",
-   "source_excerpt": "原考点是 A2A 下的 Agent 发现、任务委托与状态查询。这里把视角反转到委托方的失败处理：超时是否等于未执行、状态查询如何支撑幂等重放与副作用对账。",
-   "id": "agent-20261121-01"
-  },
-  {
-   "title": "MCP 工具失败：JSON-RPC error 与 isError 混用引发的重试风暴怎么止住",
-   "topic": "agent",
-   "difficulty": "进阶",
-   "tags": [
-    "mcp",
-    "错误处理",
-    "重试熔断",
+    "循环依赖",
+    "预算控制",
     "可观测性"
    ],
-   "why": "MCP 走 JSON-RPC 2.0，错误天然分两层：协议层 error（-32700 解析失败、-32601 方法或工具不存在、-32602 参数非法、-32603 内部错误，以及 -32000 到 -32099 的服务端自定义码）和工具执行层结果里的 isError 标记。问题在于两层的语义边界没人强制：把业务失败（余额不足、参数语义不对）当成 -32603 抛出，客户端 SDK 会当作传输故障自动重试；把真正的服务端崩溃包成 isError 的文本，模型看到「内部错误」就在 ReAct 循环里换个参数继续试。两边一叠加就是重试风暴：SDK 重试乘上 Agent 循环重试，一次会话打出上百次工具调用，把上游限流拖垮。更隐蔽的是错误信息只给一句 message，客户端无法判断 retryable，只能默认重试，也就无法做熔断决策。",
+   "why": "多 Agent 的委派关系是运行时由模型判断生成的，不是启动时固定的 DAG。A 认为该交给 B，B 判断信息不足又把任务踢回 A，或者任务描述被改写后重新触发上游 Agent，就会形成逻辑上的环。它比死循环更难发现：每一跳都合法、每个 Agent 都在正常工作，只有从整体 trace 看才会发现路径在重复。常见错误认知是『给每个 Agent 设 max_iterations 就够了』——计数是各自独立的，扇出叠加后总量仍然爆炸，而且环的代价是 token 和延迟，不是显式报错。",
    "how": [
-    "先划清语义边界：协议层 error 只用于「这次调用本身不成立」——方法或工具不存在、参数 schema 不合法、鉴权失败、服务不可用；工具确实执行了但业务失败，一律返回正常 result 加 isError:true。",
-    "错误结构化：isError 的 content 里放 {\"code\",\"retryable\",\"hint\",\"details\"}。hint 面向模型（说明该改哪个字段、合法取值范围），details 里带 trace_id 面向人；不要把堆栈或原始异常文本丢给模型。",
-    "客户端按类型决定重试：retryable=true 且工具幂等才允许指数退避重试并设上限；retryable=false 直接终止并把 hint 回灌给模型改参数；未知 code 默认不重试，只上报。",
-    "在 Agent 循环层加指纹熔断：同一 run 内以 tool_name 加参数摘要为指纹，同指纹失败 N 次终止该分支；同一工具的整体失败率超阈值时把它从本次候选工具集中摘掉并降级。",
-    "服务端日志必须带 jsonrpc id、tool name、trace_id、耗时、错误分类；客户端把 error.data 原样透传到 trace，不要吞成一句 tool failed。",
-    "监控按错误码分布看：工具失败率、重试占比、平均尝试次数、参数非法型失败占比。后者持续偏高通常不是模型笨，而是工具 description 或 schema 描述不足。"
+    "委派上下文强制透传：每次委派带 trace_id、delegation_path（祖先 Agent 加任务签名）、剩余预算（步数、token、时长），预算沿链递减而不是每层重置，让环在早期就耗尽预算而不是烧到全局超时。",
+    "任务签名做环检测：把目标与关键约束规范化后哈希，判断 (callee, signature) 是否已出现在祖先路径上；用签名而不是原文，避免措辞漂移导致去重失效。",
+    "静态加动态双层护栏：编排图启动时做拓扑校验，禁止硬编码回边；运行时设深度上限、同签名重复次数上限、全局预算，三者任一触发即中断。",
+    "命中后的降级策略：不要直接抛错，而是升级到 Supervisor、用已有部分结果合成答复或转人工，并把 cycle_detected 作为一等事件打点，形成可统计的指标。",
+    "可观测：trace 里用 span 的 parent 关系还原调用树，统计每层扇出、重复签名率、平均委派深度；异常会话可按 trace_id 完整回放定位断点。"
    ],
-   "code": "RETRYABLE_CODES = {-32603, -32001}\n\ndef call_tool(client, name, args, max_attempts=3):\n    fp = fingerprint(name, args)\n    for attempt in range(1, max_attempts + 1):\n        try:\n            res = client.call(\"tools/call\", {\"name\": name, \"arguments\": args})\n        except JsonRpcError as e:\n            if e.code == -32602 or breaker.hit(fp):\n                raise ToolFatal(name, e.code, e.message)      # 参数错 或 已熔断 不重试\n            if e.code in RETRYABLE_CODES and attempt < max_attempts:\n                time.sleep(min(2 ** attempt, 10) * (0.5 + random.random()))\n                continue\n            raise ToolFatal(name, e.code, e.message)\n        if res.get(\"isError\"):\n            payload = json.loads(res[\"content\"][0][\"text\"])\n            if payload.get(\"retryable\") and attempt < max_attempts:\n                time.sleep(min(2 ** attempt, 10)); continue\n            breaker.record(fp)\n            raise ToolBusinessError(payload[\"code\"], payload.get(\"hint\"))\n        return res\n\ndef handle_tools_call(req):\n    tool = registry.get(req.params[\"name\"])\n    if tool is None:\n        return error(req.id, -32601, \"unknown tool\")\n    if (fields := tool.schema.check(req.params.get(\"arguments\", {}))):\n        return error(req.id, -32602, \"invalid params\", data={\"fields\": fields})\n    try:\n        out = tool.run(req.params[\"arguments\"])\n    except ToolBusinessError as e:\n        return result(req.id, {\"isError\": True, \"content\": [{\"type\": \"text\", \"text\": json.dumps(\n            {\"code\": e.code, \"retryable\": e.retryable, \"hint\": e.hint})}]})\n    except Exception:\n        return error(req.id, -32603, \"internal error\", data={\"trace_id\": current_trace()})\n    return result(req.id, {\"isError\": False, \"content\": out})",
-   "scenario": "某项目里 Agent 调用内部的订单查询 MCP 工具。工具端把所有上游异常都统一包成 -32603 抛出，包括上游 401 和参数缺字段；客户端 SDK 视 -32603 为传输类错误自动重试 3 次，Agent 又在 ReAct 循环里再试。典型现象是单次会话对同一工具打出上百次调用，QPS 突增后触发上游限流，连带其他工具一起超时。排查路径：先看服务端日志里同一 jsonrpc id 反复到达，确认是重试而非用户行为；再看错误 message 全是 -32603、没有可判定的 code，说明客户端根本无法区分可重试与不可重试；最后核对 Agent 侧无指纹熔断，同参数失败会一直循环。修复是把业务失败改成 isError 加 retryable=false 并附 hint、参数校验改回 -32602、客户端加指纹熔断与尝试上限。",
+   "code": "import hashlib, json\n\ndef task_sig(goal: str, constraints: dict) -> str:\n    norm = json.dumps({'goal': goal.strip(), 'c': constraints}, sort_keys=True, ensure_ascii=False)\n    return hashlib.sha1(norm.encode()).hexdigest()[:12]\n\ndef delegate(parent, callee: str, goal: str, constraints: dict) -> dict:\n    sig = task_sig(goal, constraints)\n    path = parent.delegation_path + [(callee, sig)]\n    if (callee, sig) in parent.delegation_path:\n        return {'status': 'cycle_detected', 'path': path, 'action': 'escalate'}\n    if len(path) > parent.limits.max_depth:\n        return {'status': 'depth_exceeded', 'path': path, 'action': 'escalate'}\n    child_budget = parent.budget.spend_child()\n    if child_budget.remaining_steps <= 0:\n        return {'status': 'budget_exhausted', 'path': path, 'action': 'summarize_partial'}\n    return callee.run(goal=goal, constraints=constraints,\n                      delegation_path=path, budget=child_budget,\n                      trace_id=parent.trace_id)",
+   "scenario": "某项目用分诊 Agent 把会话路由到订单 Agent 与售后 Agent。上线后少量会话耗时是均值的数倍、token 消耗异常高，且最终没有有效答复。排查时按 trace_id 拉出调用树，发现『售后 → 订单 → 售后』反复出现；再看每次委派的任务描述措辞都略有不同（『请确认该订单是否已发货』对『查询该订单物流状态』），简单的字符串去重完全失效；而单 Agent 的步数上限一次都没有被触发。修复方向是把任务签名改成目标加约束的结构化摘要、预算随委派递减、命中重复签名时升级给 Supervisor 汇总已有结果。",
    "followups": [
     {
-     "q": "怎么区分是模型参数填错，还是工具 schema 描述不清导致的调用失败？",
-     "a": "看同一工具参数非法型失败占比与错误字段分布。若失败集中在一个字段且模型反复换写法去猜，通常是工具 description 缺单位、缺枚举、缺示例，应改 schema（加 enum、把格式和单位写进描述、附一个正确调用样例），而不是在系统提示词里反复强调。反之若失败字段分散且与用户输入强相关，才是模型理解问题。"
+     "q": "任务签名怎么设计，既不误杀合法的多轮往返，又不漏掉环？",
+     "a": "签名应编码『要达成的目标加关键约束』，而不是整段自然语言。合法的往返通常目标在变化（先澄清再执行），签名会不同；环的特征是同一目标被反复重新委派。可以再叠加一个短窗口计数：同签名在最近若干跳内出现两次以上才拦截，给合法重试留余量。"
     },
     {
-     "q": "工具需要执行超过 60 秒时，怎么和 JSON-RPC 的错误处理配合？",
-     "a": "不要靠拉长 HTTP 超时。改成异步任务模式：tools/call 立即返回 task id，后续用状态查询或服务端通知拿结果。客户端侧超时记为 unknown 而不是失败，配合幂等键避免误重放；真正的失败由任务的终态返回，并沿用同一套 code 与 retryable 语义，保证两层的判定逻辑一致。"
+     "q": "为什么不能只靠全局超时兜底？",
+     "a": "超时只能止损不能定位，而且环往往是慢速的：每跳都在二三十秒的合理区间内，全局超时触发时预算已经烧掉了。超时也不告诉你环发生在哪一层，排障成本很高。环检测加预算递减能在早期以很低成本拦住，并且留下可统计的事件。"
     }
    ],
-   "diagram": "flowchart TD\n    A[工具调用失败] --> B{调用本身是否成立}\n    B -- 否 --> C[JSON-RPC error 带标准错误码]\n    B -- 是 --> D[正常 result 加 isError 为真]\n    D --> E{retryable 为真且工具幂等}\n    E -- 是 --> F[指数退避重试 有次数上限]\n    E -- 否 --> G[不重试 把 hint 回灌给模型改参数]\n    C --> H{错误码是否可重试}\n    H -- 是 --> F\n    H -- 否 --> G\n    F --> I[同指纹失败达阈值 熔断该分支]",
+   "diagram": "flowchart TD\n    A[Agent A 收到任务] --> B[计算任务签名]\n    B --> C{签名是否已在祖先路径}\n    C -->|是| D[判定为环 升级 Supervisor]\n    C -->|否| E{深度与预算是否足够}\n    E -->|否| F[降级 用已有结果合成答复]\n    E -->|是| G[委派给下游 Agent 预算递减]\n    G --> H[下游 Agent 执行]\n    H --> I[写入 trace 记录 delegation path]",
    "source_type": "面经",
-   "source_url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md",
-   "source_excerpt": "原考点是 MCP 基于 JSON-RPC 2.0 的标准错误码与服务端错误处理诊断。这里落在应用层：错误分层不当如何被客户端自动重试与 Agent 循环叠加放大成线上故障。",
-   "id": "agent-20261121-02"
+   "source_url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/multi-agent/conflict-reliability.md",
+   "source_excerpt": "考点是多 Agent 之间出现循环依赖时如何检测与避免，涉及委派链路、冲突处理与可靠性兜底。",
+   "id": "agent-20261122-02"
   },
   {
-   "title": "Critic Agent 反复打回同一份草稿：重写震荡、验证预算与异构校验怎么设计",
+   "title": "多 Agent 心跳超时导致的「假死」误判：如何推导阈值、保证接管互斥并用 fencing 兜底",
    "topic": "agent",
    "difficulty": "资深",
    "tags": [
-    "critic-verifier",
-    "成本控制",
-    "多轮循环",
+    "multi-agent",
+    "lease",
+    "fencing",
     "可观测性"
    ],
-   "why": "Critic/Verifier 不是一次性的检查，它把「生成」变成「生成—判定—重写」的闭环：每 reject 一次就多一次生成调用，成本随轮次线性增长，尾部延迟被严重放大。更常见的错误认知是「多一个 critic 一定更准」，但实践中 generator 与 verifier 往往是同模型、同上下文、同风格偏好，两者错误高度相关，verifier 真正能纠的是「可判定错误」（schema 不合法、引用 id 不存在、缺必填字段、违反策略），对开放式质量却容易退化成「表达不够专业」这类风格改写，改完语义不变。由于 false reject 率几乎没人度量，线上就出现「成本翻倍、质量曲线不动」的典型现象；而连续 reject 还会引起重写震荡，同一份草稿被反复改写，最终 P95 延迟和 token 双双超标。",
+   "why": "心跳的本质是「推进能力信号」，不是「进程存活信号」。Agent 单步耗时呈现明显的长尾：一次 LLM 推理可能几十毫秒也可能几十秒，工具调用可能卡在外部 HTTP 或大文件解析，等待人工审批更是不可预估。用固定的 TTL 去判活，长尾必然被误判成假死；更危险的是误判之后的处理：多数实现直接「超时后重新派单」，而重跑并不等于接管——旧执行体可能只是被阻塞，恢复后仍会继续写状态，于是两个执行体同时推进同一个 task，产生重复下单、重复发消息、重复扣减这类不可逆副作用。常见错误认知有两个：一是把心跳当成 ping（只要进程在就发），二是认为超时之后重启任务即可（缺少互斥与写入校验，重启就是双写）。",
    "how": [
-    "先做分层校验：把 schema 校验、引用存在性、敏感词/合规、单测执行等确定性检查放在最前面，这类检查拦截了绝大多数硬错误且不花钱；LLM judge 只负责语义类判断，并且必须输出结构化 verdict（passed / reason_code / fix_hint / confidence），禁止自由文本。",
-    "按风险路由验证：只对写操作、对外发送、金额与合规相关的高风险样本启用语义校验；低风险任务走确定性校验后直接放行，用路由把验证成本压在真正需要的地方。",
-    "给验证设预算和熔断：默认 max_verifier_rounds=1，限制验证消耗的时间与 token；当连续两轮 reject 且草稿相似度（如 Jaccard/embedding 距离）超过阈值，判定为震荡，立即止损并降级为「带 verdict 的人工复核」或「带警告返回」，而不是继续重写。",
-    "降低错误相关性：verifier 与 generator 异构化——换模型、换上下文（verifier 只看 rubric 与待验证片段而非全对话）、或者用可执行工具（跑测试、回查检索原文）替代 LLM 判断，这样验证才提供独立信息量。",
-    "用收益判据决定去留：做离线回放与小流量 A/B，观察任务成功率、人工返工率、P95 延迟、每「被采纳结果」的成本；同时用人工抽检标签算 verifier 的 precision/recall，重点是 false reject 率——它直接决定成本浪费。",
-    "补齐观测：trace 上记录 verifier_round、verdict.reason_code、judge 模型与 prompt 版本、每轮 diff 相似度，方便事后按 reason_code 拆解「哪类打回是无效的」。"
+    "把心跳从 ping 改成 progress heartbeat：每次心跳携带 step 序号、当前阶段（thinking / tool_running / waiting_human）、最近一次产出摘要。对于合法长任务要发「忙等心跳」，让观察者能区分「卡住」与「正在干长活」。",
+    "阈值按阶段分别推导，不要全局一个数：统计各类阶段的耗时分位数（LLM 首 token、单个工具执行、人工审批），TTL 取 max(该阶段 p99 × 安全系数, 下限)；waiting_human 不走超时，改为显式的挂起状态并从判活范围中剔除。",
+    "用租约替代超时判定：任务由 lease 持有，续租即心跳；续租失败时执行体立即自我终止（self-fence），不再写任何业务状态，而不是「再试一次」。",
+    "接管互斥：抢占时必须用原子 compare-and-set 替换持有者，并把 fence 单调递增；所有下游写入都带上当前 fence，存储侧或业务侧校验并拒绝过旧 fence 的写入。",
+    "把误判做成指标：统计「被判死后又重新发心跳」的次数与比例、任务重启次数、重复副作用条数；接管初期可先做影子接管（只读对账，确认旧执行体确实停滞后再写），降低误杀损失。"
    ],
-   "code": "from dataclasses import dataclass\n\n@dataclass\nclass Verdict:\n    passed: bool\n    code: str\n    fix_hint: str = \"\"\n\ndef validate(task, draft, budget):\n    for chk in HARD_CHECKS:                 # schema / 引用 / 合规，不花钱\n        v = chk(draft)\n        if not v.passed:\n            return v\n    if not risky(task):                     # 低风险直接放行\n        return Verdict(True, \"skipped\")\n    if budget.exhausted():\n        return Verdict(True, \"budget_exhausted\")\n    return llm_judge(task, draft, rubric=RUBRIC)\n\ndef run(task, budget):\n    draft, v, prev = generate(task), None, None\n    for _ in range(max_rounds(task)):\n        v = validate(task, draft, budget)\n        if v.passed or v.code == \"budget_exhausted\":\n            break\n        if prev is not None and jaccard(prev, draft) > 0.9:\n            return draft, \"needs_human\", v      # 重写震荡，止损\n        prev = draft\n        draft = rewrite(task, draft, v.fix_hint, budget)\n    return draft, \"ok\", v",
-   "scenario": "某项目在报告生成 Agent 后串了一个 critic，上线后端到端 P95 明显变长、每任务 token 成本接近翻倍，但人工抽检的通过率与未加 critic 时基本持平。排查路径：先按 verdict.reason_code 统计打回原因，发现大部分集中在「措辞/专业度」这类主观项；再取打回前后的草稿算相似度，多数超过 0.9，即改的是同义表达；最后用人工抽检标签对齐，算出 false reject 比例偏高，说明成本主要消耗在无效重写上。改造方向是把 critic 收缩到硬校验 + 高风险样本，并加相似度熔断，之后延迟回落到接近基线，人工返工率没有变差。",
+   "code": "import time\n\nLEASE_TTL = 15.0            # 由该阶段 p99 单步耗时推导，不用全局常量\nRENEW_EVERY = LEASE_TTL / 3\n\nclass LeaseLost(Exception):\n    pass\n\ndef renew_loop(redis, task_id, worker_id, stop_evt):\n    key = f\"lease:{task_id}\"\n    while not stop_evt.is_set():\n        ok = redis.eval(\n            \"if redis.call('get', KEYS[1])==ARGV[1] then \"\n            \"return redis.call('expire', KEYS[1], ARGV[2]) else return 0 end\",\n            1, key, worker_id, int(LEASE_TTL))\n        if not ok:\n            raise LeaseLost(task_id)      # 已被接管，立刻停手，不写任何状态\n        stop_evt.wait(RENEW_EVERY)\n\ndef take_over(redis, task_id, new_worker):\n    # 原子抢占并递增 fence，旧持有者的写入会被存储侧拒绝\n    lua = (\"local cur = redis.call('get', KEYS[1]) \"\n           \"if cur then return -1 end \"\n           \"local f = redis.call('incr', KEYS[2]) \"\n           \"redis.call('set', KEYS[1], ARGV[1], 'EX', ARGV[2]) \"\n           \"return f\")\n    return redis.eval(lua, 2, f\"lease:{task_id}\", f\"fence:{task_id}\",\n                      new_worker, int(LEASE_TTL))\n\ndef write_with_fence(store, task_id, fence, payload):\n    return store.cas_write(task_id, payload, min_fence=fence)",
+   "scenario": "某项目的多 Agent 编排里，子 Agent 接到一个耗时较长的外部工具（批量抓取 / 大文件解析），心跳线程与业务执行共享同一个事件循环或线程，长同步调用把心跳饿死，主控在固定阈值后判定「假死」并重新派单。随后旧执行体从阻塞中恢复继续提交结果，两个执行体都对同一资源写入，出现重复工单；而监控上「失败率」毫无变化，只有「任务重启次数」和「下游幂等冲突数」同时抬头。排查路径：先看心跳间隔分布与该阶段实际耗时分位数是否错配（错配即阈值问题，不是任务问题）；再看重启时间点是否高度集中在含长工具调用的 step 上；最后检查续租失败后是否存在「继续写」的代码路径、写接口是否根本没有 fence 或幂等键。",
    "followups": [
     {
-     "q": "怎么证明这个 verifier 值得保留，而不是纯粹的成本？",
-     "a": "不要用「每请求成本」，要用「每被采纳结果的成本」：对比有/无 verifier 时的任务成功率、人工返工率与返工工时，换算成等效人力成本再做比较。同时对高风险子集单独看漏检率（verifier 放过但人工判错的样本），低风险子集看 false reject 率。如果质量增益只出现在少数高风险场景，就把它收敛成路由而不是全局串联。"
+     "q": "心跳发不出去，是该把 TTL 调大还是改架构？",
+     "a": "先定位阻塞源。若心跳与业务在同一线程 / 事件循环，任何同步长调用都会饿死心跳，调大 TTL 只是把误判往后推，长尾一旦超过新阈值又会复发。正确做法是把心跳放到独立线程或独立进程，或改成「外部观察者轮询进度表」，让心跳不再依赖业务线程的调度机会；阈值只解决「多快发现」，架构才解决「能不能发现」。"
     },
     {
-     "q": "verifier 和 generator 用同一个模型是不是就废了？",
-     "a": "不一定废，但独立信息量会显著下降，尤其开放式质量判断容易变成风格共识。可行的异构手段：换模型家族、给 verifier 裁剪上下文（只看 rubric 和片段，避免被 generator 的长篇叙述锚定）、引入可执行校验（跑单测、回查引用原文、schema 与数值一致性检查）。判断标准是 verifier 抓到的错误中，generator 自评抓不到的比例有多少。"
+     "q": "接管之后如何保证两个执行体不会都以为自己还活着？",
+     "a": "靠 fence 而不是靠时钟：持有者每次写之前校验自己的 fence 仍然是最新的，被接管后写入直接被拒并抛错中止；同时抢占必须是原子的 CAS，不能让两个接管者同时成功。若规模更大，用 etcd / Redis 做领导者选举，把「谁是当前执行体」变成全局唯一事实，而不是各进程本地判断。"
     }
    ],
-   "diagram": "flowchart TD\n    A[任务进入] --> B[生成草稿]\n    B --> C[确定性校验 schema 引用 合规]\n    C -->|不通过| D[按 fix_hint 定向重写]\n    C -->|通过| E{风险路由}\n    E -->|低风险| F[直接放行]\n    E -->|高风险| G{验证预算是否耗尽}\n    G -->|是| H[放行并打降级标记]\n    G -->|否| I[LLM 语义校验 输出 verdict]\n    I -->|通过| F\n    I -->|不通过| J{与上轮草稿相似度过高}\n    J -->|是| K[止损 转人工并附 verdict]\n    J -->|否| D\n    D --> B",
+   "diagram": "sequenceDiagram\n    participant W as 主 Agent 执行体\n    participant L as 租约存储\n    participant T as 接管执行体\n    W->>L: 申请租约 写入 worker_id 与 TTL\n    loop 每 TTL 三分之一\n        W->>L: 续租并校验 worker_id\n        L-->>W: 续租成功\n    end\n    Note over W: 卡在长阻塞调用 心跳被饿死\n    L-->>L: 租约到期\n    T->>L: 原子抢占 写入新 worker_id 并递增 fence\n    W->>L: 恢复后携带旧 fence 尝试写入\n    L-->>W: 拒绝写入 并中止执行体",
    "source_type": "面经",
-   "source_url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/13-multi-agent-systems/README.md",
-   "source_excerpt": "原考点讨论 Critic/Verifier Agent 既可能提升质量又可能带来副作用，以及运行时多 Agent 编排里如何在质量、延迟与成本之间取舍。",
-   "id": "agent-20261121-03"
+   "source_url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/multi-agent/conflict-reliability.md",
+   "source_excerpt": "原考点关注多 Agent 可靠性：心跳超时阈值如何设定，Agent 被误判为假死时怎么处理，以及执行体之间的冲突与互斥如何保证。",
+   "id": "agent-20261122-03"
   },
   {
-   "title": "运行时参数覆盖被 falsy 吞掉：think=False 与 temperature=0 静默失效怎么定位",
+   "title": "单轮多个 tool_calls 的隐式依赖：只读并行、写串行与幂等键如何落地",
    "topic": "agent",
    "difficulty": "进阶",
    "tags": [
-    "配置合并",
-    "参数透传",
-    "可观测性",
-    "回归测试"
+    "tool-calling",
+    "并发",
+    "幂等",
+    "失败语义"
    ],
-   "why": "Agent 运行时的模型参数通常有多个层级来源：代码里的默认值、模型 profile、任务/用户级 override、以及高峰降级策略。很多实现为了省事写成 `override.get(k) or default` 或 `if not v: v = default`，而在 Python 里 0、0.0、False、空字符串都是 falsy，于是「显式关闭」被当成「没有设置」，直接回落到默认值。这类 bug 的可怕之处在于不报错：think=False 本意是关掉 reasoning 以压首 token 延迟，结果模型继续思考；stream=False 本意是批量聚合，结果还在流式；temperature=0 本意是让评测可复现，结果输出抖动导致回归对比失真。更隐蔽的一层是 None 的双重语义——既可能是「没传」，也可能是「交给 provider 用默认值」，缺少 sentinel 就无法表达三态，再叠加 pydantic 的 exclude_unset/exclude_none 误用，会出现显式 False 被丢弃或显式 None 反向覆盖默认值。",
+   "why": "模型在一轮里返回多个 tool_calls 是为了压延迟，但它并不理解副作用顺序：create_order 与 pay_order、update 与随后的 get 校验，在模型眼里只是「同一次输出」。框架如果统一用 asyncio.gather 全部并行，写操作并发会破坏业务不变量——出现部分成功、读到中间态、同一资源被扣两次；而如果因为其中一个失败就整体重试，就会把已经成功的写再执行一遍。常见错误认知有两个：一是认为同一轮的 tool_calls 之间没有依赖（它们只是同批输出，不代表彼此独立），二是认为失败即重试（写操作天生不可盲目重放）。",
    "how": [
-    "先取证再改代码：在真正发往 provider 的出口处打印脱敏后的完整 payload，同时打印各层配置对象，逐字段对比「请求层给的」与「最终生效的」。只看配置对象永远发现不了被合并逻辑吞掉的值。",
-    "定位合并点：全局搜索 `or `、`.get(...) or`、`if not value` 这类写法，把分散在各处的合并逻辑收敛到一个 resolver 函数，禁止业务代码自己拼 kwargs。",
-    "引入三态语义：用 sentinel（如 `UNSET = object()`）或 pydantic 的 `model_fields_set` 区分「未提供」「显式 None」「显式值（含 False/0）」。合并时只跳过 UNSET，显式值一律照写；显式 None 是否下发给 provider 由出口层决定。",
-    "显式化合并优先级并绑定作用域：default < profile < request < runtime-policy（降级/限流），override 通过请求对象或 contextvar 传递，绝对不要写全局单例，否则并发请求会互相污染，出现「A 请求的参数跑到 B 请求」。",
-    "加防护网：为每个关键字段写参数矩阵单测（unset / None / True / False / 0 五态 × 合并顺序），并对最终 payload 做 snapshot 断言；出口处再加一条断言，例如 think 必须是 bool 或不存在，不允许是 None 混进请求体。",
-    "补观测：trace 里记录 effective_params 与 params_source（哪个层级提供了该字段），这样线上出现延迟或成本异常时可以直接归因到某次配置下发，而不是靠猜。"
+    "先给工具补元数据：read_only / destructive / idempotent，并按资源维度标注（order、user、inventory）。没有显式声明的工具一律按写处理，保证缺省是安全侧。",
+    "调度规则：连续的只读调用合批并行；写调用严格串行并保持模型输出顺序；写之后针对同一资源键的读必须排队到写完成之后。依赖不靠模型声明，而是由「读写属性 + 资源键」推导，模型声明的依赖只作为补充且要校验存在性，校验不过则降级为串行。",
+    "写调用统一带幂等键：idempotency_key = hash(task_id, step, tool_name, normalized_args)，同一 key 的第二次调用直接返回首次结果，而不是再打一次下游。",
+    "失败语义分开：只读失败可以指数退避有界重试并去重；写失败不回滚、不自动重试，把结构化错误（错误码、是否已生效、幂等键）回填给模型，让它决定下一步。",
+    "可观测性：为每个 tool_call 记录 start / end、资源键、幂等键、是否命中幂等，便于定位「部分成功」；同一 step 内工具 span 时间是否重叠，本身就是并行是否越界的直接证据。"
    ],
-   "code": "UNSET = object()\n\ndef resolve(defaults, profile, request):\n    out = dict(defaults)\n    for layer in (profile, request):\n        for k, v in layer.items():\n            if v is UNSET:\n                continue\n            out[k] = v          # False / 0 是合法值，不能被 or 吞掉\n    return out\n\n# 旧写法：{k: (req.get(k) or v) for k, v in defaults.items()}\n# resolve({\"think\": True}, {}, {\"think\": False}) -> {\"think\": False}\n\nfrom pydantic import BaseModel\n\nclass ModelArgs(BaseModel):\n    think: bool | None = None\n    temperature: float | None = None\n\ndef to_payload(args: ModelArgs, defaults: dict) -> dict:\n    explicit = args.model_dump(exclude_unset=True)   # 区分「没传」与「传了 False」\n    return {**defaults, **{k: v for k, v in explicit.items() if v is not None}}",
-   "scenario": "某项目为压高峰延迟，按任务给支持 thinking 的模型下发 think=False，但上线后监控显示首 token 延迟与 reasoning token 占比几乎没变化。排查路径：先确认降级策略确实命中（策略日志有记录），再把出口 payload 打出来，发现 think 字段实际是 True——实例默认 True，合并时用了 `override.get('think') or default`，False 被吞成默认值。同类问题还出现在批处理任务上：显式 stream=False 未生效仍在流式；以及评测流水线中 temperature=0 不生效，导致同一 prompt 回归结果不可复现、误判为模型退化。修复方式是把分散的合并收敛到一个 resolver + sentinel，并在 CI 里加五态参数矩阵测试与 payload snapshot。",
+   "code": "import asyncio\n\nREAD_ONLY = {\"search_docs\", \"get_order\", \"query_stock\"}\n\ndef schedule(tool_calls):\n    plan, batch = [], []\n    for c in tool_calls:\n        if c.name in READ_ONLY:\n            batch.append(c)\n            continue\n        if batch:\n            plan.append((\"parallel\", batch)); batch = []\n        plan.append((\"serial\", [c]))\n    if batch:\n        plan.append((\"parallel\", batch))\n    return plan\n\nasync def run(plan, ctx):\n    results = {}\n    for mode, calls in plan:\n        if mode == \"parallel\":\n            done = await asyncio.gather(*(read(c, ctx) for c in calls),\n                                        return_exceptions=True)\n        else:\n            done = [await write_idempotent(calls[0], ctx)]\n        for c, r in zip(calls, done):\n            results[c.id] = r      # 失败同样回填，交由模型决策而非自动重放\n    return results\n\ndef key_of(task_id, step, call):\n    return f\"{task_id}:{step}:{call.name}:{call.args_hash()}\"",
+   "scenario": "某项目为了降延迟，把 Agent 一轮内的 tool_calls 直接 gather。线上出现偶发的「订单已创建、状态仍 pending 且库存被扣两次」；trace 里同一 step 下两个写调用的 span 起始时间几乎重合，重试后问题加剧，而单请求平均延迟只改善了一点点。排查路径：按 trace 拉同一 step 内所有 tool span，看时间是否重叠、重叠的是不是写工具；查写工具是否带幂等键、命中率是否为 0；再看失败回填逻辑里是否存在「整体重试本轮」的代码路径；最后核对资源键标注，常见根因是读工具被误标成写（无谓串行）或写工具没标可写（被并行了）。",
    "followups": [
     {
-     "q": "为什么不能简单用 `is not None` 判断就完事？",
-     "a": "因为 None 本身可能是有语义的：调用方可能想显式表达「这一项交给 provider 用默认值」，而「完全没传」应当继承上一层配置。所以要区分三态——UNSET（未提供，继续继承）、None（显式交给下游默认）、具体值（含 False/0，必须透传）。用 sentinel 配合 pydantic 的 model_fields_set 才能无损表达，`is not None` 会把显式 None 和未提供混为一谈。"
+     "q": "让模型自己在 tool_call 里声明 depends_on 靠谱吗？",
+     "a": "不可靠，模型经常漏写或写错 id，而且声明本身也可能指向不存在的调用。工程上以工具元数据加资源键推导为主路径，模型声明只作为补充；一旦声明的依赖无法解析，就降级为串行而不是忽略——宁可慢一点，也不能乱序执行写。"
     },
     {
-     "q": "怎么防止这类问题再犯？",
-     "a": "三层防护：一是合并逻辑单点化，业务代码不允许自己拼参数；二是 CI 跑参数矩阵测试（unset/None/True/False/0）并对最终 payload 做 snapshot 断言，任何字段语义变化都会让测试红；三是出口处记录 effective_params 与 params_source 到 trace，线上出现「降级没生效」时能一眼定位是哪一层覆盖出了问题，而不是重新发版加日志排查。"
+     "q": "写操作全串行会明显拖慢整体吗？",
+     "a": "影响有限，因为真正的时延大头通常是只读检索与 LLM 推理。若确实存在多资源写，可以按 resource_key 分桶：桶间并行、桶内串行，既不破坏单资源不变量，也保留了并发收益。切忌为了并行把不同资源的写混在一起做全局 gather，那等于放弃顺序保证。"
     }
    ],
-   "diagram": "",
-   "source_type": "issue",
-   "source_url": "https://github.com/run-llama/llama_index/issues/22970",
-   "source_excerpt": "原 issue 记录 Ollama 客户端把 think=False 当作未设置而回落到实例默认 thinking，导致显式关闭思考反而失效；考点在于参数合并时如何区分 falsy 合法值与未提供。",
-   "id": "agent-20261121-04"
+   "diagram": "flowchart TD\n    A[模型单轮返回多个 tool_calls] --> B{按元数据判定读写属性}\n    B -->|只读| C[并入当前并行批次]\n    B -->|写| D[结束当前并行批次]\n    D --> E[写调用串行执行]\n    E --> F[写入幂等键并落执行日志]\n    C --> G[并行执行并汇总结果]\n    F --> G\n    G --> H[统一回填 tool 消息]\n    H --> I{是否全部成功}\n    I -->|否| J[标记失败项 不自动重放写调用]\n    I -->|是| K[进入下一步推理]",
+   "source_type": "面经",
+   "source_url": "https://github.com/didilili/ai-agents-from-zero/blob/main/17-Tools%E5%B7%A5%E5%85%B7%E8%B0%83%E7%94%A8.md",
+   "source_excerpt": "原考点围绕工具调用展开：一个函数是否该暴露成 Tool、工具描述质量差会带来什么真实问题，以及模型负责决策、程序负责执行在安全上的含义。",
+   "id": "agent-20261122-04"
   },
   {
-   "title": "索引从百万级扩到亿级后内存打满、recall 下滑：量化与 GPU 的收益边界怎么量化",
+   "title": "HNSW 的 ef 调大后离线召回达标了，但线上 p99 翻几倍、跑两周还越来越慢：参数、内存与墓碑怎么一起算",
    "topic": "rag",
    "difficulty": "资深",
    "tags": [
-    "向量库",
-    "量化",
-    "容量规划",
-    "成本取舍"
+    "向量索引",
+    "HNSW",
+    "召回评测",
+    "更新治理"
    ],
-   "why": "向量检索的成本上限通常取决于「索引是否放得进内存」，而非峰值 QPS。float32 下裸向量占 N×dim×4 字节，HNSW 还要额外存图结构（与 M 参数成正比），再加副本与段合并的临时放大，实际内存常是理论值的 1.5 倍以上。上量之后必然要动量化（SQ8 / PQ / BQ），但量化会扰动相似度排序，被换掉的往往正是 top-k 尾部那些「差一点」的段落，表现为答案缺漏而不是报错，所以只盯平均延迟会漏掉质量回退。GPU 的收益来自大 batch 并行与高显存带宽，在 QPS 低、batch 只有个位数时，kernel launch 与 H2D 拷贝会把收益吃光；且显存不能超卖，多租户隔离与分片弹性都更差。常见错误认知有三个：把换索引类型当成唯一旋钮；拿平均延迟代替 recall 与 p99；以为换 GPU 就能解决所有慢查询。",
+   "why": "HNSW 的参数被分成了两类，很多人把它们混为一谈：M 与 efConstruction 决定图本身的质量（每个节点的出度、建图时候选队列的长度），一旦建完就基本改不了；ef（查询期）只是把搜索前沿放宽，它只能在「已有的图」上延伸搜索，无法补回图里根本没连上的近邻。所以典型错误认知是「召回不够就把 ef 调大」，短期指标确实会涨，代价是每次查询要访问的候选点线性增加，QPS 和 p99 直接崩。第二个被忽视的点是更新：向量库普遍按 segment/段组织，upsert 与 delete 先写标记，旧点变成墓碑，在合并（compaction/optimize）之前查询仍要路过它们，于是出现「参数没变、数据没涨，但延迟和内存一路走高」。第三个坑是 filtered search：带 filter 时 ef 的候选池被过滤条件稀释，选择率低的条件实际有效候选远小于 ef，recall 会莫名下降，而纯向量基准测不出来。",
    "how": [
-    "先建容量模型：N×dim×4 字节裸向量 + 图结构开销 + 副本数 + 段合并余量，算出单节点可承载上限，再和实际占用的磁盘、内存水位对照，先找出「非必要占用」（历史向量、未使用的命名向量字段、重复副本）。",
-    "按量级选形态：百万级用单节点全内存 HNSW 即可；千万级做分片 + SQ8 或 PQ 量化 + mmap 磁盘索引，把热数据留在 page cache；亿级必须多分片多副本，二值或 PQ 粗召回 + 原始向量 rescore 精排，并按访问频次做冷热分层。",
-    "把量化当作带参数的开关而不是一次性决策：固定同一批真实 query，用 exact 检索结果作为上界，对比量化前后与开启 rescore 后的 recall@k，扫描 oversample 倍数（2/4/8），画出「内存节省 vs recall 损失」曲线再定参。",
-    "CPU 与 GPU 的取舍用同一 recall 目标下的单位查询成本衡量：分别压测空载与带 filter 的场景，记录 p50/p99、每秒可承载查询数、以及索引重建耗时，GPU 一般只在索引构建和高 QPS 大 batch 查询上占优。",
-    "加护栏再上线：容量水位、段数量、慢查询比例、以及定期跑的 recall 抽样对比组成监控项；把量化参数和 oversample 写进配置而非代码，便于回退。",
-    "上线后按季度复核：数据分布会漂移，原先选定的 oversample 与量化档位在语料变长、变稠密后可能不再达标。"
+    "先建立可复现的召回基线：固定评测集（query → 已知相关 doc id），用暴力检索或 exact search 的结果作为 ground truth，统一用 recall@k 口径，禁止用人工「看起来相关」判断。",
+    "做内存预算建模：向量本体 n×dim×4 字节，加上图结构（底层约 2M 个邻居、上层约 M 个，每个 4 字节 id），再加上 payload 与原始文本；先给 M 定一个内存上限，再谈参数。",
+    "在小规模集合（如全量 10% 采样）上固定 M/efConstruction，只扫描 ef，画 recall–QPS–p99 三条曲线，取曲线拐点作为 ef 默认值，而不是取 recall 最高的点。",
+    "为带 filter 的查询单独校准：按过滤选择率放大 ef（如 ef_eff = min(ef_base / selectivity, cap)），或让存储层先做 payload 预过滤，再把结果喂给图搜索；两条路径都要有基准。",
+    "把更新纳入运维：监控 segment 数量、被标记删除的点占比、单 segment 大小；设置合并/优化阈值，大批量变更走「新集合重建 + 别名原子切换」，而不是原地长期 upsert。",
+    "上线后做在线抽样评测（按比例抽样并标注），同时看 p99、每查询访问点数、segment 数与内存；把召回衰退和延迟衰退分开归因，避免把墓碑问题误判成参数问题。"
    ],
-   "code": "import numpy as np\n\ndef recall_at_k(ref_ids, got_ids, k=10):\n    return len(set(ref_ids[:k]) & set(got_ids[:k])) / k\n\ndef compare_configs(store, queries, k=10, oversample=4):\n    rows = []\n    for q in queries:\n        ref = store.search(q, limit=k, exact=True)\n        sq = store.search(q, limit=k, quant=\"sq8\", rescore=False)\n        sq_r = store.search(q, limit=k, quant=\"sq8\",\n                            oversample=oversample, rescore=True)\n        rows.append([recall_at_k(ref, sq, k), recall_at_k(ref, sq_r, k)])\n    mean = np.mean(rows, axis=0)\n    return {\"sq8\": round(float(mean[0]), 4),\n            \"sq8_rescore\": round(float(mean[1]), 4)}",
-   "scenario": "某项目的知识库从百万级文档涨到几千万 chunk 后，节点内存水位长期在 85% 以上，检索 p99 开始出现秒级抖动，同时业务侧反馈「答案里少了关键那条」。排查顺序是：先算理论内存与实际占用的缺口，发现 collection 里为多路召回建了若干个 optional 命名向量，每个都按最大维度占位，实际容量是最小必要集合的数倍；把离线才用到的向量字段迁到独立冷集合后内存回落。再看质量，用同一批线上 query 跑 exact 检索作对照，发现开启 SQ8 后 top-10 与 exact 的交集明显下降，而打开 rescore 并把 oversample 提到 4 后基本追平。最后压测 CPU 与 GPU：该业务 QPS 不高、单请求 batch 很小，GPU 方案 p99 反而更差且成本更高，最终维持 CPU + 量化 + rescore，只把索引重建挪到批处理窗口。",
+   "code": "import time\nimport numpy as np\n\ndef recall_at_k(gt, got, k):\n    return len(set(got[:k]) & set(gt[:k])) / k\n\ndef mem_bytes(n, dim, m, payload_bytes=200):\n    vec = n * dim * 4\n    graph = n * (2 * m * 4 + m * 4)          # 底层 2M 邻居 + 上层近似 M\n    return vec + graph + n * payload_bytes\n\ndef sweep(client, coll, queries, gt, k=10, efs=(32, 64, 128, 256)):\n    rows = []\n    for ef in efs:\n        hits, lat = [], []\n        for q, g in zip(queries, gt):\n            t0 = time.perf_counter()\n            res = client.search(coll, q, limit=k, params={\"ef\": ef})\n            lat.append(time.perf_counter() - t0)\n            hits.append(recall_at_k(g, [r.id for r in res], k))\n        rows.append({\"ef\": ef,\n                     \"recall\": round(float(np.mean(hits)), 4),\n                     \"p99_ms\": round(float(np.percentile(lat, 99)) * 1000, 1)})\n    return rows",
+   "scenario": "某项目的离线基准显示 ef 从 64 提到 256 后 recall@10 明显上升，于是直接改了线上默认值。上线后 QPS 掉到原来的一小部分、p99 涨了数倍，而业务侧反馈「答案没变好」。更麻烦的是集合每天有大量 upsert，跑了两周后即使把 ef 调回原值，延迟仍高于初始水平。排查路径：先看集合的 segment 数量与被标记删除点占比，发现长期未合并、内存虚高；再抓一批真实请求，发现大部分查询带租户与时间过滤，选择率极低，ef 的候选池被过滤条件吃掉大半，实际有效搜索深度远小于配置值；最后用同一评测集在「只读快照」上复测，确认图质量受 M 约束，单纯抬 ef 的收益早已饱和。处理方式是：重建集合时提高 M 与 efConstruction，线上 ef 取拐点值，filter 查询按选择率放大 ef，并把合并策略与别名切换纳入例行运维。",
    "followups": [
     {
-     "q": "量化后 recall 掉了几个点，怎么判断是量化误差还是切分、embedding 本身的问题？",
-     "a": "先用 exact 检索当上界：如果 exact 也召不回目标段落，问题在切分粒度或 embedding 模型，跟量化无关。若 exact 能召回而量化后丢失，再看被挤出 top-k 的样本是否集中在长文档、跨段答案这类边界样本上，并扫 oversample 与 rescore 观察是否可恢复；同时确认评测 query 集与线上分布一致，避免用离线标注集自欺。"
+     "q": "为什么把 ef 一直调大不能解决召回问题？M 到底影响什么？",
+     "a": "ef 只扩大查询期要探索的候选队列，搜索仍然沿着图中已有的边前进；M 决定每个节点保留多少邻居，M 太小会导致本该近邻的点在图里压根没连上，这时再大的 ef 也走不到。efConstruction 影响建图时挑邻居的搜索深度，决定边的质量。三者职责不同：M/efConstruction 是建图期的质量上限，ef 是查询期的成本-召回旋钮，因此正确做法是先按内存预算定 M、用采样数据验证建图质量，再扫 ef 取拐点。"
     },
     {
-     "q": "亿级数据量下要不要直接上 GPU 检索？",
-     "a": "先分清瓶颈在建索引还是在线查询。建索引阶段 GPU 的批量构图收益明确；在线查询阶段只有当 QPS 高、单批候选多、且显存足以容纳分片时才划算。低 QPS 场景下 kernel launch、数据拷贝和显存不能超卖带来的分片刚性，会让 GPU 的成本与运维复杂度都高于 CPU + 量化 + 分片，多数业务先做量化与冷热分层更划算。"
+     "q": "IVF-PQ、DiskANN 这类方案在你的场景里什么时候反而更合适？",
+     "a": "当内存是主要约束、数据量很大、可接受一定量化误差时，IVF-PQ 用聚类加乘积量化压缩向量，内存占用显著下降，nprobe 可以调节召回与延迟；但它需要训练码本，分布漂移要重训，且对高 recall 场景通常吃亏。DiskANN 把图放在 SSD 上、内存只放压缩向量与少量入口点，适合超大规模且能接受单次查询的磁盘 IO 延迟、更新不频繁的场景。选型看四个维度：内存预算、目标 recall 下限、更新频率、p99 容忍度，任何一项给不出来就不该拍板。"
     }
    ],
-   "diagram": "flowchart TD\n    A[向量规模与内存水位评估] --> B{数量级}\n    B -->|百万级| C[单节点全内存 HNSW]\n    B -->|千万级| D[分片 加 SQ8 或 PQ 加 mmap]\n    B -->|亿级| E[多分片多副本 粗召回 加 rescore 精排]\n    D --> F[同一批 query 对比 exact 与量化后的 recall]\n    E --> F\n    F --> G{recall 是否达标}\n    G -->|否| H[提高 oversample 打开 rescore 或回退精度]\n    G -->|是| I[压测 CPU 与 GPU 的 p99 与单位查询成本]",
+   "diagram": "flowchart TD\n    A[固定评测集与暴力检索基线] --> B[按内存预算定 M 与 efConstruction]\n    B --> C[小规模集合扫描 ef 画曲线]\n    C --> D[取拐点作为线上默认值]\n    D --> E[监控 segment 数与墓碑比例]\n    E --> F{延迟或召回出现漂移}\n    F -->|是| G[合并或重建集合加别名切换]\n    F -->|否| E\n    D --> H[带 filter 的查询按选择率放大 ef]",
    "source_type": "面经",
-   "source_url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-2.md",
-   "source_excerpt": "原考点是向量库在百万、千万、亿级下的架构差异，以及 GPU 与 CPU 检索如何选型；本质考容量模型、量化带来的精度损失与成本取舍。",
-   "id": "rag-20261121-01"
+   "source_url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/06-vector-index-optimization/README.md",
+   "source_excerpt": "原考点围绕 HNSW 的 M、efConstruction、ef 三个参数分别管什么、生产上怎么定值，以及调参过程中容易踩的性能与召回陷阱。",
+   "id": "rag-20261122-01"
   },
   {
-   "title": "在线 embedding 成了写入与查询的公共瓶颈：micro-batch、缓存与降级的组合怎么落地",
+   "title": "换了 embedding 模型后拒答阈值全部失效、新旧向量还混在一个集合里：影子索引、阈值重标定与灰度切换怎么做",
    "topic": "rag",
-   "difficulty": "进阶",
+   "difficulty": "资深",
    "tags": [
     "embedding",
-    "micro-batch",
-    "缓存",
-    "降级"
+    "索引迁移",
+    "灰度",
+    "阈值标定"
    ],
-   "why": "在 RAG 系统里 embedding 服务是查询链路和入库链路的共享依赖：用户 query 要实时转向量，文档导入也要批量转向量，两条链路争同一份推理配额。批量合并能抬高吞吐，但会把请求攒在队列里，直接抬高尾延迟，吞吐和 p99 天然对立。常见错误有四个：每个请求单独调一次 embedding，batch 恒为 1，加速卡利用率极低；不做任何缓存，热门 query 和重复文档反复计算；在 async 路由里直接调用同步 SDK，阻塞 event loop，让并发数上不去；对下游没有并发上限和超时，一旦排队就开始雪崩式超时。此外缓存一致性也要小心：文档更新后旧向量若未失效，会持续召回过期内容。",
+   "why": "换 embedding 模型不是「换个 encoder 重跑一遍」这么简单。第一，向量空间整体改变：不同模型的训练目标、语言分布、是否归一化、pooling 方式都不同，两个空间的余弦相似度数值不可比，跨空间算出来的距离在语义上没有意义——但只要维度相同，代码不会报错，于是静默污染，表现为「召回莫名其妙、有的文档永远召不回、有的永远排第一」。第二，所有依赖分数的下游全部失效：拒答阈值、rerank 前置过滤、混合检索的加权融合、缓存命中判定，都是按旧模型的分数量纲调出来的，直接沿用会造成大规模误拒或误放行。第三，全量重算是硬成本：docs×tokens 的编码开销、限流窗口、失败重试，还要保证回填期间线上照常可服务、可回滚，这本质是一次带状态的数据迁移。",
    "how": [
-    "先量化现状：分开统计 query embedding 与文档 embedding 的 QPS、batch 分布、单次耗时、队列等待时间与加速卡利用率，判断是算力不够还是调用粒度太碎。",
-    "在服务端做 micro-batching：设定 max_batch 与 max_delay 两个参数，收到第一个请求后最多等 max_delay 或凑满 max_batch 就发车，用线上 p99 预算减去下游耗时反推 max_delay，而不是凭感觉设 50ms。",
-    "加两级缓存：query 向量按规范化后的文本哈希缓存（做大小写、空白、语言归一，多租户加 tenant 前缀），文档向量按 content hash 持久化，模型或维度变更时整体版本化失效，避免串用旧向量。",
-    "把两条链路做隔离：导入任务走独立队列与独立配额、低优先级、可中断重跑；在线查询保留最小配额，防止一次全量重建把线上打挂。",
-    "在 FastAPI 侧保证非阻塞：用 async client 或把同步调用放进线程池，设置明确的超时与取消，超时后降级到缓存或关键词召回而不是无限等待。",
-    "补观测：embedding 服务 p99、平均 batch 大小、队列长度、缓存命中率、降级触发率、超时率，任一指标恶化都能定位到是批量策略还是容量问题。"
+    "冻结模型契约：把模型名、版本、维度、归一化方式写进集合元数据与别名命名，写入与查询两端都做校验，宁可启动失败也不要混写。",
+    "新建影子集合：用新模型建独立 collection + 独立 alias，在线新文档双写两份；旧集合保持可读，作为回滚底座。",
+    "历史数据分批回填：按 doc id 水位做断点续跑，同 id upsert 保证幂等，用并发与 QPS 上限保护在线读写，失败批次可重放而不重复计费。",
+    "阈值重标定而非直接沿用：在同一评测集上分别跑旧/新索引，把分数按分位数对齐（如都取 top-1 分数的 p10/p50/p90 做映射），再重设拒答与融合阈值，禁止跨模型比绝对值。",
+    "同集对比与灰度：用固定评测集比 recall@k、端到端答案正确率、拒答率、长尾与多语言 query 表现；达标后按租户或流量比例切读，双读对比但只返回主路结果。",
+    "缓存与回滚：query embedding 缓存 key 带上模型版本，答案缓存带上索引别名版本；切换动作是别名原子切换，旧索引保留一个观察窗口，异常时一键切回。"
    ],
-   "code": "import asyncio, hashlib\n\nclass BatchedEmbedder:\n    def __init__(self, embed_fn, cache, max_batch=64, max_delay=0.01, workers=2):\n        self.embed_fn, self.cache = embed_fn, cache\n        self.max_batch, self.max_delay = max_batch, max_delay\n        self.q, self.sem = asyncio.Queue(), asyncio.Semaphore(workers)\n\n    async def embed(self, text):\n        key = hashlib.sha256(text.encode()).hexdigest()\n        if (hit := self.cache.get(key)) is not None:\n            return hit\n        fut = asyncio.get_running_loop().create_future()\n        await self.q.put((text, key, fut))\n        return await asyncio.wait_for(fut, timeout=2.0)\n\n    async def run(self):\n        loop = asyncio.get_running_loop()\n        while True:\n            batch = [await self.q.get()]\n            deadline = loop.time() + self.max_delay\n            while len(batch) < self.max_batch:\n                left = deadline - loop.time()\n                if left <= 0:\n                    break\n                try:\n                    batch.append(await asyncio.wait_for(self.q.get(), left))\n                except asyncio.TimeoutError:\n                    break\n            async with self.sem:\n                try:\n                    vecs = await self.embed_fn([t for t, _, _ in batch])\n                    for (_, k, fut), v in zip(batch, vecs):\n                        self.cache[k] = v\n                        fut.set_result(v)\n                except Exception as e:\n                    for _, _, fut in batch:\n                        if not fut.done():\n                            fut.set_exception(e)",
-   "scenario": "某项目的知识库导入任务一启动，线上问答 p99 就从几百毫秒涨到数秒，超时率明显上升，而加速卡利用率却在 30% 与 100% 之间锯齿波动。排查发现三点：一是导入链路逐条调用 embedding，batch 恒为 1；二是在线查询与导入共用同一个 endpoint，没有配额隔离；三是 FastAPI 路由里直接调用了同步 SDK，event loop 被阻塞，并发上不去，只能靠客户端重试，重试又进一步放大队列。改造后：上线 micro-batching 把 batch 抬到几十，在线 query 向量加缓存，导入改走异步任务队列并限流到低优先级，同步调用挪进线程池并设置超时，超时直接降级为缓存命中或关键词召回。锯齿消失，导入期间线上 p99 恢复平稳。",
+   "code": "import itertools\nimport time\n\ndef batched(it, n):\n    it = iter(it)\n    while chunk := list(itertools.islice(it, n)):\n        yield chunk\n\ndef backfill(src, dst, model, ckpt, batch=128, qps=20):\n    watermark = ckpt.load()                       # 已完成的 doc id 水位\n    docs = (d for d in src.iter_docs(after=watermark) if d.id > watermark)\n    for chunk in batched(docs, batch):\n        texts = [d.text for d in chunk]           # 先物化，避免生成器被消费两次\n        vecs = model.encode(texts, normalize=True)\n        dst.upsert([{\"id\": d.id, \"vector\": v, \"payload\": d.payload,\n                     \"meta\": {\"model\": model.name, \"rev\": model.rev}}\n                    for d, v in zip(chunk, vecs)])   # 同 id 覆盖，天然幂等\n        ckpt.save(chunk[-1].id)                   # 逐批推进水位\n        time.sleep(len(chunk) / qps)              # 限流，别挤占在线写入",
+   "scenario": "某项目把 embedding 模型从旧版换到新版本，维度恰好一致，为了省事直接对原集合 upsert 覆盖。结果是：回填任务中途因限流超时中断，重跑时又从头扫，一半文档是新向量一半是旧向量；检索侧完全看不出异常，但部分老文档彻底召不回。同时拒答阈值沿用旧值，新模型分数整体偏低，大量本可回答的问题被判为不可答，用户侧表现为「知识库明明有却说不知道」。排查路径：先抽样比对集合内的 model 元数据分布，确认混写；再用同一评测集分别在纯旧向量与重新全量写入的新向量上跑 recall 与拒答率，发现阈值必须按分位数重标定；最后核对 query embedding 缓存未带版本，命中了旧模型的向量。收敛做法是重建影子集合、断点续跑回填、阈值按分位数重设、按租户灰度后再别名切换。",
    "followups": [
     {
-     "q": "query 向量缓存值不值得做，边界在哪？",
-     "a": "收益取决于 query 重复率与规范化质量。高频问法、多轮会话里的复述、以及多租户共用模板句式重复率高，收益明显；长尾自由文本为主、几乎没有重复的业务收益有限，还要承担一致性与内存成本。落地时要先统计文本归一化后的重复率，再决定缓存容量与 TTL，并保证模型或维度升级时整体失效。"
+     "q": "新旧模型维度相同，是否可以共用一个集合，靠 payload 里的 model 字段过滤来区分？",
+     "a": "不建议。同一集合内的向量会被同一个图/聚类结构组织，两个空间的点混在一起会互相成为邻居，过滤只能保证返回结果的来源，不能保证搜索路径没被污染，距离本身仍然不可比；而且索引结构无法按 filter 分区训练。正确做法是集合或别名级隔离，模型版本写进集合元数据做写入校验，迁移用双写加别名切换完成。"
     },
     {
-     "q": "max_delay 调大吞吐更好但延迟更差，怎么定这个值？",
-     "a": "用 p99 预算倒推：总预算减去检索、rerank、生成各段耗时，剩下的才是允许排队时间。再在压测里扫描几档 max_delay 与 max_batch，画吞吐-延迟曲线取拐点；线上按负载动态调整，高峰期把 max_delay 调小保尾延迟，低峰期放大提吞吐，同时监控平均 batch 大小作为策略是否生效的信号。"
+     "q": "怎么判定这次模型切换是成功的，而不只是「跑通了」？",
+     "a": "三个层面同时看：检索层用固定评测集的 recall@k 与 MRR 对比新旧索引；答案层看端到端正确率、拒答率与拒答是否正确（该拒的拒、不该拒的别拒）；分布层看长尾 query、多语言、时间新近文档的表现，避免新版只在头部热门问题上变好。阈值必须先按分位数重标定再比较，否则分数尺度差异会伪装成效果差异；另外回填遗漏率（集合内 model 元数据分布）也要作为验收项。"
     }
    ],
-   "diagram": "sequenceDiagram\n    participant API as 检索接口\n    participant C as 向量缓存\n    participant B as 批量合并器\n    participant M as Embedding 服务\n    API->>C: 按文本哈希查缓存\n    C-->>API: 命中则直接返回\n    API->>B: 未命中则入队等待\n    B->>B: 攒批或等到 max_delay\n    B->>M: 一次前向计算整批\n    M-->>B: 返回向量列表\n    B->>C: 回写缓存\n    B-->>API: 唤醒等待中的请求",
+   "diagram": "flowchart TD\n    A[冻结模型版本与维度契约] --> B[新建影子集合与独立别名]\n    B --> C[在线文档双写新旧两份]\n    C --> D[历史数据分批回填 断点续跑]\n    D --> E[同一评测集对比新旧索引]\n    E --> F[按分位数重标定拒答与融合阈值]\n    F --> G[按租户或流量灰度切读]\n    G --> H{指标达标}\n    H -->|否| D\n    H -->|是| I[别名原子切换 保留旧索引可回滚]",
    "source_type": "面经",
-   "source_url": "https://github.com/didilili/ai-agents-from-zero/blob/main/19-RAG%E6%A3%80%E7%B4%A2%E5%A2%9E%E5%BC%BA%E7%94%9F%E6%88%90.md",
-   "source_excerpt": "原考点是区分 RAG 中哪些步骤属于离线建库、哪些属于在线问答；延伸到在线链路上 embedding 生成与查询共享算力时的资源压力与优化手段。",
-   "id": "rag-20261121-02"
+   "source_url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md",
+   "source_excerpt": "原考点围绕知识库版本升级时历史数据的处理方式，以及不同 embedding 模型在向量空间、维度与相似度尺度上的差异。",
+   "id": "rag-20261122-02"
   },
   {
-   "title": "检索命中高相似度片段却答非所问：answerability 判定、拒答阈值与证据覆盖率怎么落地",
+   "title": "想用 GraphRAG 解决「跨文档多跳与汇总类」问题：抽取成本、实体归一化与增量社区重建怎么一起算",
    "topic": "rag",
    "difficulty": "资深",
    "tags": [
-    "向量检索",
-    "拒答策略",
-    "评估体系",
-    "rerank"
+    "graphrag",
+    "成本建模",
+    "增量索引",
+    "query路由"
    ],
-   "why": "余弦相似度衡量的是 query 与 chunk 在 embedding 空间里的接近程度，它既不代表片段里含有答案，也不能跨语料、跨模型比较。工程上常见的四类误判：一是 chunk 切分把答案切到了相邻块，命中的块只有铺垫；二是 query 短、doc 长，非对称语义下「话题相关」被算成高相似；三是问题含多个约束（时间、主体、口径），单个片段只覆盖一部分；四是换 embedding 模型或换语料后分数分布整体漂移，写死的 0.8 阈值直接失效。典型错误认知是把 top1 分数当置信度、把「模型回答流畅且带了引用」当作答对，结果是在没有证据时也强行生成，错误答案比检索不到更难被发现。",
+   "why": "向量 RAG 的检索单元是 chunk，本质是「局部语义相似」；当问题需要跨多篇文档做聚合、对比、多跳推理（例如「哪些组件同时被 A 和 B 两个流程依赖」），单 chunk top-k 里根本不存在这样一条证据，召回再准也答不对。GraphRAG 的取舍是「用离线昂贵的抽取与社区摘要，换在线可聚合的图结构」，它不是「更准的向量检索」，而是一次预处理成本与查询能力的置换。常见错误认知有三个：（1）先上 GraphRAG 再想评测，结果事实型问题毫无提升却背了全量抽取成本；（2）实体不做归一化，同一实体在图中分裂成十几个节点，社区摘要被噪声淹没、边数爆炸；（3）把图当成 append-only，文档更新后只加边不删旧边，导致摘要里长期存在已删除的事实，且每次新增文档都触发全量社区重建。",
    "how": [
-    "先分离两类失败：用带标注的评估集算 recall@k 与 MRR，判断是「gold 片段根本没召回」还是「召回了但没用上」，两者优化手段完全不同，不要一上来就调 prompt。",
-    "用 cross-encoder 做精排，把判定阈值建在 rerank 分数上而不是 bi-encoder 余弦上；rerank 分数对「片段是否真的回答问题」判别力更强，且量纲相对稳定。",
-    "阈值分层而非全局：按 query 类型（单跳事实、多跳比较、流程步骤）分别标定基线，用评估集上的分数分布取分位点，并定期用新采样重标。",
-    "引入证据覆盖率：从 query 抽取关键实体与约束，检查 top-n 片段是否覆盖；覆盖率不足时不要直接作答，先做 query 改写或分解后重检索。",
-    "设计降级路径：一次改写 + 扩 k 重试，仍不达标就拒答并给出「未找到依据」的明确回复，同时把该 query 落盘进未命中池，供后续补文档。",
-    "把「引用段落命中率」「unanswerable 集合上的误答率」纳入线上看板，用抽样人工复核校准自动指标。"
+    "先用评测集判定「是否真的需要图」：从真实日志里抽出 50–100 条聚合型/多跳型 query 单独成集，对比纯向量基线在这些 query 上的答案正确率；如果提升不明显，优先用 metadata 过滤 + 结构化关系表 + 少量 SQL 覆盖，成本低一到两个数量级。",
+    "做成本建模：抽取阶段按「每千字文档消耗的 token」估算全量成本，社区摘要按层数近似超线性增长估算；把「全量重建一次」和「每月增量 N 篇」分别算出来，与业务对新鲜度的要求对齐，再决定语料范围（只对高价值语料建图）。",
+    "实体归一化先行：维护别名表 + embedding 聚类召回候选 + 人工抽检 top 实体，产出稳定的 canonical_entity_id；抽取阶段就落归一化后的 id，而不是事后合并。设置度数下限，孤立/低度数节点不进图，避免社区碎片化。",
+    "把图的写入设计成「以文档为中心可回滚」：每条边带 source_doc_id 与 doc_version，更新文档时先按 doc 反向裁剪旧边再加新边；社区摘要按节点局部失效（invalidate），只对受影响的社区重算，而不是整图重建。",
+    "在线加 query 路由：用小分类器或规则把 query 分成事实型 / 聚合型；事实型走向量分支，聚合型走图 + 社区摘要，混合时把图结果当 evidence 注入并严格限制 token 预算，避免把整个社区摘要塞进 prompt。",
+    "灰度与回归：按 query 类型分别看正确率与 p95 延迟，同时对「已删除文档的事实是否还被引用」做定期抽检。"
    ],
-   "code": "def gate(query, chunks, reranker, coverage_fn, cfg):\n    scored = sorted(\n        ((reranker.score(query, c.text), c) for c in chunks),\n        key=lambda x: x[0], reverse=True,\n    )[: cfg.top_n]\n    if not scored:\n        return {\"action\": \"refuse\", \"reason\": \"empty_recall\"}\n\n    top_score = scored[0][0]\n    cov = coverage_fn(query, [c for _, c in scored])\n    base = cfg.thresholds.get(classify(query), cfg.thresholds[\"default\"])\n\n    if top_score < base or cov < cfg.min_coverage:\n        return {\n            \"action\": \"retry_or_refuse\",\n            \"top_score\": top_score,\n            \"coverage\": cov,\n            \"rewrite\": True,\n        }\n    return {\n        \"action\": \"answer\",\n        \"context\": [c for _, c in scored],\n        \"top_score\": top_score,\n        \"coverage\": cov,\n    }",
-   "scenario": "某项目上线知识库问答后，用户反馈「答得像模像样但引用的段落跟问题无关」。抽样回捞发现 top1 相似度普遍在 0.85 以上，pass 了原有 0.8 阈值，但引用段落命中率很低，且在被标注为「库里没有答案」的问题上几乎从不拒答。排查路径：先在评估集上算 recall@5，发现 gold 片段多数能召回，说明不是索引问题；再看精排后 top1 片段是否含答案，命中率低，确认是「相关但不可答」；同时核对分数分布，发现新语料接入后整体分数上移，旧阈值等价于失效。改造为 rerank 分数 + 分层阈值 + 覆盖率门控后，拒答率与误答率同时下降。",
+   "code": "def ingest_doc(doc, graph, extractor, community_index):\n    for e in graph.edges_by_doc(doc.id):\n        graph.remove_edge(e)\n    triples = extractor(doc.text)\n    touched = set()\n    for s, r, o in triples:\n        s_id, o_id = normalize(s), normalize(o)\n        if s_id is None or o_id is None:\n            continue\n        graph.upsert_edge(s_id, r, o_id, source_doc=doc.id, version=doc.version)\n        touched |= {s_id, o_id}\n    for nid in touched:\n        if graph.degree(nid) < MIN_DEGREE:\n            continue\n        community_index.invalidate_node(nid)\n    return touched\n\n\ndef route(query):\n    if AGG_PATTERN.search(query) and graph.available:\n        return \"graph\"\n    return \"vector\"",
+   "scenario": "某项目把十几万份工单与设计文档一次性跑 GraphRAG：抽取阶段消耗了大量模型调用才完成，图和社区摘要建好后上线。观察到的典型现象是：普通「XX 怎么配置」类问题答案与原来的向量 RAG 基本无差别，只有「哪些模块同时依赖这两个服务」「这个季度反复出现的问题集中在哪些组件」这类聚合型问题明显变好；同时新增文档后，每次重建社区摘要耗时很长，且摘要里偶尔还能看到已经下线文档里的旧事实。排查路径：第一步按 query 类型拆分日志，确认收益集中在少部分聚合型 query；第二步抽样失败案例，发现同一供应商/组件在图中分裂成多个节点（归一化缺失），摘要被重复实体稀释；第三步检查更新流程，发现文档更新走的是 append 而非「先删旧边」，且社区重建是全量触发。改进方向是缩小建图语料范围、补齐 canonical id、改成按文档反向裁剪 + 局部社区失效，并给在线加 query 路由。",
    "followups": [
     {
-     "q": "为什么不直接用余弦相似度设一个固定阈值做拒答？",
-     "a": "分数分布依赖 embedding 模型、语料长度分布和 chunk 策略，任何一项变化都会整体平移；且不同 query 类型尺度不同。做法是分层标定 + 用 rerank 分数做主判据 + 覆盖率做辅助判据，并保留一个定期重标流程。"
+     "q": "如果业务方坚持「全部语料都要建图」，你怎么回应？",
+     "a": "不直接否定，而是把成本与收益摊开：给出全量抽取的 token 成本、首次建图时长、增量重建频率对应的月度开销，以及按 query 类型的收益分布——通常 80% 以上流量是事实型，图的边际收益集中在少数聚合型 query 上。然后给折中方案：按业务价值给语料分级（高频引用文档先建图），或用更轻的抽取器（规则 + 词典辅助）先覆盖实体与关键关系，把 LLM 抽取留给核心语料。"
     },
     {
-     "q": "多跳问题在这种门控下会被误拒，怎么处理？",
-     "a": "先做 query 分解，把子问题分别检索再融合去重，覆盖率按子问题维度分别计算而不是整体算；只有全部子问题都无证据时才拒答，部分缺失时在答案里显式标注哪部分无依据。"
+     "q": "实体归一化怎么做到可维护，而不是一次性人工对齐？",
+     "a": "三层：别名表是事实来源（人工确认的高置信映射，带版本）；embedding 聚类只用来「发现候选」，相似度高于阈值的新实体进入待审队列而不是自动合并；线上加度量——统计同名不同 id、同 id 多名称的比例，以及合并后边的度数变化，异常上升就回滚。关键是合并操作要可逆，保留 merge 记录。"
     }
    ],
-   "diagram": "flowchart TD\n    A[用户 query] --> B[多路召回候选片段]\n    B --> C[交叉编码器精排]\n    C --> D{最高分是否高于分层阈值}\n    D -- 否 --> E[改写 query 并扩 k 重试一次]\n    E --> F{重试后是否达标}\n    F -- 否 --> G[拒答并提示未找到依据]\n    D -- 是 --> H{关键约束覆盖率是否达标}\n    H -- 否 --> G\n    H -- 是 --> I[带引用生成答案]",
+   "diagram": "flowchart TD\n  A[文档更新事件] --> B[按 source_doc 反向裁剪旧边]\n  B --> C[实体抽取与归一化]\n  C --> D[写入新边和版本号]\n  D --> E{节点度数是否达标}\n  E -->|否| F[跳过不入图]\n  E -->|是| G[标记受影响社区失效]\n  G --> H[仅局部重算社区摘要]\n  H --> I[在线查询路由]\n  I --> J[事实型走向量分支]\n  I --> K[聚合型走图与社区摘要]",
    "source_type": "面经",
-   "source_url": "https://github.com/didilili/ai-agents-from-zero/blob/main/18-%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8EEmbedding%E5%AE%9E%E6%88%98.md",
-   "source_excerpt": "考点是相似度分数只反映语义接近，不保证片段含答案；要区分检索未命中与上下文不可用，并设计拒答与重试路径。",
-   "id": "rag-20261121-03"
+   "source_url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md",
+   "source_excerpt": "考点是 GraphRAG 与向量 RAG 的本质差异及选型：抽取与社区摘要的离线成本、图结构擅长的多跳与聚合查询，以及什么业务场景下不值得上图。",
+   "id": "rag-20261122-03"
   },
   {
-   "title": "给每个字段都建 named vector 后存储翻了好几倍：多向量集合的成本建模与拆分策略",
+   "title": "混合检索的关键字分支偶发 500、高亮字段为 null 就报错：词法索引的边界数据该怎么治理与降级",
    "topic": "rag",
    "difficulty": "进阶",
    "tags": [
-    "向量库选型",
-    "存储成本",
     "混合检索",
-    "容量规划"
+    "词法索引",
+    "多语种",
+    "降级设计"
    ],
-   "why": "向量库的实际占用远不止「维度 × 条数 × 4 字节」。一是命名向量的 slot 对齐：部分引擎在同一 collection 内对多路命名向量按最大维度统一分配，小维度向量并不省空间，可选命名的稀疏写入也会被放大；二是每路向量都带一份独立的图索引，HNSW 的邻接表随 m 线性增长；三是 payload 与标量索引、副本数、WAL 与快照会叠加放大。常见错误认知是按理论 raw 字节做容量规划，然后把「多模型对照」「title/summary/content 多路」长期堆在同一个 collection 里，上线后磁盘、内存、快照时间一起失控。",
+   "why": "混合检索里大家把注意力放在向量侧，词法/全文分支常被当成「配一下就行」的基础设施，但它对输入数据的敏感度远高于向量：stemmer 按语种分词、payload 索引要求字段类型一致、highlight 依赖字段可被匹配到。一旦出现未验证的语种字符、带变音符的词形、nullable 字段里的 null，词法引擎可能在分词阶段抛异常直接返回 5xx，而不是「召回为空」。更糟的是这类错误是数据相关的长尾——同一批查询 99% 正常，某个语种或某几条文档一旦命中就稳定失败，客户端重试还会放大成雪崩。常见错误认知是「词法失败就当没召回」，但如果异常没被隔离在词法分支内，它会污染整个混合检索请求。",
    "how": [
-    "先做分层估算：raw 向量 + 每路图索引 + 元数据与 payload + 副本 + 快照留存，得出 bytes/point 的量级，再乘写入增速和保留周期。",
-    "用实测校准估算：在一个测试 collection 上写入固定批量的点，比较写入前后磁盘增量的差值，得到真实 bytes/point，与理论值比对找出放大来源。",
-    "对每路向量做边际收益评估：在评估集上分别移除某一路，看 recall@k 与答案质量的下降幅度，对无增益的路直接下线。",
-    "按用途决定布局：需要一次请求内多路召回的（dense + sparse、title + content）放同一 collection 用命名向量；只是离线对照实验或生命周期不同的放独立 collection，便于整体删除与独立重建。",
-    "用稀疏向量 + 单路稠密替代「多稠密向量堆叠」，必要时对存量向量做量化或降维，先在小流量验证 recall 损失。",
-    "建成本护栏：collection 级存储与增速告警、按租户分片、冷数据下沉，并定期跑一次「删除某路后指标变化」的复盘。"
+    "把词法分支做成「可失败且失败可观测」的独立单元：单独设超时（远小于整体预算）、捕获所有异常、失败时返回空列表并 fail-open 到纯向量分支；同时按语种/字符集/错误类型打点，避免错误被静默吞掉。",
+    "建语种白名单：只对已验证过 stemmer 与分词的语种启用词法索引，新语种上线前用真实语料做回放（包含变音符号、大小写、混合语言、emoji、超长 token），验证通过再加入白名单；白名单之外的语种走向量分支或字符级 n-gram 匹配。",
+    "写入侧做规范化与校验：null 统一归一化为空串（或直接不写该字段），避免 nullable 字段在 match/highlight 时字段缺失；对文本做 NFC 规范化、控制字符剥离、长度截断，并在入库前跑一个轻量 preflight，把异常样本挡在索引外而不是等查询时炸。",
+    "高亮不要依赖引擎：在应用层用召回的原文做字符串匹配高亮，或对引擎返回的 highlight 做容错（字段缺失就回退到原文首段），避免「高亮失败导致整个响应构造失败」。",
+    "做数据分桶监控：按语种、是否有 payload 词法索引、字段是否为空统计 5xx 率与空召回率；对「同一 query 稳定失败」做指纹聚合，便于快速定位是数据问题还是引擎版本问题，并在升级引擎版本时把已知边界样本纳入回归集。",
+    "准备降级链：词法失败 → 纯向量；向量也失败 → 缓存/serve_stale 或明确返回降级提示；上游不要无脑重试 5xx，对可重试错误加 jitter 与上限。"
    ],
-   "code": "def estimate_bytes(n_points, named_dims, payload_bytes=256, m=16, replicas=1):\n    slot = max(named_dims.values())\n    n_vec = len(named_dims)\n    raw = n_points * n_vec * slot * 4\n    graph = n_points * n_vec * m * 2 * 4\n    meta = n_points * (32 + payload_bytes)\n    return (raw + graph + meta) * replicas\n\n# 实测校准：写入前后磁盘增量的差值\ndef measure(client, coll, batch):\n    before = client.stats(coll)[\"disk_bytes\"]\n    client.upsert(coll, batch)\n    after = client.stats(coll)[\"disk_bytes\"]\n    return (after - before) / len(batch)\n\nprint(estimate_bytes(10_000, {\"title\": 256, \"summary\": 768, \"body\": 1536}))\nprint(\"actual bytes/point:\", measure(client, \"kb\", points))",
-   "scenario": "某项目为了做多路召回，对 title、summary、body 以及两个不同 embedding 模型各建一路命名向量，容量按「各路维度之和 × 条数 × 4」估算并申请了磁盘。上线一段时间后发现磁盘用量显著超过预估、节点内存吃紧、快照耗时明显变长。排查路径：统计 collection 的 disk_bytes 与累计写入点数，算出真实 bytes/point，与理论 raw 值对比，发现最小的那路向量占用与最大维度那路基本一致，确认存在 slot 对齐放大；再在测试 collection 上逐路删除做对照，发现其中两路对 recall 几乎无贡献。最终下线无增益向量、把对照实验迁到独立 collection，并把稠密多路收敛为 dense + sparse。",
+   "code": "LEXICON_LANGS = {\"zh\", \"en\"}\n\n\ndef lexical_search(q, lang, limit=20, budget=0.15):\n    if lang not in LEXICON_LANGS:\n        return []\n    try:\n        return call_with_timeout(\n            lambda: client.search_text(q, lang=lang, limit=limit), budget)\n    except Exception as e:\n        metrics.incr(\"lexical_fail\", tags={\"lang\": lang, \"err\": type(e).__name__})\n        return []\n\n\ndef normalize_payload(payload):\n    out = {}\n    for k, v in payload.items():\n        if v is None:\n            continue\n        out[k] = unicodedata.normalize(\"NFC\", str(v))[:MAX_FIELD_LEN]\n    return out\n\n\ndef hybrid_search(q, lang, vec):\n    text_hits = lexical_search(q, lang)\n    vector_hits = vector_search(vec, limit=20)\n    return fuse(text_hits, vector_hits)",
+   "scenario": "某项目做多语种知识库的混合检索，上线后前端偶发「搜索整个不可用」：同一批查询大部分正常，但某些查询稳定 5xx。按语言分桶后发现集中在少数小语种词形上——词法索引在分词阶段直接抛异常，请求返回 500；客户端带重试，单个坏查询在高峰期被放大成一片 5xx。另一条线是「高亮失败」：文档里的可匹配字段为 null 时，highlight 找不到字段直接报错，导致本来已经召回成功的请求在构造响应阶段失败。排查路径：先按语言和字段空值率给 5xx 分组，确认与某个语种字符和 null 字段强相关；再用最小请求复现，确认异常发生在词法分支内部而非向量分支；最后检查客户端重试策略，发现 5xx 被无上限重试。修复是把词法分支隔离成可失败单元并 fail-open、语种白名单 + 入库前 preflight、null 归一化，高亮改到应用层做。",
    "followups": [
     {
-     "q": "多路向量召回的结果该怎么融合才不引入新的偏差？",
-     "a": "优先用 RRF 这类基于排名的融合，规避不同模型分数量纲不可比的问题；若要用加权分数，必须先做归一化并在一批带标注 query 上调权重；融合之后再过一次 cross-encoder 精排，避免靠融合权重硬扛排序质量。"
+     "q": "fail-open 到纯向量分支，会不会让召回质量在不知不觉中下降？",
+     "a": "会，所以降级必须可观测：词法失败不只是返回空，要打点并算「降级请求占比」与「降级请求的答案采纳率/无答案率」。设阈值告警，超过阈值就当作故障处理，而不是长期静默降级。同时把失败样本沉淀为回归集，在引擎升级或新语种接入前回放。"
     },
     {
-     "q": "什么情况下应该拆成多个 collection，而不是继续加命名向量？",
-     "a": "当各路数据的生命周期或重建频率不同、需要按租户或权限隔离、需要不同的索引参数与量化策略、或需要独立扩缩容与独立删除时，拆 collection 更合适；代价是无法在一次请求里完成跨 collection 多路召回，需要在应用层并行查询再合并，注意超时与部分失败的降级。"
+     "q": "为什么不直接对所有语种关掉 stemmer，用字符 n-gram 更省事？",
+     "a": "字符 n-gram 对中文、日文这类无空格语言其实不错，对英文会显著增加索引体积与误召回，而且丢掉词形归并后同义词召回变差。更务实的做法是分层：拉丁语种用验证过的 stemmer，CJK 用 n-gram 或分词器，未验证语种先退回字符级匹配并把词法权重调低，等语料回放通过再提权重。"
+    }
+   ],
+   "diagram": "sequenceDiagram\n  participant U as 客户端\n  participant S as 检索服务\n  participant L as 词法分支\n  participant V as 向量分支\n  U->>S: 查询 带语种\n  S->>L: 词法检索 带超时\n  alt 语种不在白名单或抛异常\n    L-->>S: 返回空 并打点\n  else 正常\n    L-->>S: 词法候选\n  end\n  S->>V: 向量检索\n  V-->>S: 向量候选\n  S->>S: 融合并在应用层高亮\n  S-->>U: 结果或降级提示",
+   "source_type": "issue",
+   "source_url": "https://github.com/qdrant/qdrant/issues/11386",
+   "source_excerpt": "某语种合法词在文本索引的 stemmer 分词阶段触发内部 panic，upsert 与查询都返回 500；同类问题还有 nullable 字段为 null 时 highlight 报字段未找到，暴露词法索引对边界数据缺乏容错。",
+   "id": "rag-20261122-04"
+  },
+  {
+   "title": "中间件注入的 trace_id 在接口里读不到，500 响应还丢了 CORS 头：BaseHTTPMiddleware 的边界与中间件顺序",
+   "topic": "fastapi",
+   "difficulty": "资深",
+   "tags": [
+    "middleware",
+    "contextvars",
+    "CORS",
+    "请求生命周期"
+   ],
+   "why": "Starlette 的中间件栈是分层的：最外层 ServerErrorMiddleware，中间是用户通过 add_middleware 注册的中间件（后注册的反而更靠外），再往里是 ExceptionMiddleware，最内是路由。未捕获异常一路向上传递到 ServerErrorMiddleware，由它直接生成一个纯文本 500；此时内层的 CORSMiddleware 根本没见到 http.response.start，因此无法补上 Access-Control-Allow-Origin。浏览器把这次 500 报成跨域错误，真实的堆栈被掩盖。第二个问题来自 BaseHTTPMiddleware：它用 anyio 的 task group 把下游 app 放进独立的 task 里执行，contextvars 在 task 创建时按「向下拷贝」传播——中间件里 set 的值下游可见，但下游 endpoint、依赖、异常处理器里 set 的值不会回流到中间件，导致中间件层的访问日志、耗时统计里 trace_id 时有时无。它还会让流式响应多包一层，客户端提前断开时的取消语义改变，出现 No response returned 之类的怪象。",
+   "how": [
+    "固定中间件顺序：CORS 一定最后 add_middleware（最外层）；需要覆盖 500 场景时，用 application = CORSMiddleware(app=app, ...) 把 CORS 包在整个 ASGI app 外面。",
+    "把 trace 注入和耗时日志改写成纯 ASGI 中间件，直接包装 send，而不是用 @app.middleware('http') 的 BaseHTTPMiddleware 写法；contextvar 在入口 set、在 finally 里 reset，避免跨请求泄漏。",
+    "业务级上下文（用户、租户、trace）优先用 Depends 注入，而不是在中间件里塞 request.state 再指望下游回写。",
+    "注册 app.add_exception_handler(Exception, handler) 时要意识到它挂在 ServerErrorMiddleware 上；要么在最外层 CORS 处理，要么在 handler 内手动补 CORS 头和 trace 头。",
+    "补两条集成测试把行为锁死：断言未捕获异常返回 500 且响应头含 access-control-allow-origin；断言 endpoint 内 logger 输出的 trace_id 与响应头一致。"
+   ],
+   "code": "import uuid\nimport contextvars\nfrom fastapi import FastAPI\nfrom starlette.datastructures import MutableHeaders\nfrom starlette.middleware.cors import CORSMiddleware\nfrom starlette.types import ASGIApp, Scope, Receive, Send\n\ntrace_id: contextvars.ContextVar[str] = contextvars.ContextVar(\"trace_id\", default=\"-\")\n\nclass TraceMiddleware:\n    def __init__(self, app: ASGIApp) -> None:\n        self.app = app\n\n    async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:\n        if scope[\"type\"] != \"http\":\n            return await self.app(scope, receive, send)\n        incoming = dict(scope[\"headers\"]).get(b\"x-trace-id\", b\"\").decode() or uuid.uuid4().hex\n        token = trace_id.set(incoming)\n\n        async def send_with_trace(message):\n            if message[\"type\"] == \"http.response.start\":\n                MutableHeaders(scope=message)[\"x-trace-id\"] = incoming\n            await send(message)\n\n        try:\n            await self.app(scope, receive, send_with_trace)\n        finally:\n            trace_id.reset(token)\n\napp = FastAPI()\napp.add_middleware(TraceMiddleware)                       # 内层\napp.add_middleware(CORSMiddleware, allow_origins=[\"*\"],   # 后加即更外层\n                   expose_headers=[\"x-trace-id\"])",
+   "scenario": "某项目的日志平台按 trace_id 串联前后端，接入后发现约一半请求的访问日志里 trace_id 为空，但接口内部打的日志却有值；同时前端控制台频繁报跨域，后端却只看到零星 traceback。排查路径：先用 curl -i 直打接口，能拿到 500 且响应体是纯文本 Internal Server Error，但没有 access-control-allow-origin 头——说明这次响应由最外层生成、绕过了 CORS；再看中间件写法是 @app.middleware('http')，在中间件里 set contextvar 后立刻打日志，发现下游 endpoint 里额外 set 的字段回流不到中间件，异常路径下更是整个上下文丢失；把中间件换成纯 ASGI 实现、CORS 移到最外层后两个症状同时消失。",
+   "followups": [
+    {
+     "q": "为什么不在 BaseHTTPMiddleware 里 try/except 把所有异常兜住，统一返回 JSON？",
+     "a": "能兜住，但必须原样 re-raise 或自己构造完整响应，否则会把 ServerErrorMiddleware 和 ExceptionMiddleware 的职责搅在一起；而且 BaseHTTPMiddleware 给每个请求多建一个 task，流式响应下客户端断开的取消传播会被改变。所以网关级的行为（trace、CORS、限流）用纯 ASGI 中间件，业务级错误用 exception handler，权限用 Depends。"
+    },
+    {
+     "q": "后台任务里还能拿到中间件设置的 trace_id 吗？",
+     "a": "Starlette 的异步 BackgroundTask 在响应发送后、同一个 task 上下文里 await 执行，可以看到；同步后台任务走 anyio 线程池，当前 context 会被复制进去，一般也能看到。但如果任务自己 asyncio.create_task 出去，或在别处新 set，就不会同步，跨进程、跨队列时必须把它显式放进消息体里携带。"
+    }
+   ],
+   "diagram": "sequenceDiagram\n  participant C as 浏览器\n  participant SE as ServerErrorMiddleware\n  participant CORS as CORSMiddleware\n  participant T as TraceMiddleware\n  participant R as 路由与依赖\n  C->>SE: 请求\n  SE->>CORS: 调用内层\n  CORS->>T: 调用内层\n  T->>R: 执行业务逻辑\n  R--xT: 未捕获异常向上抛出\n  T--xSE: 中间件无异常处理直接透传\n  SE-->>C: 纯文本 500 且无 CORS 头",
+   "source_type": "文档",
+   "source_url": "",
+   "source_excerpt": "",
+   "id": "fastapi-20261122-01"
+  },
+  {
+   "title": "单测单独跑都过，一起跑就报 attached to a different loop：dependency_overrides 与连接池的测试隔离",
+   "topic": "fastapi",
+   "difficulty": "进阶",
+   "tags": [
+    "测试",
+    "dependency_overrides",
+    "事件循环",
+    "fixture"
+   ],
+   "why": "两个独立的坑叠在一起。第一，app.dependency_overrides 是挂在 app 对象上的全局 dict，fixture 里 override 了 get_current_user 或 get_session 却没清理，后续用例拿到的是上一个用例的 mock 或已关闭的会话——典型症状是该返回 401 的用例意外通过，或者报「Session is closed」。第二，驱动类连接池（asyncpg / aiomysql / httpx.AsyncClient）在创建时绑定事件循环；如果 engine 是模块顶层实例化的，第一次用例在 loop A 建好连接，第二个用例在 loop B（pytest-asyncio 默认按用例新建 loop，TestClient 每次 with 也会起自己的 portal）复用时就会抛 Task got Future attached to a different loop 或 Event loop is closed。单独跑绿、随机顺序跑红，正是这两个全局状态被跨用例复用的特征。",
+   "how": [
+    "把 engine、池、外部 client 的创建从模块顶层挪进 lifespan 或 fixture，销毁时 await engine.dispose()，保证「谁创建、谁绑定、谁释放」都在同一个 loop。",
+    "用 yield fixture 包住 override，并在 finally 里 app.dependency_overrides.pop(key, None)（或恢复到快照），不要在用例内散落赋值。",
+    "测试客户端统一用 httpx.AsyncClient + ASGITransport，并用 asgi-lifespan 的 LifespanManager 显式驱动 startup/shutdown，确保生命周期钩子和用例跑在同一 loop。",
+    "若坚持复用一个全局 engine，就必须让整个测试会话共用一个 loop（固定 loop fixture 或 asyncio_mode=auto + session 级 loop），二选一，不要混用。",
+    "在 CI 里加一轮乱序或两两组合的抽样执行，专门用来暴露这类隐式顺序依赖。"
+   ],
+   "code": "import pytest_asyncio\nfrom httpx import ASGITransport, AsyncClient\nfrom asgi_lifespan import LifespanManager\nfrom sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine\n\nfrom app.main import app\nfrom app.db import get_session\n\n@pytest_asyncio.fixture\nasync def client():\n    engine = create_async_engine(\"postgresql+asyncpg://u:p@localhost/test\")\n    session_factory = async_sessionmaker(engine, expire_on_commit=False)\n\n    async def _override():\n        async with session_factory() as session:\n            yield session\n\n    app.dependency_overrides[get_session] = _override\n    try:\n        async with LifespanManager(app):\n            async with AsyncClient(transport=ASGITransport(app), base_url=\"http://test\") as c:\n                yield c\n    finally:\n        app.dependency_overrides.pop(get_session, None)\n        await engine.dispose()",
+   "scenario": "某项目的 CI 上偶发红灯，本地单独跑该用例 100% 通过，全量跑则两三个用例随机失败；错误栈里出现 RuntimeError: Task 绑定到了另一个 loop 或 Event loop is closed。另一个更隐蔽的症状是：鉴权用例里断言「未登录返回 401」却拿到了 200。排查路径：先 pytest -p no:randomly 固定顺序复现，确认是顺序相关；在用例开头打印 app.dependency_overrides 的键，发现残留了上一个用例注册的 fake_user；再全局搜索 create_async_engine，发现它写在模块顶层、被 import 时创建，连接池因此绑在第一个 loop 上。把 engine 移到 fixture、override 用 yield + finally 清理后，全量与乱序都稳定通过。",
+   "followups": [
+    {
+     "q": "为什么用 TestClient 单跑时不报跨 loop 的错？",
+     "a": "TestClient 每次进入上下文都新起一个 portal 和事件循环，模块级 engine 的连接池是在第一个 loop 上第一次用时才真正建连；只要后续用例没复用到池里的旧连接就不炸，一旦复用（或 dispose 不在同一 loop）就报错。所以它更像偶发问题，而不是必现问题。"
+    },
+    {
+     "q": "生产代码要怎么配合，才能让测试容易替换？",
+     "a": "所有共享资源（连接池、模型 client、HTTP 客户端）只在 lifespan 里创建并挂到 app.state，业务侧通过 Depends 从 app.state 取；模块顶层不做实例化，避免 import 即绑定 loop，也让测试可以整体替换 app.state 或 override 依赖。"
     }
    ],
    "diagram": "",
-   "source_type": "issue",
-   "source_url": "https://github.com/qdrant/qdrant/issues/11512",
-   "source_excerpt": "同一 collection 内的可选命名向量并未按各路上传数据量分配空间，而是向最大命名向量对齐，导致集合体积成倍膨胀，影响大规模场景下的成本与可用性。",
-   "id": "rag-20261121-04"
-  },
-  {
-   "title": "返回 200 之后，后台任务写入已关闭的会话：审计记录丢失且没有重试，怎么补",
-   "topic": "fastapi",
-   "difficulty": "资深",
-   "tags": [
-    "BackgroundTasks",
-    "依赖生命周期",
-    "幂等写入",
-    "可观测性"
-   ],
-   "why": "FastAPI 从 0.106 起把 yield 依赖的退出（exit stack 关闭）提前到响应发送之前，请求作用域的 Session、HTTP client 在 BackgroundTasks 真正执行时已经关闭；而 BackgroundTasks 仍跑在同一个 worker 进程内，没有持久化、没有重试、没有背压，任务抛出的异常不会改变已经发出的状态码。很多团队在旧版本上“本来能跑”，升级后变成静默失败：接口全部返回 200，业务数据一条没写入，监控里看不到 5xx，最后靠对账才发现。",
-   "how": [
-    "先用时间线确认顺序：在 yield 依赖的 finally 与后台任务的首尾各打一条带 trace id 的时间戳日志，确认会话关闭发生在任务执行之前，并对照 FastAPI 0.106 的 release note。",
-    "切断任务对请求作用域资源的依赖：add_task 只传不可变的标量或 DTO（业务键、id、快照字段），绝不传 ORM 实例或 Session，因为实例此时已 detached。",
-    "任务内部自建资源：在 lifespan 中创建独立的 engine、sessionmaker 与 httpx client，任务用 async with session_factory() 拿到自己的会话；同时设置连接池上限与获取超时，避免长任务耗尽连接池。",
-    "按可丢与不可丢分流：不可丢的副作用改为在同一事务里写 outbox 表，再由独立消费者（定时任务或队列 worker）处理并回写状态；BackgroundTasks 只保留埋点、缓存预热这类可丢动作。",
-    "幂等兜底：写入用业务唯一键 upsert，或状态机条件更新（where status='pending'），保证重放与并发都安全。",
-    "可观测性单独建：任务失败计数、耗时、积压量单独埋点与告警，不依赖 HTTP 状态码；再加一个对账任务比对业务表与 outbox 的差异。"
-   ],
-   "code": "from contextlib import asynccontextmanager\nfrom fastapi import BackgroundTasks, Depends, FastAPI, Request\nfrom sqlalchemy.dialects.postgresql import insert as pg_insert\n\n@asynccontextmanager\nasync def lifespan(app: FastAPI):\n    app.state.engine = create_async_engine(DSN, pool_size=5, max_overflow=5)\n    app.state.session_factory = async_sessionmaker(app.state.engine, expire_on_commit=False)\n    yield\n    await app.state.engine.dispose()\n\napp = FastAPI(lifespan=lifespan)\n\nasync def write_audit(session_factory, order_id: int, biz_key: str) -> None:\n    async with session_factory() as s, s.begin():\n        stmt = pg_insert(Audit).values(order_id=order_id, biz_key=biz_key)\n        await s.execute(stmt.on_conflict_do_nothing(index_elements=['biz_key']))\n\n@router.post('/orders')\nasync def create_order(payload: OrderIn, request: Request, bg: BackgroundTasks,\n                       session: AsyncSession = Depends(get_session)):\n    order = await save_order(session, payload)\n    await session.commit()\n    bg.add_task(write_audit, request.app.state.session_factory, order.id, payload.biz_key)\n    return {'id': order.id}",
-   "scenario": "某项目把 FastAPI 升级到 0.106 以上后上线，订单接口的错误率与 P99 都没有变化（全是 200），但对账发现审计表当天新增为 0；日志里散落着 Session is closed 一类告警，被当成噪音忽略。排查路径：先找后台任务的失败计数（通常没埋点，只能 grep 日志并关联 trace id）→ 在依赖 finally 与任务内部打时间戳，确认会话先关闭、任务后执行 → 最后定位到任务里复用了 Depends 注入的会话，改成任务内自建 sessionmaker 并补上 upsert 幂等。",
-   "followups": [
-    {
-     "q": "把后台任务改成同步阻塞函数，让它赶在依赖关闭前执行，可行吗？",
-     "a": "不可行。BackgroundTasks 无论同步还是异步，都在响应发送之后执行，顺序不会改变；同步函数还会占用 anyio 线程池，长任务会拖慢其他请求的依赖执行。正确做法是任务内自建资源，或者换成 outbox 加独立消费者。"
-    },
-    {
-     "q": "那为什么不直接用 asyncio.create_task 后台跑？",
-     "a": "create_task 没有生命周期归属：worker 重启、滚动发布、进程被 SIGKILL 时任务直接丢失；异常没有人去 await 会静默吞掉；也没有背压与并发上限。它只适合可以丢的短副作用，而且要 add_done_callback 记录异常。"
-    }
-   ],
-   "diagram": "sequenceDiagram\n    participant C as 客户端\n    participant H as 路由函数\n    participant E as 依赖退出栈\n    participant BG as 后台任务\n    C->>H: 提交订单请求\n    H->>H: 写业务数据并提交事务\n    H->>E: 返回响应前关闭会话\n    E-->>C: 发送 200 响应\n    H->>BG: 触发后台任务\n    BG->>BG: 使用已关闭会话 写入失败",
    "source_type": "文档",
    "source_url": "",
    "source_excerpt": "",
-   "id": "fastapi-20261121-01"
-  },
-  {
-   "title": "handler 很快但 P99 高：response_model 在序列化阶段触发隐式懒加载与 N+1，怎么根治",
-   "topic": "fastapi",
-   "difficulty": "进阶",
-   "tags": [
-    "response_model",
-    "SQLAlchemy",
-    "懒加载",
-    "序列化性能"
-   ],
-   "why": "把 ORM 实体直接交给 response_model 时，属性访问被推迟到响应构建阶段。异步会话下，同步懒加载会直接抛 MissingGreenlet 变成 500；同步会话（跑在线程池里的依赖）下，则是每条记录补一次查询，形成 N+1。这两类问题都发生在框架层，应用自身的 handler 计时看起来很短，于是被误判成“查询没问题、框架慢”。再叠加 Pydantic v2 的校验与序列化两遍遍历，大列表的开销会成倍放大。",
-   "how": [
-    "分阶段计时：用中间件或自定义 APIRoute 记录请求进入、handler 返回、响应序列化完成三个时间点，把耗时拆成 handler 与序列化两段，先确认慢在哪一段。",
-    "统计 SQL 条数：在测试里挂 before_cursor_execute 监听，对每个接口断言 SQL 条数上限（详情类不超过 3、列表类不超过 2），N+1 会在 CI 直接暴露，而不是等到线上 P99 恶化。",
-    "显式预加载加显式 DTO：查询用 selectinload 或 joinedload，路由内部把 ORM 实例构造成独立的 Pydantic DTO，schema 不开 from_attributes，从结构上杜绝序列化期的隐式属性访问。",
-    "控制 response_model 成本：列表接口强制分页、裁剪字段、避免多层嵌套递归校验；极热路径改用 ORJSONResponse 加 model_dump_json，绕过二次编码。",
-    "防回归：路由返回类型里不再出现 ORM 实体，配合 lint 规则或单测断言，review 时一眼能看出谁又返回了实体。"
-   ],
-   "code": "class ItemOut(BaseModel):\n    sku: str\n    qty: int\n\nclass OrderOut(BaseModel):\n    id: int\n    items: list[ItemOut]\n\n@router.get('/orders', response_model=list[OrderOut])\nasync def list_orders(session: AsyncSession = Depends(get_session)):\n    stmt = select(Order).options(selectinload(Order.items)).order_by(Order.id).limit(50)\n    orders = (await session.scalars(stmt)).all()\n    return [\n        OrderOut(id=o.id, items=[ItemOut(sku=i.sku, qty=i.qty) for i in o.items])\n        for o in orders\n    ]\n\n_counter: list[str] = []\n\n@event.listens_for(engine.sync_engine, 'before_cursor_execute')\ndef _count(conn, cursor, statement, params, context, executemany):\n    _counter.append(statement)\n\ndef test_list_orders_sql_budget(client):\n    _counter.clear()\n    assert client.get('/orders').status_code == 200\n    assert len(_counter) <= 2",
-   "scenario": "某项目的订单列表在数据量从百级涨到万级后，P99 从毫秒级抬到秒级，但 APM 显示 handler 耗时只占很小一截，慢在框架层，日志里偶发 MissingGreenlet。排查路径：先按请求量对齐 SQL 条数，发现每返回一条 order 就多一次 items 查询 → 确认路由返回的是 ORM 实体而非 DTO → 改成 selectinload 预加载加显式构造 DTO 后，SQL 条数恒定为 2，P99 回落 → 再在 CI 加 SQL 预算断言防止回归。",
-   "followups": [
-    {
-     "q": "直接给 schema 配 from_attributes=True 让它自己读属性不行吗？",
-     "a": "能跑通，但把 IO 藏进了序列化：异步会话下直接 MissingGreenlet 报错，同步会话下变成 N+1，而且报错栈指向框架内部，定位成本高。显式构造把这类失败提前到查询阶段，也顺便固定了对外契约。"
-    },
-    {
-     "q": "selectinload 和 joinedload 怎么选？",
-     "a": "一对多并且带分页时用 selectinload，避免 join 造成行膨胀、limit 失真与计数错误；一对一或集合很小时 joinedload 少一次往返。两者都不要和多层嵌套叠加，容易产生笛卡尔积，必要时拆成两次查询在应用层拼装。"
-    }
-   ],
-   "diagram": "flowchart TD\n    A[请求进入] --> B[路由函数 执行查询]\n    B --> C[返回 ORM 实体]\n    C --> D[response_model 校验与序列化]\n    D --> E{是否访问未加载关系}\n    E -->|是| F[异步会话抛 MissingGreenlet 或同步会话逐条补查]\n    E -->|否| G[正常输出]\n    F --> H[handler 计时很短 整体耗时高]",
-   "source_type": "文档",
-   "source_url": "",
-   "source_excerpt": "",
-   "id": "fastapi-20261121-02"
+   "id": "fastapi-20261122-02"
   }
  ]
 }

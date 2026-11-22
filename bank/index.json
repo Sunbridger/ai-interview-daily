@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-21 12:18",
+ "updated": "2026-11-22 11:28",
  "questions": [
   {
    "id": "agent-20261120-01",
@@ -340,6 +340,176 @@
    "source_url": "",
    "path": "fastapi/fastapi-20261121-02.md",
    "has_diagram": true
+  },
+  {
+   "id": "agent-20261122-01",
+   "title": "工具从 8 个涨到 40 个后误选与越权执行：工具准入标准、描述契约与决策执行分离怎么落地",
+   "topic": "agent",
+   "difficulty": "资深",
+   "tags": [
+    "tool-use",
+    "function-calling",
+    "权限与幂等",
+    "工具治理"
+   ],
+   "date": "2026-11-22",
+   "source_type": "面经",
+   "source_url": "https://github.com/didilili/ai-agents-from-zero/blob/main/17-Tools%E5%B7%A5%E5%85%B7%E8%B0%83%E7%94%A8.md",
+   "path": "agent/agent-20261122-01.md",
+   "has_diagram": true
+  },
+  {
+   "id": "agent-20261122-02",
+   "title": "多 Agent 互相委派形成环：任务签名环检测、预算随链递减与降级策略",
+   "topic": "agent",
+   "difficulty": "资深",
+   "tags": [
+    "multi-agent",
+    "循环依赖",
+    "预算控制",
+    "可观测性"
+   ],
+   "date": "2026-11-22",
+   "source_type": "面经",
+   "source_url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/multi-agent/conflict-reliability.md",
+   "path": "agent/agent-20261122-02.md",
+   "has_diagram": true
+  },
+  {
+   "id": "agent-20261122-03",
+   "title": "多 Agent 心跳超时导致的「假死」误判：如何推导阈值、保证接管互斥并用 fencing 兜底",
+   "topic": "agent",
+   "difficulty": "资深",
+   "tags": [
+    "multi-agent",
+    "lease",
+    "fencing",
+    "可观测性"
+   ],
+   "date": "2026-11-22",
+   "source_type": "面经",
+   "source_url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/multi-agent/conflict-reliability.md",
+   "path": "agent/agent-20261122-03.md",
+   "has_diagram": true
+  },
+  {
+   "id": "agent-20261122-04",
+   "title": "单轮多个 tool_calls 的隐式依赖：只读并行、写串行与幂等键如何落地",
+   "topic": "agent",
+   "difficulty": "进阶",
+   "tags": [
+    "tool-calling",
+    "并发",
+    "幂等",
+    "失败语义"
+   ],
+   "date": "2026-11-22",
+   "source_type": "面经",
+   "source_url": "https://github.com/didilili/ai-agents-from-zero/blob/main/17-Tools%E5%B7%A5%E5%85%B7%E8%B0%83%E7%94%A8.md",
+   "path": "agent/agent-20261122-04.md",
+   "has_diagram": true
+  },
+  {
+   "id": "rag-20261122-01",
+   "title": "HNSW 的 ef 调大后离线召回达标了，但线上 p99 翻几倍、跑两周还越来越慢：参数、内存与墓碑怎么一起算",
+   "topic": "rag",
+   "difficulty": "资深",
+   "tags": [
+    "向量索引",
+    "HNSW",
+    "召回评测",
+    "更新治理"
+   ],
+   "date": "2026-11-22",
+   "source_type": "面经",
+   "source_url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/06-vector-index-optimization/README.md",
+   "path": "rag/rag-20261122-01.md",
+   "has_diagram": true
+  },
+  {
+   "id": "rag-20261122-02",
+   "title": "换了 embedding 模型后拒答阈值全部失效、新旧向量还混在一个集合里：影子索引、阈值重标定与灰度切换怎么做",
+   "topic": "rag",
+   "difficulty": "资深",
+   "tags": [
+    "embedding",
+    "索引迁移",
+    "灰度",
+    "阈值标定"
+   ],
+   "date": "2026-11-22",
+   "source_type": "面经",
+   "source_url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md",
+   "path": "rag/rag-20261122-02.md",
+   "has_diagram": true
+  },
+  {
+   "id": "rag-20261122-03",
+   "title": "想用 GraphRAG 解决「跨文档多跳与汇总类」问题：抽取成本、实体归一化与增量社区重建怎么一起算",
+   "topic": "rag",
+   "difficulty": "资深",
+   "tags": [
+    "graphrag",
+    "成本建模",
+    "增量索引",
+    "query路由"
+   ],
+   "date": "2026-11-22",
+   "source_type": "面经",
+   "source_url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md",
+   "path": "rag/rag-20261122-03.md",
+   "has_diagram": true
+  },
+  {
+   "id": "rag-20261122-04",
+   "title": "混合检索的关键字分支偶发 500、高亮字段为 null 就报错：词法索引的边界数据该怎么治理与降级",
+   "topic": "rag",
+   "difficulty": "进阶",
+   "tags": [
+    "混合检索",
+    "词法索引",
+    "多语种",
+    "降级设计"
+   ],
+   "date": "2026-11-22",
+   "source_type": "issue",
+   "source_url": "https://github.com/qdrant/qdrant/issues/11386",
+   "path": "rag/rag-20261122-04.md",
+   "has_diagram": true
+  },
+  {
+   "id": "fastapi-20261122-01",
+   "title": "中间件注入的 trace_id 在接口里读不到，500 响应还丢了 CORS 头：BaseHTTPMiddleware 的边界与中间件顺序",
+   "topic": "fastapi",
+   "difficulty": "资深",
+   "tags": [
+    "middleware",
+    "contextvars",
+    "CORS",
+    "请求生命周期"
+   ],
+   "date": "2026-11-22",
+   "source_type": "文档",
+   "source_url": "",
+   "path": "fastapi/fastapi-20261122-01.md",
+   "has_diagram": true
+  },
+  {
+   "id": "fastapi-20261122-02",
+   "title": "单测单独跑都过，一起跑就报 attached to a different loop：dependency_overrides 与连接池的测试隔离",
+   "topic": "fastapi",
+   "difficulty": "进阶",
+   "tags": [
+    "测试",
+    "dependency_overrides",
+    "事件循环",
+    "fixture"
+   ],
+   "date": "2026-11-22",
+   "source_type": "文档",
+   "source_url": "",
+   "path": "fastapi/fastapi-20261122-02.md",
+   "has_diagram": false
   }
  ]
 }

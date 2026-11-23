@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-22 11:28",
+ "updated": "2026-11-23 11:59",
  "questions": [
   {
    "id": "agent-20261120-01",
@@ -510,6 +510,176 @@
    "source_url": "",
    "path": "fastapi/fastapi-20261122-02.md",
    "has_diagram": false
+  },
+  {
+   "id": "agent-20261123-01",
+   "title": "委派链上的权限放大：Policy Engine 的授权收敛与可回放审计怎么设计",
+   "topic": "agent",
+   "difficulty": "资深",
+   "tags": [
+    "multi-agent",
+    "policy-engine",
+    "审计",
+    "权限收敛"
+   ],
+   "date": "2026-11-23",
+   "source_type": "面经",
+   "source_url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/13-multi-agent-systems/README.md",
+   "path": "agent/agent-20261123-01.md",
+   "has_diagram": true
+  },
+  {
+   "id": "agent-20261123-02",
+   "title": "主动式 Agent 的事件入口：重复投递与事件风暴下如何做到不丢不重",
+   "topic": "agent",
+   "difficulty": "进阶",
+   "tags": [
+    "event-driven",
+    "mcp-triggers",
+    "幂等",
+    "背压"
+   ],
+   "date": "2026-11-23",
+   "source_type": "面经",
+   "source_url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md",
+   "path": "agent/agent-20261123-02.md",
+   "has_diagram": true
+  },
+  {
+   "id": "agent-20261123-03",
+   "title": "MCP Server 独立发版后工具 schema 漂移：Registry 升级把线上 Agent 批量打挂，如何做契约兼容与快速止血",
+   "topic": "agent",
+   "difficulty": "资深",
+   "tags": [
+    "MCP",
+    "工具契约",
+    "灰度发布",
+    "故障定位"
+   ],
+   "date": "2026-11-23",
+   "source_type": "面经",
+   "source_url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md",
+   "path": "agent/agent-20261123-03.md",
+   "has_diagram": true
+  },
+  {
+   "id": "agent-20261123-04",
+   "title": "多模态 Agent 把截图原样塞进上下文：视觉 token 膨胀、历史重放与分辨率取舍怎么治",
+   "topic": "agent",
+   "difficulty": "进阶",
+   "tags": [
+    "多模态",
+    "上下文预算",
+    "成本优化",
+    "VLM"
+   ],
+   "date": "2026-11-23",
+   "source_type": "面经",
+   "source_url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/21-multimodal-agents/README.md",
+   "path": "agent/agent-20261123-04.md",
+   "has_diagram": true
+  },
+  {
+   "id": "rag-20261123-01",
+   "title": "多路召回里某一路超时后 RRF 融合结果悄悄变差：分路预算、缺失标记与降级怎么落地",
+   "topic": "rag",
+   "difficulty": "资深",
+   "tags": [
+    "多路召回",
+    "RRF",
+    "降级",
+    "可观测性"
+   ],
+   "date": "2026-11-23",
+   "source_type": "面经",
+   "source_url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md",
+   "path": "rag/rag-20261123-01.md",
+   "has_diagram": true
+  },
+  {
+   "id": "rag-20261123-02",
+   "title": "百万 token 长上下文把整本手册塞进 prompt 后成本翻倍且引用对不上：RAG 与长文直塞的路由边界怎么定",
+   "topic": "rag",
+   "difficulty": "资深",
+   "tags": [
+    "长上下文",
+    "成本建模",
+    "路由",
+    "引用可验证"
+   ],
+   "date": "2026-11-23",
+   "source_type": "面经",
+   "source_url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md",
+   "path": "rag/rag-20261123-02.md",
+   "has_diagram": false
+  },
+  {
+   "id": "rag-20261123-03",
+   "title": "PDF 里的图表和扫描页接进 RAG 后，文本题反而被答错：多模态 Embedding、图片转描述与重嵌入成本怎么取舍",
+   "topic": "rag",
+   "difficulty": "资深",
+   "tags": [
+    "multimodal-embedding",
+    "chunking",
+    "选型",
+    "成本建模"
+   ],
+   "date": "2026-11-23",
+   "source_type": "文档",
+   "source_url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md",
+   "path": "rag/rag-20261123-03.md",
+   "has_diagram": true
+  },
+  {
+   "id": "rag-20261123-04",
+   "title": "语义缓存上线后成本降了，却出现答案过时和跨客户串答案：缓存键、阈值与定向失效怎么设计",
+   "topic": "rag",
+   "difficulty": "进阶",
+   "tags": [
+    "semantic-cache",
+    "多租户隔离",
+    "缓存失效",
+    "成本优化"
+   ],
+   "date": "2026-11-23",
+   "source_type": "面经",
+   "source_url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md",
+   "path": "rag/rag-20261123-04.md",
+   "has_diagram": false
+  },
+  {
+   "id": "fastapi-20261123-01",
+   "title": "流式响应发出 200 后上游报错：SSE 错误帧、结束标记与断开感知怎么补",
+   "topic": "fastapi",
+   "difficulty": "资深",
+   "tags": [
+    "StreamingResponse",
+    "SSE",
+    "异常处理",
+    "LLM 流式"
+   ],
+   "date": "2026-11-23",
+   "source_type": "文档",
+   "source_url": "",
+   "path": "fastapi/fastapi-20261123-01.md",
+   "has_diagram": true
+  },
+  {
+   "id": "fastapi-20261123-02",
+   "title": "每个请求都新建 AsyncClient：连接池复用失效、TIME_WAIT 飙升与多 worker 配额失控",
+   "topic": "fastapi",
+   "difficulty": "进阶",
+   "tags": [
+    "lifespan",
+    "httpx.AsyncClient",
+    "连接池",
+    "多进程部署"
+   ],
+   "date": "2026-11-23",
+   "source_type": "文档",
+   "source_url": "",
+   "path": "fastapi/fastapi-20261123-02.md",
+   "has_diagram": true
   }
  ]
 }

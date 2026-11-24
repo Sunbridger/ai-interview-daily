@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AI 面试题日报 · 2026-11-23</title>
+<title>AI 面试题日报 · 2026-11-24</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#fff;color:#3f3f3f;font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;letter-spacing:.4px;-webkit-font-smoothing:antialiased}
@@ -58,372 +58,356 @@ input[type=search]:focus{border-color:#d4472a}
 <main>
 <header class="masthead">
 <span class="kicker">AI 面试题日报</span>
-<h1>11 月 23 日 · 10 道</h1>
-<p class="meta">2026-11-23 · 周一 · Agent 4 · RAG 4 · FastAPI 2 · 中高级</p>
+<h1>11 月 24 日 · 10 道</h1>
+<p class="meta">2026-11-24 · 周二 · Agent 4 · RAG 4 · FastAPI 2 · 中高级</p>
 
 </header>
 <div class="orn"><span>◆</span></div>
-<div class="topic-head"><span>Agent 专题</span></div><section class="q" id="agent-20261123-01"><h2><span class="no">01</span>委派链上的权限放大：Policy Engine 的授权收敛与可回放审计怎么设计</h2><p class="meta-line">资深 ｜ <span class="tag">multi-agent</span><span class="tag">policy-engine</span><span class="tag">审计</span><span class="tag">权限收敛</span> ｜ <a href="https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/13-multi-agent-systems/README.md" target="_blank" rel="noopener">面经来源 ↗</a></p><p class="sub">为什么会有这个问题</p><p>多 Agent 系统里权限常常是按「入口身份」一次性授予的，子 Agent 在委派时直接继承甚至叠加父级 scopes，形成 ambient authority（环境权限）放大。另一个常见错误是把 Policy Engine 写成 prompt 里的一句「不要执行危险操作」，或写成散落在各个 tool 里的 if-else。这样做的后果是：决策输入没有被固化（谁发起、在哪个会话、对哪个资源、基于哪条策略），allow 无法回放，deny 无法解释；策略缓存按 agent_id 命中却忽略了参数维度；更危险的是，模型在收到 deny 之后换个参数重试，就能绕过被拒的那条路径。审计只记录 allow/deny 结果而不记录决策依据，等于出事之后查不出是哪一层委派放的行。</p><p class="sub">怎么做</p><ol class="steps"><li>把决策输入固化成五元组：subject（含委派链）、action、resource（归一化键）、有效 scopes、policy_version。Policy Engine 做成无状态纯函数 evaluate(request) -&gt; Decision{effect, policy_id, obligations}，模型侧不参与判定。</li><li>委派时权限单调收敛：子 Agent 的有效 scopes = 父 scopes ∩ 任务声明 scopes ∩ 工具白名单，TTL 取两者最小值，随委派生成 capability token 向下传递。禁止任何形式的并集或「继承父会话全部权限」。</li><li>工具执行器作为唯一 choke point：模型只能产出意图，真正执行必须过 Policy Engine。deny 返回结构化原因（缺哪个 scope、命中哪条策略）供模型自我修正，但同一 turn 内相同 (tool, args) 的重试要计数，超限直接终止并上报，防止换参试探。</li><li>审计与决策解耦：审计写入走独立进程或独立 sink，Agent 只能 append 自己的 trace，不能写审计通道。审计记录决策输入 hash、policy_version、obligations 的实际执行结果（如脱敏是否生效），保证可按事件回放。</li><li>缓存以 (policy_version, subject, action, resource_key) 为 key，resource_key 必须归一化（路径折叠、大小写、租户前缀）。策略热更新时整体升版本号失效；执行前用 policy_version 二次校验，版本不一致则重新评估，避免飞行中的旧决策生效。</li></ol><div class="code"><code>from dataclasses import dataclass
-from typing import Literal
-
-@dataclass(frozen=True)
-class Request:
-    subject: str
-    action: str
-    resource: str
-    scopes: frozenset
-    policy_version: str
-
-@dataclass(frozen=True)
-class Decision:
-    effect: Literal[&quot;allow&quot;, &quot;deny&quot;]
-    policy_id: str
-    policy_version: str
-    obligations: tuple
-
-def delegate(parent_scopes, parent_ttl, task_scopes, task_ttl, allowlist):
-    return {
-        &quot;scopes&quot;: frozenset(parent_scopes) &amp; frozenset(task_scopes) &amp; frozenset(allowlist),
-        &quot;ttl&quot;: min(parent_ttl, task_ttl),
-    }
-
-def evaluate(req: Request, rules) -&gt; Decision:
-    for r in rules:
-        if not r.match(req.action, req.resource):
-            continue
-        if not req.scopes &gt;= r.required_scopes:
-            return Decision(&quot;deny&quot;, r.id, req.policy_version, (&quot;scope_insufficient&quot;,))
-        return Decision(&quot;allow&quot;, r.id, req.policy_version, r.obligations)
-    return Decision(&quot;deny&quot;, &quot;default&quot;, req.policy_version, (&quot;no_matching_policy&quot;,))
-
-def execute(tool, args, req, rules, retry_counter):
-    d = evaluate(req, rules)
-    if d.effect == &quot;deny&quot;:
-        retry_counter.bump(req.subject, req.action, args)
-        if retry_counter.over(req.subject, req.action, args):
-            raise PermissionError(&quot;retry_exhausted&quot;)
-        return {&quot;denied&quot;: d.policy_id, &quot;obligations&quot;: d.obligations}
-    return tool.run(args, obligations=d.obligations)</code></div><p class="sub">真实场景</p><p>某项目的客服 Agent 上线后，被发现能调用原本只开放给运营侧的批量数据导出工具。审计日志里只有一条 allow，看不到是哪一层授权的。排查后得到两条线索：一是主 Agent 委派子任务时把父 session 的 scopes 全量透传，子 Agent 又叠加了工具白名单，实际权限是并集；二是策略缓存 key 只有 agent_id，同一个 Agent 第一次被允许导出后，后续不同资源参数全部命中缓存直接放行。修复方向：委派改为交集收敛 + capability token 带 TTL，缓存 key 加入归一化资源与 policy_version，审计补齐五元组与策略版本，并对 deny 后的重试加计数上限。</p><div class="diagram"><pre class="mermaid">flowchart TD
-    A[入口 Agent 收到请求] --&gt; B[委派生成子任务]
-    B --&gt; C[有效权限取父权限与任务声明权限的交集]
-    C --&gt; D[Policy Engine 评估五元组]
-    D --&gt;|deny| E[返回结构化拒绝原因并累加重试计数]
-    D --&gt;|allow| F[产出带 obligations 的 Decision]
-    F --&gt; G[工具执行器作为唯一 choke point 执行]
-    G --&gt; H[审计事件写入独立通道]
-    E --&gt; I[同一轮重试超限则终止并上报]</pre></div><p class="sub">面试官追问</p><div class="qa"><p><strong>Q：</strong>策略热更新时，已经生成但还没执行的 allow 决策怎么处理？</p><p><strong>A：</strong>Decision 里携带 policy_version，执行器在真正调用工具前做一次版本比对：版本不一致就重新评估，评估失败则拒绝并记录 stale_decision 指标。不要靠失效缓存来保证，因为决策可能已经在队列或另一个 Agent 手里。</p><p><strong>Q：</strong>如何保证审计日志不被 Agent 自己污染？</p><p><strong>A：</strong>审计写入与 Agent 运行时物理隔离：Agent 只能写自己的 trace span，审计 sink 由独立的 sidecar 或服务消费执行器事件生成，Agent 无写权限。同时审计记录要带决策输入 hash，事后可重算比对，防止记录被篡改或缺失。</p></div></section><section class="q" id="agent-20261123-02"><h2><span class="no">02</span>主动式 Agent 的事件入口：重复投递与事件风暴下如何做到不丢不重</h2><p class="meta-line">进阶 ｜ <span class="tag">event-driven</span><span class="tag">mcp-triggers</span><span class="tag">幂等</span><span class="tag">背压</span> ｜ <a href="https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md" target="_blank" rel="noopener">面经来源 ↗</a></p><p class="sub">为什么会有这个问题</p><p>MCP Triggers / Events 让 Agent 从被动响应变成主动感知，但事件源本身就是 at-least-once：webhook 会重投，队列会重放，文件监听会乱序。Agent 的触发不像普通消费者那样天然幂等——一次触发往往引发多次工具调用和写副作用，而且推理成本远高于一次普通的消息处理。最常见的错误认知是把「消息去重」等同于「触发去重」：一个 PR 在十分钟内推了十次，去重键各不相同，于是十次全都放行。反过来，用时间戳做去重键又会把合法的两次变更合并掉，造成丢事件。加上事件风暴时的无限堆积，最终表现为重复评论、API 限流、任务雪崩。</p><p class="sub">怎么做</p><ol class="steps"><li>事件规范化：统一成 {source, resource_id, version, payload}，用 source + resource_id + version 构造 dedup_key，落 Redis/DB 做 SETNX 带 TTL。优先用单调递增的 version 而不是 timestamp，避免时钟与乱序问题。</li><li>资源级防抖与聚合：同一 resource 在静默窗口内只保留最终态，窗口结束回捞一次；对持续高频的资源设窗口上限，超时强制 flush，防止永远等不到静默期。</li><li>触发与执行解耦：事件先转成触发决策，再入队为任务，任务 ID 复用 dedup_key；worker 侧再做一次幂等检查，做到 at-least-once + 幂等 = 业务上的 effectively-once。</li><li>背压与配额：按 tenant / agent 维度做令牌桶，队列水位超阈值时降级为摘要触发或直接丢弃并打点，绝不允许无限堆积。丢弃要可解释，记录 dropped 原因。</li><li>可观测：trace 从 event_id 贯穿到工具调用；分别统计 duplicate、debounced、dropped、executed 四类计数，用这些比例反过来调窗口与配额，而不是拍脑袋定参数。</li></ol><div class="code"><code>import hashlib, time
-
-def dedup_key(event) -&gt; str:
-    raw = f&quot;{event.source}:{event.resource_id}:{event.version}&quot;
-    return hashlib.sha1(raw.encode()).hexdigest()
-
-async def on_event(event, store, queue, window=30.0):
-    if not await store.setnx(dedup_key(event), 1, ttl=86400):
-        return &quot;duplicate&quot;
-    await store.upsert_pending(event.resource_id, event, ttl=window * 4)
-    await queue.enqueue_delayed(
-        task_id=f&quot;flush:{event.resource_id}:{int(event.ts // window)}&quot;,
-        delay=window,
-        payload={&quot;resource_id&quot;: event.resource_id},
-    )
-    return &quot;accepted&quot;
-
-async def flush(resource_id, store, queue):
-    event = await store.pop_pending(resource_id)
-    if event is None:
-        return &quot;noop&quot;
-    await queue.enqueue(task_id=f&quot;run:{dedup_key(event)}&quot;, payload=event.payload)
-    return &quot;enqueued&quot;
-
-async def worker(task, agent):
-    if await task.store.seen(task.task_id):
-        return &quot;skip&quot;
-    await task.store.mark(task.task_id)
-    return await agent.run(task.payload)</code></div><p class="sub">真实场景</p><p>某项目接了代码仓库 webhook 来触发代码评审 Agent。凌晨一次批量 rebase 造成事件风暴，同一分支短时间内涌入大量 push 事件，去重键各不同，Agent 为同一分支起了几十个评审任务，重复刷评论并撞上模型 API 限流；同时有用户反馈部分变更没有触发评审，排查发现去重键里用了 timestamp，同一秒内的两次不同变更被误判为重复丢弃。修复路径：去重键换成 version、加资源级静默窗口聚合、入队任务 ID 复用 dedup_key、worker 二次幂等，并在网关加租户令牌桶与 dropped 打点。</p><div class="diagram"><pre class="mermaid">sequenceDiagram
-    participant S as 事件源
-    participant G as 事件网关
-    participant R as 去重存储
-    participant Q as 任务队列
-    participant A as Agent Worker
-    S-&gt;&gt;G: 推送事件 版本号 v3
-    G-&gt;&gt;R: 写入 dedup_key
-    R--&gt;&gt;G: 首次写入成功
-    G-&gt;&gt;R: 覆盖资源待处理态为最新版本
-    G-&gt;&gt;Q: 投递延迟任务 静默期后回捞
-    S-&gt;&gt;G: 重投同一事件
-    G-&gt;&gt;R: 写入 dedup_key 失败
-    R--&gt;&gt;G: 判定重复直接丢弃
-    Q-&gt;&gt;A: 静默期到点 取最终态入队
-    A-&gt;&gt;A: 按任务 ID 二次幂等后执行</pre></div><p class="sub">面试官追问</p><div class="qa"><p><strong>Q：</strong>静默窗口设多长，依据什么定？</p><p><strong>A：</strong>按资源的自然收敛时间和事件间隔分布来定：观察同一 resource 的 P95 事件间隔，窗口取略大于该值，并设置窗口上限兜底长尾。上线后看 debounced 与 dropped 的比例以及「用户感知延迟」两个指标互相校正，不要一次拍死。</p><p><strong>Q：</strong>事件乱序或者版本回退时怎么处理？</p><p><strong>A：</strong>用 version 单调比较：低于资源已处理版本的直接丢弃并计数 stale_event；无法比较版本的源，在资源维度维护状态机，只接受合法的状态跃迁，非法跃迁记录并告警，避免用「最后到达者胜出」这种隐式规则。</p></div></section><section class="q" id="agent-20261123-03"><h2><span class="no">03</span>MCP Server 独立发版后工具 schema 漂移：Registry 升级把线上 Agent 批量打挂，如何做契约兼容与快速止血</h2><p class="meta-line">资深 ｜ <span class="tag">MCP</span><span class="tag">工具契约</span><span class="tag">灰度发布</span><span class="tag">故障定位</span> ｜ <a href="https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md" target="_blank" rel="noopener">面经来源 ↗</a></p><p class="sub">为什么会有这个问题</p><p>MCP 把工具能力外置成独立服务后，Server 的发版节奏和 Agent 的解耦了，但 Agent 侧真正依赖的是 tools/list 返回的 name、description、inputSchema 三件套。现实中 Server 发版常顺手改字段名、把可选字段改成必填、收窄枚举或改返回结构，而 Agent 侧要么在会话开始时拉一次工具清单并长缓存（甚至写进 prompt cache），要么按 tool name 做本地路由表，根本没有版本语义可以感知变化。常见错误认知是「Registry 里写了版本号就安全」——实际客户端多数按 name 拉 latest，或者 pin 了 Server 版本却没 pin 工具契约，模型看到的仍是旧描述、生成的仍是旧参数，执行层直接校验失败。更糟的是失败被当成「模型不会用工具」，于是加 prompt、加 few-shot，把问题越掩盖越深。</p><p class="sub">怎么做</p><ol class="steps"><li>把工具契约变成可 diff 的 artifact：每次发布前抓 tools/list 快照存进 git，CI 对新旧快照做结构化 diff，并把差异分级（必填新增、枚举收窄、类型变更、字段重命名为 breaking；可选字段新增、枚举扩展、返回字段新增为非 breaking），breaking 未声明就直接卡发布。</li><li>运行时显式寻址 + 版本锁：工具引用写成 server@version#tool=name 的形式，禁止隐式 latest；同时保证 N-1 版本与 N 版本并行可路由，为蓝绿/回滚留出物理条件。</li><li>执行层强校验替代模型自觉：tool call 前用 JSON Schema / pydantic 校验 arguments，失败第一次把校验错误回灌给模型做一次自愈重试，第二次仍失败则抛结构化错误并降级（走兜底工具或转人工），避免重试风暴。</li><li>按版本灰度放量：新版本先路由到小比例会话，观测 tool_call 失败率、参数校验失败率、平均重试轮次、任务完成率四个指标，任何一项劣化立即把路由切回 N-1。</li><li>发布纪律写进规范：破坏性变更必须换 tool name（search → search_v2）而不是原地改，让模型描述和路由表都能区分；字段只增不删，必填只能从「有默认值的可选字段」升级而来。</li></ol><div class="code"><code>import math
-from jsonschema import Draft202012Validator
-
-def diff_tools(old, new):
-    issues = []
-    for name, nt in new.items():
-        ot = old.get(name)
-        if ot is None:
-            issues.append(f&#x27;added_tool:{name}&#x27;)
-            continue
-        o, n = ot[&#x27;inputSchema&#x27;], nt[&#x27;inputSchema&#x27;]
-        added = set(n.get(&#x27;required&#x27;, [])) - set(o.get(&#x27;required&#x27;, []))
-        if added:
-            issues.append(f&#x27;required_added:{name}:{sorted(added)}&#x27;)
-        for k, nv in n.get(&#x27;properties&#x27;, {}).items():
-            ov = o.get(&#x27;properties&#x27;, {}).get(k, {})
-            if ov.get(&#x27;enum&#x27;) and set(nv.get(&#x27;enum&#x27;, [])) &lt; set(ov[&#x27;enum&#x27;]):
-                issues.append(f&#x27;enum_narrowed:{name}.{k}&#x27;)
-            if ov.get(&#x27;type&#x27;) and nv.get(&#x27;type&#x27;) != ov[&#x27;type&#x27;]:
-                issues.append(f&#x27;type_changed:{name}.{k}&#x27;)
-    return issues
-
-def call_tool(registry, tool_ref, args, retries=0):
-    version, name = tool_ref.split(&#x27;#tool=&#x27;)
-    schema = registry.schema(version, name)
-    errs = [e.message for e in Draft202012Validator(schema[&#x27;inputSchema&#x27;]).iter_errors(args)]
-    if errs and retries &lt; 1:
-        return registry.reask(name, errs)
-    if errs:
-        raise ToolContractError(tool_ref, errs)
-    return registry.invoke(version, name, args)</code></div><p class="sub">真实场景</p><p>某项目把知识检索类 MCP Server 从 1.3 升到 1.4，把 query 字段改名为 q，并新增必填的 scope。Agent 侧工具清单有十分钟 TTL 缓存，prompt 里还是旧描述。发布后短时间内 tool_call 失败率明显跳升，日志里集中出现 &#x27;scope&#x27; is a required property 与 unknown field query，模型重试一到两轮后开始绕开工具、凭记忆直接作答，用户看到的症状是「答得挺顺但引用了不存在的文档」。排查路径：先按 tool name 与 server 版本二维打点，定位失败集中在单一 Server 的新版本 → 取出两版 tools/list 快照做 diff，确认是 breaking 变更 → 路由整体切回 1.3 止血 → 事后改成版本显式寻址 + 蓝绿并行，并把 schema diff 加进 CI 门禁。</p><div class="diagram"><pre class="mermaid">flowchart TD
-    A[拉取 tools list] --&gt; B[写入 schema 快照并入库]
-    B --&gt; C[CI 对比新旧两版差异]
-    C --&gt; D{是否破坏性变更}
-    D --&gt;|是| E[换新 tool name 并行发布]
-    D --&gt;|否| F[原位升级]
-    E --&gt; G[小比例会话灰度路由]
-    F --&gt; G
-    G --&gt; H{参数校验失败率上升}
-    H --&gt;|是| I[路由切回上一版本]
-    H --&gt;|否| J[逐步放量至全量]</pre></div><p class="sub">面试官追问</p><div class="qa"><p><strong>Q：</strong>为什么不让模型自己适配新 schema，非要客户端做校验和版本路由？</p><p><strong>A：</strong>模型每次会话只看到一次工具描述，长尾会话仍跑在旧描述上，而且工具多时描述本身占大量 token，不可能频繁刷新；依赖模型自愈会带来重试放大、延迟上升和偶发的「假装调用成功」。执行层校验是确定性的，能立刻把问题变成可观测的失败率指标，而版本路由是唯一能在分钟级止血的手段。</p><p><strong>Q：</strong>你用什么标准判定一次 schema 变更是 breaking？</p><p><strong>A：</strong>用「旧客户端按旧 schema 生成的合法参数，在新 schema 下是否仍然合法且语义不变」来判定：必填字段增加、枚举收窄、类型变更、字段重命名、返回结构删字段都算 breaking；可选字段新增、枚举扩展、返回字段新增、描述文案调整不算。无法判断语义是否变化时，一律按 breaking 处理，换新 tool name 并行发布。</p></div></section><section class="q" id="agent-20261123-04"><h2><span class="no">04</span>多模态 Agent 把截图原样塞进上下文：视觉 token 膨胀、历史重放与分辨率取舍怎么治</h2><p class="meta-line">进阶 ｜ <span class="tag">多模态</span><span class="tag">上下文预算</span><span class="tag">成本优化</span><span class="tag">VLM</span> ｜ <a href="https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/21-multimodal-agents/README.md" target="_blank" rel="noopener">面经来源 ↗</a></p><p class="sub">为什么会有这个问题</p><p>VLM 的图像成本不是常数，而是由分辨率与切块策略决定（切块数乘以每块 token，再加基础开销），同一张图在不同 provider 上可能差出数倍。真实痛点是 Agent 多轮循环里每一步都产生新截图，而多数实现是直接把图片 base64 append 进 messages 且从不裁剪历史，于是每一轮都把全部历史图像重新送一遍，token 随轮次近似平方增长，延迟和费用同步放大，最终撞上下文上限。更隐蔽的问题是盲目压缩：把整图等比缩小后小字、图标、禁用态读不出来，模型「看到但读不准」，表现为参数编造或反复点同一个位置。常见错误认知是「一张图就是一次性的固定成本」，以及「降分辨率总是省钱的」——实际上裁剪比缩放更省也更准。</p><p class="sub">怎么做</p><ol class="steps"><li>先量化再优化：按 provider 的图像计费规则写一个估算函数（宽高、切块大小、每块 token），给每个会话设 image_token_budget，超出即拒绝注入新图或强制压缩，把预算变成硬约束而不是事后看账单。</li><li>把图像从消息体里挪出去做 artifact：工具产出的截图落到对象存储，返回 artifact_id 加尺寸元数据和 OCR/结构摘要；默认进上下文的是摘要与引用，模型需要细节时再通过 view_artifact 主动取图。</li><li>按任务选表示层级：文字密集的表格、表单用高分辨率加区域裁剪（先定位目标 bounding box 再裁，token 少且识别准）；布局与场景理解用低分辨率整图；不要用整图缩放代替裁剪。</li><li>历史压缩：轮次结束后把图像替换成带 id 的文本占位，仅保留最近一到两张原图，保证可回溯但不再重复计费。</li><li>监控四个指标：每会话 image token 占比、上下文占用率峰值、因超限触发的截断或重试次数、含图会话的任务完成率与纯文本会话的差值；用任务完成率而不是「接口有没有报错」来判断压缩是否伤精度。</li></ol><div class="code"><code>import math
-
-def est_image_tokens(w, h, tile=512, base=85, per_tile=170):
-    return base + per_tile * math.ceil(w / tile) * math.ceil(h / tile)
-
-def fit_image(w, h, budget, min_side=768):
-    if est_image_tokens(w, h) &lt;= budget:
-        return w, h
-    scale = 1.0
-    while w * scale &gt; min_side and est_image_tokens(int(w * scale), int(h * scale)) &gt; budget:
-        scale -= 0.1
-    return int(w * scale), int(h * scale)
-
-def compact_history(messages, keep_last_images=1):
-    seen = 0
-    for m in reversed(messages):
-        content = m.get(&#x27;content&#x27;) or []
-        for i, part in enumerate(content):
-            if part.get(&#x27;type&#x27;) != &#x27;image&#x27;:
-                continue
-            seen += 1
-            if seen &gt; keep_last_images:
-                content[i] = {&#x27;type&#x27;: &#x27;text&#x27;,
-                              &#x27;text&#x27;: f&quot;[img#{part.get(&#x27;artifact_id&#x27;)} 已折叠，需要细节时调用 view_artifact]&quot;}
-    return messages</code></div><p class="sub">真实场景</p><p>某项目做浏览器操作 Agent，每一步用整页截图作为观测。典型现象：任务前期正常，到第六到第八步开始明显变慢、单任务成本陡增，第十步左右报上下文超限；而在报错前的一两步，模型开始重复点击同一位置或编造按钮文案，因为图像被上游压缩后小字已不可读。排查路径：按轮次打点 prompt token 中 image 占比，发现图像占了大头且每轮随历史线性叠加 → 关闭历史图像重放，改为摘要加引用，仅保留最近一张原图 → 把点击前的观测从整页截图改为按候选元素裁剪 → 单任务步数、token 与耗时同时回落，关键字段识别准确率反而上升。</p><div class="diagram"><pre class="mermaid">sequenceDiagram
-    participant A as Agent
-    participant S as 产物存储
-    participant M as 视觉模型
-    A-&gt;&gt;S: 截图上传 取回 artifact_id 与摘要
-    S--&gt;&gt;A: 返回摘要 尺寸与元素坐标
-    A-&gt;&gt;M: 仅注入摘要与引用
-    M--&gt;&gt;A: 请求查看某区域
-    A-&gt;&gt;S: 按目标区域裁剪
-    S--&gt;&gt;A: 返回小图
-    A-&gt;&gt;M: 注入裁剪后的图像</pre></div><p class="sub">面试官追问</p><div class="qa"><p><strong>Q：</strong>既然图像这么贵，为什么不干脆只把 OCR 文本给模型？</p><p><strong>A：</strong>OCR 丢掉了布局、图标、颜色状态（禁用、报错、选中）和相对位置，在 UI 定位与表单校验这类任务上精度明显下降，而且视觉模型对坐标的推理依赖图像本身。正确做法是分层：默认给结构化摘要与元素坐标文本，留一个 view_artifact 让模型在不确定时主动请求裁剪图，把图像成本花在真正需要看的局部。</p><p><strong>Q：</strong>怎么证明降分辨率或裁剪没有伤害准确率？</p><p><strong>A：</strong>离线构造带标注的关键区域集（含小字、密集表格、灰色禁用按钮），对每一档分辨率与裁剪策略跑端到端任务成功率与关键字段抽取准确率，画出分辨率到成功率的曲线找拐点，拐点以下不采用；线上用 A/B 看任务完成率与平均步数，而不是只看单次调用有没有异常。</p></div></section><div class="topic-head"><span>RAG 专题</span></div><section class="q" id="rag-20261123-01"><h2><span class="no">05</span>多路召回里某一路超时后 RRF 融合结果悄悄变差：分路预算、缺失标记与降级怎么落地</h2><p class="meta-line">资深 ｜ <span class="tag">多路召回</span><span class="tag">RRF</span><span class="tag">降级</span><span class="tag">可观测性</span> ｜ <a href="https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md" target="_blank" rel="noopener">面经来源 ↗</a></p><p class="sub">为什么会有这个问题</p><p>多路召回通常把向量、BM25、图谱等异构召回器并发执行，再用 RRF 按排名融合。RRF 只看名次，不关心某一路是否因为超时、限流或异常返回空列表，所以单路失败不会让接口报错，却会让融合后的候选集悄悄偏向剩余路径。常见错误是只监控总 p95 延迟和接口错误率，不记录 per-path 的召回数量、失败状态与耗时；空结果和失败结果被同等对待，长尾 query 的召回覆盖先下降，最终表现为答案变窄但无人告警。</p><p class="sub">怎么做</p><ol class="steps"><li>给每条召回路定义独立超时预算和 SLO：从总检索预算反推，例如总 300ms，向量 120ms、BM25 80ms、图谱 60ms，融合与重排预留剩余时间；超时不是异常抛出，而是返回带 status 的结构化结果。</li><li>融合层显式携带 degraded 标记：区分 ok、timeout、error、empty 四种状态；缺失路不参与 RRF 计分，记录 per-path hit rate、empty rate、p99 延迟和融合前后 top-k 重叠率。</li><li>RRF 实现保持简单：score = sum(weight / (k + rank))，对 chunk 按 doc_id + 内容指纹去重；每路设置 topN 配额，避免某一路召回数量过大主导融合；不要直接把不同召回器的原始分数加权平均。</li><li>对高贡献路径设置熔断与 fallback：单路失败率连续超过阈值时告警并降级到缓存结果或单路检索；用故障注入回归测试验证单路超时后的答案质量下降在可接受范围内。</li><li>按查询类型调整路径权重：精确术语查询提高 BM25 权重，语义问法提高向量权重，关系型问题提高图谱权重；权重来自离线评估，不在线用 LLM 动态调参。</li><li>把路由与融合决策写入 trace：记录 query 类型、各路 topN、状态、耗时、融合后 top-k 变化，便于事后定位是召回缺失还是生成问题。</li></ol><div class="code"><code>import asyncio, hashlib
+<div class="topic-head"><span>Agent 专题</span></div><section class="q" id="agent-20261124-01"><h2><span class="no">01</span>Agent 长期记忆越用越蠢：写入噪声、召回污染与遗忘策略怎么治</h2><p class="meta-line">资深 ｜ <span class="tag">memory</span><span class="tag">上下文工程</span><span class="tag">召回排序</span><span class="tag">评测</span> ｜ <a href="https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/22-agent-planning-reflection/README.md" target="_blank" rel="noopener">面经来源 ↗</a></p><p class="sub">为什么会有这个问题</p><p>很多团队把 Memory 理解成“把对话 append 进向量库”，结果记忆只增不减：一次性闲聊、过期偏好、重复摘要全被写入，召回时又只按向量相似度取 top-k，最终无关记忆挤占上下文、旧事实覆盖新事实，模型表现随使用时长下降。Memory 的难点不在存，而在写入准入、冲突消解、分层 TTL 与召回预算控制；只加向量库不解决污染，反而放大成本与延迟。</p><p class="sub">怎么做</p><ol class="steps"><li>先分层：working memory 只保留当前任务槽位；episode 存带时间戳的交互摘要；semantic 存实体-属性-值事实。三类分开 TTL、召回权重与存储，禁止全部塞进同一向量集合。</li><li>写入前置闸门：候选记忆先过重要度阈值、去重相似度、敏感信息过滤；episode 设更高阈值，避免把寒暄写进长期库。抽取时保留 provenance（会话 id、来源消息），便于回溯和按用户删除。</li><li>冲突消解：semantic 记忆以 entity+attribute 为唯一键，新值写入时把旧值置为 superseded 而非物理删除；召回只取 active 版本，保留变更历史用于审计。</li><li>召回打分融合 relevance、importance、recency，再按 token 预算裁剪；低于相关性阈值的不注入，防止无关记忆稀释当前指令。</li><li>评估与淘汰：离线看 recall@k 与端到端答案正确率，线上做“关闭长期记忆”的 A/B；定期把低频 episode 压缩成摘要，用 TTL 淘汰，监控记忆注入 token 占比与采纳率。</li></ol><div class="code"><code>import time
 from dataclasses import dataclass
 
 @dataclass
-class Hit:
-    doc_id: str
+class Mem:
     text: str
-    rank: int = 0
+    kind: str
+    importance: float
+    created_at: float
+    ttl: float | None = None
+    active: bool = True
 
-async def run_path(name, fn, query, timeout, weight):
-    try:
-        items = await asyncio.wait_for(fn(query), timeout)
-        return name, weight, items, &#x27;ok&#x27;, timeout
-    except asyncio.TimeoutError:
-        return name, weight, [], &#x27;timeout&#x27;, timeout
-
-def rrf(path_results, k=60, limit=20):
-    scores, store, degraded = {}, {}, []
-    for name, weight, items, status, _ in path_results:
-        if status != &#x27;ok&#x27;:
-            degraded.append(name)
-        for rank, hit in enumerate(items, 1):
-            key = hashlib.md5((hit.doc_id + hit.text[:64]).encode()).hexdigest()
-            store[key] = hit
-            scores[key] = scores.get(key, 0.0) + weight / (k + rank)
-    ranked = sorted(scores.items(), key=lambda x: -x[1])[:limit]
-    return [store[key] for key, _ in ranked], degraded
-
-async def search(query, paths):
-    results = await asyncio.gather(*[
-        run_path(name, fn, query, timeout, weight)
-        for name, fn, timeout, weight in paths
-    ])
-    hits, degraded = rrf(results)
-    return {&#x27;hits&#x27;: hits, &#x27;degraded&#x27;: degraded}</code></div><p class="sub">真实场景</p><p>某项目的 RAG 检索由向量、BM25、图谱三路并发组成，平时总 p95 在预算内。某段时间夜间索引重建，BM25 路偶发超时，接口仍返回 200，总延迟看起来正常，但客服反馈长尾问题答案变窄。排查 trace 发现 lexical 路 hits=0 且没有失败标记，RRF 融合后 top-10 几乎全由向量路贡献，融合前后重叠率异常升高。进一步做单路故障注入，复现了召回覆盖下降。修复后为每路增加超时预算和 status 字段，融合层输出 degraded 列表，并对 BM25 失败率设置告警和缓存 fallback。</p><div class="diagram"><pre class="mermaid">flowchart TD
-    Q[用户查询] --&gt; V[向量召回]
-    Q --&gt; B[BM25 召回]
-    Q --&gt; G[图谱召回]
-    V --&gt; S[分路结果与状态]
-    B --&gt; S
-    G --&gt; S
-    S --&gt; F[RRF 融合]
-    S --&gt; D[缺失路标记]
-    D --&gt; F
-    F --&gt; R[重排与生成]
-    F --&gt; M[分路指标与告警]</pre></div><p class="sub">面试官追问</p><div class="qa"><p><strong>Q：</strong>RRF 和加权分数融合应该怎么选？</p><p><strong>A：</strong>异构召回器的分数量纲和分布通常不可比，RRF 只用排名，冷启动和线上漂移更稳；加权分数融合需要归一化或学习校准，维护成本高。可以先用 RRF 融合，再用轻量 rerank 统一打分。</p><p><strong>Q：</strong>单路超时阈值怎么定才合理？</p><p><strong>A：</strong>从总检索预算反推，结合每路 p99 延迟和对最终答案的离线贡献度分配；高贡献路给更大预算并设置熔断，低贡献路可快速失败。用故障注入验证不同超时下的召回和答案质量。</p></div></section><section class="q" id="rag-20261123-02"><h2><span class="no">06</span>百万 token 长上下文把整本手册塞进 prompt 后成本翻倍且引用对不上：RAG 与长文直塞的路由边界怎么定</h2><p class="meta-line">资深 ｜ <span class="tag">长上下文</span><span class="tag">成本建模</span><span class="tag">路由</span><span class="tag">引用可验证</span> ｜ <a href="https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md" target="_blank" rel="noopener">面经来源 ↗</a></p><p class="sub">为什么会有这个问题</p><p>长上下文模型扩大了单次可输入的 token 上限，但窗口大小不等于有效可用上下文。把整本手册直接塞进 prompt 会带来 prefill 成本、首 token 延迟、注意力稀释、引用无法回溯和更新不经济等问题。常见错误是用离线 demo 的汇总效果决定线上架构，忽略 prefix cache 需要稳定前缀，文档顺序每次变化导致缓存不命中；引用由模型自由生成，无法映射回原文 section，最终出现答案看似完整但页码和条款对不上。</p><p class="sub">怎么做</p><ol class="steps"><li>先做查询分类和路由表：lookup、compare、summarize 三类查询分别评估 RAG、长文直塞、混合模式的效果与成本；路由输入包括候选文档 token 数、更新频率、引用要求和延迟预算。</li><li>建立单请求成本模型：input_tokens × 输入单价 × cache_miss 比例 + output_tokens × 输出单价 + 检索与重排成本；长文直塞要固定文档顺序和前缀以命中 prefix cache，否则每次请求都在重复 prefill。</li><li>长文直塞的工程约束：文档预处理为带 section_id 和 offset 的结构，prompt 中保留可引用 id；超过 token 预算时走 map-reduce 摘要，摘要结果仍保留来源 id；输出流式返回并设置超时降级。</li><li>构建分层评测集：lookup、compare、summarize 分别评估 answer accuracy、citation precision、cost per resolved query、p95 TTFT；用 A/B 路由对比长文直塞和 RAG，不只看窗口大小或单次演示。</li><li>设置回退链路：长文直塞超时或超预算时回退 RAG；RAG 证据不足且查询属于汇总类时再升级长文；每次路由决策记录 mode、token 用量和降级原因。</li><li>按文档更新频率选择策略：高频变更的 FAQ 走 RAG 增量索引，静态手册可长文直塞加 prefix cache；权限过滤仍在检索层完成，不能把无权限文档塞进长上下文。</li></ol><div class="code"><code>PRICE_IN = 0.5 / 1_000_000
-PRICE_OUT = 2.0 / 1_000_000
-RETRIEVAL_COST = 0.0002
-
-def estimate_tokens(text: str) -&gt; int:
-    return max(1, len(text) // 3)
-
-def classify(query: str) -&gt; str:
-    if &#x27;对比&#x27; in query or &#x27;区别&#x27; in query:
-        return &#x27;compare&#x27;
-    if &#x27;总结&#x27; in query or &#x27;汇总&#x27; in query:
-        return &#x27;summarize&#x27;
-    return &#x27;lookup&#x27;
-
-def route(query, docs, cache_hit=False):
-    total_tokens = sum(estimate_tokens(d.text) for d in docs)
-    qtype = classify(query)
-    if qtype == &#x27;lookup&#x27; or total_tokens &gt; 200_000:
-        return {&#x27;mode&#x27;: &#x27;rag&#x27;, &#x27;reason&#x27;: &#x27;精确问答或超预算&#x27;}
-    input_price = PRICE_IN * (0.1 if cache_hit else 1.0)
-    long_cost = total_tokens * input_price + 600 * PRICE_OUT
-    rag_cost = RETRIEVAL_COST + 8_000 * input_price + 600 * PRICE_OUT
-    if long_cost &lt;= rag_cost * 1.5:
-        return {&#x27;mode&#x27;: &#x27;long_context&#x27;, &#x27;tokens&#x27;: total_tokens, &#x27;cost&#x27;: long_cost}
-    return {&#x27;mode&#x27;: &#x27;rag&#x27;, &#x27;cost&#x27;: rag_cost}</code></div><p class="sub">真实场景</p><p>某项目知识库以产品手册和 FAQ 为主，团队尝试用百万 token 长上下文直接替代检索。离线汇总类问题效果变好，但线上 p95 首 token 延迟上升、单请求成本明显增加，回答中的页码和条款经常对不上。排查发现每次 prompt 的文档顺序不同，prefix cache 基本不命中；引用是模型自由生成而非 section_id 映射；lookup 类问题也被路由到长文直塞。修复后按查询类型路由，固定长文前缀并启用缓存，引用改为 section_id 映射，lookup 回退 RAG，并设置 token 预算和超时降级。</p><p class="sub">面试官追问</p><div class="qa"><p><strong>Q：</strong>长上下文模型会不会让 RAG 消失？</p><p><strong>A：</strong>不会。RAG 解决索引、权限、更新、成本和可验证性问题；长上下文是另一种取数方式。更合理的架构是按查询类型和成本在 RAG、长文直塞、混合模式之间路由。</p><p><strong>Q：</strong>如何避免长文直塞的引用幻觉？</p><p><strong>A：</strong>预处理保留 section_id 和 offset，要求模型只输出 id，由服务端映射回原文；无 id 或映射失败的引用直接拒答或降级；离线用 citation precision 做回归评估。</p></div></section><section class="q" id="rag-20261123-03"><h2><span class="no">07</span>PDF 里的图表和扫描页接进 RAG 后，文本题反而被答错：多模态 Embedding、图片转描述与重嵌入成本怎么取舍</h2><p class="meta-line">资深 ｜ <span class="tag">multimodal-embedding</span><span class="tag">chunking</span><span class="tag">选型</span><span class="tag">成本建模</span> ｜ <a href="https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md" target="_blank" rel="noopener">文档来源 ↗</a></p><p class="sub">为什么会有这个问题</p><p>线上知识库很少是干净的纯文本：PDF、扫描件、PPT 里大量关键信息在表格、架构图、截图里。纯文本抽取会丢（表格被打散成乱序 token，图片直接丢弃），团队于是想一步到位，把每页渲染成图片、用多模态模型编码后塞进同一个 collection。常见认知错误是「同一维度就能比较」：如果文本块用文本编码器、图片块用另一个多模态编码器，即便维度相同，向量分布也不在同一空间，跨模态相似度没有可比性，阈值和 top-k 全失效；更隐蔽的后果是图片块在高相似区间挤占名额，原本能答对的文本题反而答错。另一条错误路线是只做 OCR 转文本，图表语义丢了，检索命中了也答不出。此外图片的分辨率决定视觉 token 与重嵌入耗时，全量重渲染会把更新链路拖慢一个量级。</p><p class="sub">怎么做</p><ol class="steps"><li>先按文档类型和真实 query 意图分层：统计哪些问题必须靠视觉证据（图表数值、版式、示意图），哪些用文本足够；只对前者投入视觉链路，避免全量上图片。</li><li>两条路线并列评估并量化：路线 A 用同一多模态编码器对文本块与图片块编码（同空间可比）；路线 B 用视觉模型把图表转成结构化描述（表格转 markdown、图转要点），与图注、邻近正文一起编码。对比维度固定为：图表类问题的 recall、单文档 ingestion 成本、重嵌入耗时、生成侧视觉 token 成本、可解释性。</li><li>推荐混合落地：图片走多模态向量召回候选，命中后再把原图（按需裁剪、降分辨率）送生成模型；低风险类别（如流程图类问答）用路线 B 的文本描述兜底。</li><li>分块上采用父子结构：图片与其 caption、上下文段落绑定为一个父块，图片向量作为子块，检索命中子块后返回父块全文给生成侧，保证上下文完整。</li><li>存储分层：图片二进制放对象存储，向量库 payload 只放 uri、模态标识、父块 id 与页码，不要把 base64 塞进 payload，否则集合膨胀且影响快照与备份。</li><li>检索端加模态配额（quota）：文本与图片分别检索后再合并，限制图片块最多占 top-k 的一定比例，避免单一模态淹没结果。</li><li>重嵌入与切换：新模态单独建 collection 并影子双跑，用同一套评测集对比「原文本链路」与「新链路」在文本题上的 recall 不掉、图表题 recall 提升，达标再切流量。</li><li>把 ingestion 做成可增量：只对变更页重渲染，记录每页的渲染参数（dpi、裁剪框）作为版本，避免改一次模型就全量重跑。</li></ol><div class="code"><code>def ingest_page(page, doc_id):
-    rows = []
-    for blk in page.blocks:
-        parent = f&quot;{doc_id}#{blk.parent_idx}&quot;
-        if blk.type == &quot;text&quot;:
-            for ch in split(blk.text, size=400, overlap=60):
-                rows.append({&quot;kind&quot;: &quot;text&quot;, &quot;parent&quot;: parent,
-                             &quot;text&quot;: ch, &quot;vec&quot;: mm_embed_text(ch)})
-        else:
-            uri = blob.put(render_png(blk, dpi=150))
-            desc = vlm_describe(uri) if blk.type == &quot;table&quot; else blk.caption
-            rows.append({&quot;kind&quot;: &quot;image&quot;, &quot;parent&quot;: parent, &quot;uri&quot;: uri,
-                         &quot;text&quot;: desc, &quot;vec&quot;: mm_embed_image(uri)})
-    return rows
-
-def search(q, k=8, image_quota=0.4):
-    v = mm_embed_text(q)
-    text_hits = store.search(v, k, flt={&quot;kind&quot;: &quot;text&quot;})
-    image_hits = store.search(v, k, flt={&quot;kind&quot;: &quot;image&quot;})
-    n_img = min(len(image_hits), int(k * image_quota))
-    return text_hits[: k - n_img] + image_hits[:n_img]</code></div><p class="sub">真实场景</p><p>某项目的产品文档库里约三成页面含表格或架构图，用户高频问「这张表里 A 和 B 的参数差异」「这个流程图里失败分支走哪」。纯文本链路对这类问题经常答成泛泛描述。团队随后把每页渲染成 PNG、用多模态模型编码，与文本块混写同一 collection。上线后典型现象是：图表类问题略有好转，但原先答得对的纯文本题开始答错，且 top-k 里大量是整页图片块；同时每次文档更新都要全量重渲染重编码，更新延迟从小时级变成隔天。排查路径：把评测集按「文本题 / 图表题」拆成两条曲线分别看 recall，再看 top-k 结果里的模态分布与相似度分布，会发现图片块在中间相似度区间堆积，把文本块挤出名额；同时比对文本块与图片块所用编码器是否同一个，确认向量是否同空间可比。</p><div class="diagram"><pre class="mermaid">flowchart TD
-  A[原始文档页] --&gt; B{块类型判断}
-  B --&gt;|文本块| C[文本编码器生成向量]
-  B --&gt;|表格或图片| D[渲染为图片存入对象存储]
-  D --&gt; E[多模态编码器生成图片向量]
-  D --&gt; F[视觉模型生成结构化描述]
-  F --&gt; C
-  C --&gt; G[写入集合 带模态与父块标识]
-  E --&gt; G
-  G --&gt; H[检索时按模态分配召回名额]
-  H --&gt; I[命中图片则按需回传原图给生成侧]</pre></div><p class="sub">面试官追问</p><div class="qa"><p><strong>Q：</strong>多模态 Embedding 和「图片转文本描述」两条路，你怎么量化选型？</p><p><strong>A：</strong>用同一套按题型分层的评测集对比：图表数值类、版式理解类、普通文本类分别看 recall 与最终答案正确率；再叠加成本项——图片编码的算力、存储体积、重嵌入耗时，以及生成侧是否必须回传原图（视觉 token 成本）。结论通常不是二选一，而是图片向量负责召回、文本描述负责兜底与可解释，按题型路由。</p><p><strong>Q：</strong>同一 collection 混模态，怎么防止一类挤占另一类的 top-k？</p><p><strong>A：</strong>不要让不同模态直接混排：检索时按模态分别查询再做配额合并，或使用 named vector 分字段检索；此外为每个模态单独标定阈值，因为两个编码器（或同编码器不同模态）的相似度分布尺度不同，共用一个阈值必然出现一侧过召回一侧欠召回。</p></div></section><section class="q" id="rag-20261123-04"><h2><span class="no">08</span>语义缓存上线后成本降了，却出现答案过时和跨客户串答案：缓存键、阈值与定向失效怎么设计</h2><p class="meta-line">进阶 ｜ <span class="tag">semantic-cache</span><span class="tag">多租户隔离</span><span class="tag">缓存失效</span><span class="tag">成本优化</span> ｜ <a href="https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md" target="_blank" rel="noopener">面经来源 ↗</a></p><p class="sub">为什么会有这个问题</p><p>RAG 的成本与延迟大头在生成侧，语义缓存（对 query 向量做近邻匹配、命中即复用历史答案）是最直接的降本手段。问题在于「query 向量相似」不等于「答案等价」：否定词（要不要 / 需不需要）、时间与版本限定（新政策 vs 旧政策）、实体替换（换成另一个产品名或套餐）、权限范围不同的租户，向量距离都可能很近。常见错误有三类：一是只用单一相似度阈值就上线，没有做实体与约束一致性校验；二是缓存键里只放 query，没带 tenant、知识库版本、prompt 与模型版本，导致越权复用和版本漂移；三是失效策略只有统一 TTL，知识库更新后旧答案还会继续回放很久。另一个隐性错误是把「命中率」当收益指标，没有扣掉命中后的差评与不一致率。</p><p class="sub">怎么做</p><ol class="steps"><li>明确缓存作用域（scope）：归一化后的 query + tenant_id + 权限范围 + 知识库版本 + 模型/prompt 版本，任一维度变化一律视为未命中，从结构上杜绝越权与版本漂移。</li><li>做两级判定：先向量近邻取 top-n 候选，再对候选做约束一致性校验——数字、日期、专有实体、否定词方向是否一致，不一致直接跳过，宁可回源。</li><li>阈值不靠拍脑袋：构建等价/不等价 query 对标注集，扫阈值看 precision-recall 曲线，按业务错答成本定阈值；高风险类目（计费、合规、合同条款）直接禁用缓存或要求近乎文本级匹配。</li><li>定向失效：缓存条目记录其答案引用的 doc_id/chunk_id 集合，文档更新时反查受影响的条目批量删除；统一 TTL 只作为兜底，不作为主要手段。</li><li>影子与灰度：先以影子模式只记录「若命中则返回什么」，与线上实时答案比对，统计不一致率与差评率，再放量到低风险类目。</li><li>观测口径：同时看命中率、命中后的负反馈率、缓存答案与实时答案的一致率、以及分租户的命中分布，避免某一租户命中异常。</li><li>降级设计：缓存层超时或不可用时直接跳过，主链路不受影响；缓存写入异步化，不阻塞首字节响应。</li></ol><div class="code"><code>SCOPE = (&quot;tenant_id&quot;, &quot;kb_version&quot;, &quot;prompt_version&quot;)
-
-def lookup(q, ctx):
-    cat = classify(q)
-    if cat in NO_CACHE_CATEGORIES:
+def admit(cand, existing, sim, min_imp=0.55, dup=0.92):
+    if cand.importance &lt; min_imp:
         return None
-    cands = idx.search(embed(normalize(q)), k=5,
-                       flt={k: ctx[k] for k in SCOPE})
-    for c in cands:
-        if c.score &lt; THRESHOLD[cat]:
+    if cand.kind == &#x27;episode&#x27; and cand.importance &lt; 0.7:
+        return None
+    for e in existing:
+        if e.active and sim(cand.text, e.text) &gt; dup:
+            return None
+    return cand
+
+def recall(qvec, items, embed, cosine, now=None, k=5):
+    now = now or time.time()
+    out = []
+    for m in items:
+        if not m.active:
             continue
-        if not constraints_ok(normalize(q), c.query):
+        if m.ttl and now - m.created_at &gt; m.ttl:
             continue
-        return CacheHit(answer=c.answer, cite=c.cited_doc_ids)
-    return None
+        rel = cosine(qvec, embed(m.text))
+        if rel &lt; 0.35:
+            continue
+        rec = 0.5 ** ((now - m.created_at) / 86400 / 30)
+        score = 0.62 * rel + 0.23 * m.importance + 0.15 * rec
+        out.append((score, m))
+    out.sort(key=lambda x: -x[0])
+    return [m for _, m in out[:k]]</code></div><p class="sub">真实场景</p><p>某项目 Agent 上线两个月后用户反馈“它记得乱七八糟的偏好”，同时首 token 延迟上升、context token 持续增长。抽样被召回的记忆发现：同一偏好有多个措辞重复条目、旧偏好没有失效、一次性闲聊被写成长期记忆，且注入的记忆 token 占比明显上升。排查路径是先把召回结果按来源和写入时间分组，统计重复率与过期率，再回看写入日志确认闸门缺失；修复后改为分层存储、写入去重和 entity+attribute 版本替换，并加召回预算裁剪。</p><div class="diagram"><pre class="mermaid">flowchart TD
+  A[会话事件] --&gt; B[写入候选抽取]
+  B --&gt; C{重要度与去重校验}
+  C --&gt;|不通过| D[丢弃或降级为短期]
+  C --&gt;|通过| E[冲突检测与版本替换]
+  E --&gt; F[分层存储 工作记忆 情景记忆 语义记忆]
+  F --&gt; G[召回多路打分]
+  G --&gt; H[重排与预算裁剪]
+  H --&gt; I[注入上下文]</pre></div><p class="sub">面试官追问</p><div class="qa"><p><strong>Q：</strong>用户说“以后都用中文回答”，这类偏好和临时指令怎么区分？</p><p><strong>A：</strong>偏好写入 semantic memory，带 scope（全局/项目/会话）与 source；临时指令只进 working memory。召回时按 scope 过滤，冲突时项目级覆盖全局级，会话级指令默认不落长期库。</p><p><strong>Q：</strong>记忆删除与合规怎么做？</p><p><strong>A：</strong>每条记忆带 subject_id 与 provenance，支持按用户/会话级联删除；向量库与原文库双删，删除走异步任务并记录墓碑，防止重建索引时复活。</p></div></section><section class="q" id="agent-20261124-02"><h2><span class="no">02</span>Prompt Caching 命中率骤降：上下文拼装顺序与工具大结果外置怎么改</h2><p class="meta-line">进阶 ｜ <span class="tag">prompt-caching</span><span class="tag">上下文工程</span><span class="tag">成本优化</span><span class="tag">MCP</span> ｜ <a href="https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/12-frameworks-tools/README.md" target="_blank" rel="noopener">面经来源 ↗</a></p><p class="sub">为什么会有这个问题</p><p>Prompt Caching 按前缀逐字节匹配，只有稳定前缀完全一致才命中；很多实现把当前时间、用户额度、随机 id 拼进 system，或工具 schema 由未排序 dict 序列化，导致每轮前缀都变，缓存写入有溢价却几乎不命中。另一个常见错误是让 MCP 工具返回的大 JSON 原样进历史，后续每轮重复计费并挤占上下文。缓存不是打开开关就省钱，它依赖上下文拼装纪律。</p><p class="sub">怎么做</p><ol class="steps"><li>给每次请求算稳定前缀哈希（system、工具 schema、few-shot、历史），日志记录 prefix_hash 与 cache_read/cache_creation token；采样两轮请求做首个差异位置 diff，定位是谁在污染前缀。</li><li>重排上下文：静态 system 与工具定义放最前，工具按 name 稳定排序；历史 append-only；当前时间、用户配额、随机 id 等动态字段后置到 user 消息；会话中不改 system。</li><li>在稳定段末尾设置 cache breakpoint（按 provider 支持），保证断点前内容逐字节一致；工具 schema 走规范化 JSON 序列化，避免 dict 顺序漂移。</li><li>工具大结果外置：超过阈值（如 8KB）落对象存储，上下文只放摘要、句柄与关键字段；需要细节时通过单独的 fetch 工具按行号/JSONPath 取片段。</li><li>监控缓存命中率与单位请求成本并设回归告警；多租户场景缓存键要带 tenant，防止跨租户复用与数据泄露。</li></ol><div class="code"><code>from hashlib import sha256
 
-def constraints_ok(qn, cn):
-    if has_negation(qn) != has_negation(cn):
-        return False
-    return extract_slots(qn) == extract_slots(cn)
+def render_tools(tools):
+    return &#x27;\n&#x27;.join(f&quot;{t[&#x27;name&#x27;]}: {t[&#x27;description&#x27;]}&quot; for t in tools)
 
-def invalidate(doc_ids):
-    for e in idx.scan(flt={&quot;cited_doc_ids&quot;: {&quot;any&quot;: doc_ids}}):
-        idx.delete(e.id)</code></div><p class="sub">真实场景</p><p>某项目的问答接口在高峰期成本压力大，接入语义缓存后整体调用量与平均延迟明显下降。随后客服侧反馈两类问题：政策类问题返回的是旧版本说法；个别客户看到明显属于其他客户的方案细节。排查路径：先抽查被判为命中的样本，会发现两条 query 仅产品名不同但相似度远高于设定阈值；再查缓存 payload，发现缓存键里没有 tenant 与知识库版本字段；最后查失效链路，文档更新后条目仍在，只能等统一 TTL 过期。关键指标是对比「缓存答案」与「强制回源答案」的不一致率，以及命中样本的负反馈率——命中率上升但这两个指标同步恶化，说明阈值与 scope 设计有问题，而不是缓存本身不该用。</p><p class="sub">面试官追问</p><div class="qa"><p><strong>Q：</strong>命中率涨了但差评也涨了，怎么确认是缓存导致的？</p><p><strong>A：</strong>做两组对照：一是影子回源，对命中样本同时算一次实时答案，比对不一致率并按类目拆分；二是按是否命中分桶看负反馈率，若命中桶显著高于未命中桶且集中在特定类目（政策、价格、权限相关），即可归因。再抽不一致样本看相似度分布，判断是阈值过低还是 scope 缺字段。</p><p><strong>Q：</strong>文档更新后，怎么让相关缓存条目及时失效而不是等 TTL？</p><p><strong>A：</strong>在缓存条目里落答案的引用来源（doc_id/chunk_id），知识库更新事件触发时按来源反查删除；对无法精确归因的条目按知识库版本整体提升 version 使旧条目自然失效（scope 不匹配），TTL 只做兜底。同时保留一个可开关的「高风险类目不走缓存」白名单用于事故止血。</p></div></section><div class="topic-head"><span>FastAPI 专题</span></div><section class="q" id="fastapi-20261123-01"><h2><span class="no">09</span>流式响应发出 200 后上游报错：SSE 错误帧、结束标记与断开感知怎么补</h2><p class="meta-line">资深 ｜ <span class="tag">StreamingResponse</span><span class="tag">SSE</span><span class="tag">异常处理</span><span class="tag">LLM 流式</span></p><p class="sub">为什么会有这个问题</p><p>StreamingResponse 一旦开始发送，HTTP 状态码和 headers 已经写给客户端；如果异常发生在 async generator 内部，Starlette 无法再把响应改成 500，全局 exception_handler 也不会按预期接管。常见错误是直接在 generator 里 raise HTTPException，或者只依赖连接关闭表示结束。结果是客户端收到 200 加半截内容，把截断当正常完成；服务端 5xx 指标几乎不动，但用户重复提交、上游 token 继续计费。</p><p class="sub">怎么做</p><ol class="steps"><li>先定协议：流内至少区分 token、error、done 三类事件，done 是唯一成功结束标志；error 帧带 code、retryable、request_id，客户端据此决定重试还是提示。</li><li>在 generator 内部 try/except：上游异常转成 error 帧后正常结束，不要 raise；finally 里关闭上游流并记录 usage，避免已断开还在计费。</li><li>显式感知断开：循环中检查 request.is_disconnected()，并捕获 asyncio.CancelledError；断开时 cancel 上游任务，不要只等 finally。</li><li>处理代理缓冲：返回 text/event-stream，设置 Cache-Control: no-cache、X-Accel-Buffering: no，对 event-stream 关闭 gzip，并周期性发心跳注释帧。</li><li>观测口径：单独统计首 token 延迟、流时长、error 帧比例、客户端断开率；不要把流内 error 混进 5xx 告警，否则故障不可见。</li></ol><div class="code"><code>from fastapi import FastAPI, Request
-from fastapi.responses import StreamingResponse
-import asyncio, json
+def build_prompt(system_static, tool_schemas, history, user_input):
+    tools = sorted(tool_schemas, key=lambda t: t[&#x27;name&#x27;])
+    msgs = [
+        {&#x27;role&#x27;: &#x27;system&#x27;, &#x27;content&#x27;: system_static},
+        {&#x27;role&#x27;: &#x27;system&#x27;, &#x27;content&#x27;: render_tools(tools)},
+    ]
+    msgs.extend(history)
+    msgs.append({&#x27;role&#x27;: &#x27;user&#x27;, &#x27;content&#x27;: user_input})
+    return msgs
 
-app = FastAPI()
+def compact_tool_result(text, store, limit=8000):
+    if len(text) &lt;= limit:
+        return text
+    key = sha256(text.encode()).hexdigest()[:16]
+    store.put(key, text)
+    head = text[:limit]
+    return f&#x27;ref={key} total={len(text)}\n{head}&#x27;
 
-async def gen(req: Request, prompt: str):
-    upstream = None
+def log_prefix_hash(msgs):
+    blob = &#x27;&#x27;.join(m[&#x27;content&#x27;] for m in msgs)
+    return sha256(blob.encode()).hexdigest()[:12]</code></div><p class="sub">真实场景</p><p>某项目接入 Prompt Caching 后账单没有下降，p50 延迟反而上升，监控里 cache_read_input_tokens 长期接近于零。抓两轮请求体做 diff，发现 system 中拼了当前时间和用户额度，工具 schema 每次由未排序 dict 序列化；另有一个 MCP 工具返回大 JSON 直接进历史，后续每轮重复计费。排查路径是记录 prefix_hash、定位首个差异字节、改上下文顺序并规范化 schema，同时把大结果外置为句柄，命中率恢复后单位请求成本才下降。</p><div class="diagram"><pre class="mermaid">flowchart TD
+  A[请求拼装] --&gt; B[稳定段 系统提示与工具 schema]
+  B --&gt; C[缓存断点]
+  C --&gt; D[追加式会话历史]
+  D --&gt; E[动态段 当前时间与用户输入]
+  E --&gt; F[工具大结果外置为引用]
+  F --&gt; G[调用模型]
+  G --&gt; H[记录前缀哈希与缓存命中指标]</pre></div><p class="sub">面试官追问</p><div class="qa"><p><strong>Q：</strong>外置后模型需要看完整结果怎么办？</p><p><strong>A：</strong>增加 fetch 工具，用 handle + 行号/JSONPath 分段读取，单次返回有上限；对高频小结果不落盘，设阈值和命中统计，避免为省 token 增加一轮工具调用。</p><p><strong>Q：</strong>缓存写入有溢价，怎么判断值不值？</p><p><strong>A：</strong>按 cache_creation 与 cache_read 的单价和 TTL 算盈亏平衡次数；长 system、多轮工具调用场景收益明显，短会话或前缀不稳定时关闭。用 prefix_hash 命中率和单位请求成本做灰度对照。</p></div></section><section class="q" id="agent-20261124-03"><h2><span class="no">03</span>Memory 检索预算被长会话吃穿：召回窗口、压缩与写回时机怎么权衡</h2><p class="meta-line">资深 ｜ <span class="tag">memory</span><span class="tag">上下文工程</span><span class="tag">成本控制</span><span class="tag">召回质量</span> ｜ <a href="https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/22-agent-planning-reflection/README.md" target="_blank" rel="noopener">面经来源 ↗</a></p><p class="sub">为什么会有这个问题</p><p>Agent 的 Memory 常被误当成「把历史都塞进向量库就行」，真实工程里它同时受三方面挤压：一是 token 预算固定而会话轮次线性增长，召回条目与系统提示、工具结果争抢同一窗口；二是写入端没有准入标准，模型随手生成的总结、失败的工具调用残留、用户的口误全被固化，后续召回被这些噪声占满；三是召回端用同一套 top-k 应对所有问题，导致「查偏好」拿到一堆流程日志，「查进度」却只拿到闲聊。更隐蔽的是写入时机：多数实现让 Agent 在每轮结束时异步总结，若总结任务与主流程共享同一份上下文快照，重试或并发会让同一事实写入多份互相矛盾的版本，召回时冲突无人裁决。</p><p class="sub">怎么做</p><ol class="steps"><li>先给 Memory 分层并明确各层的预算上限：工作记忆（当前会话窗口，按 token 硬上限计算，如占模型窗口的 60%）、情景记忆（会话摘要 + 关键事件，按条数与字节双限）、语义记忆（用户偏好、稳定事实，条数少但要求高置信）。每层独立配额，任一层的溢出不得挤占其它层。</li><li>写入端做准入闸门：只有满足「事实性、稳定性、可复用」三条的内容才允许持久化；工具原始返回、报错堆栈、模型臆测统一丢弃。写入前做实体与谓词归一化（如把「喜欢简短回答」「回复要短一点」归到同一 key），用 (entity, predicate) 做幂等键，冲突时按时间戳 + 来源可信度裁决，旧版本置为 superseded 而不是删除。</li><li>召回端改成按意图路由的多路召回，而不是固定 top-k：先用一个轻量分类（或规则）判断本轮是查偏好、查历史进度、还是查外部知识，各路使用不同的检索器与配额；召回结果必须过一次重排与去重，再做「与当前问题是否相关」的 LLM 二判，剔除噪声后再拼进上下文，且拼装顺序固定（稳定事实在前、易变状态在后）以保住前缀缓存。</li><li>压缩策略要在会话内周期性触发而不是等到超窗报错：保留最近 N 轮原文 + 一份滚动摘要，摘要只写决策、结论、未完成事项与用户明确约束，不写过程；摘要本身标记为派生数据，可重算，避免成为不可回滚的污染源。</li><li>设置可观测指标并设回归用例：记录每次召回的命中率（召回条目被模型实际引用）、噪声率（被判不相关而丢弃的比例）、每轮平均 memory token 占比、冲突裁决次数。用一组固定脚本会话做回归，改动写入或召回策略后重跑，比较答案正确率与 token 成本。</li></ol><div class="code"><code>def build_context(user_query, session, mem_store):
+    kind = classify_intent(user_query)
+    routes = {
+        &quot;preference&quot;: (&quot;semantic&quot;, 5),
+        &quot;progress&quot;:   (&quot;episodic&quot;, 3),
+        &quot;fact&quot;:       (&quot;semantic&quot;, 3),
+    }
+    layer, k = routes.get(kind, (&quot;episodic&quot;, 3))
+
+    cands = mem_store.search(layer, user_query, top_k=k * 3, status=&quot;active&quot;)
+    cands = dedup_by_key(cands)
+    kept = [c for c in cands if judge_relevant(user_query, c)][:k]
+
+    stable = [c for c in kept if c[&quot;layer&quot;] == &quot;semantic&quot;]
+    volatile = [c for c in kept if c[&quot;layer&quot;] != &quot;semantic&quot;]
+    recent = session.recent_turns(n=3)
+    summary = session.rolling_summary()
+
+    return assemble(system=session.system_prompt,
+                    facts=stable,
+                    state=summary,
+                    turns=recent,
+                    volatile=volatile,
+                    budget=session.token_budget)
+
+def maybe_write(session, fact, source):
+    if not is_stable_fact(fact):
+        return
+    key = normalize(fact)
+    old = mem_store.get(key)
+    if old and old[&quot;value&quot;] == fact.value:
+        return
+    mem_store.upsert(key, fact.value, source=source,
+                     supersedes=old[&quot;id&quot;] if old else None)</code></div><p class="sub">真实场景</p><p>某项目把 Agent 的 Memory 直接接到向量库，写入端每轮自动总结、召回端固定 top-8。上线一个月后出现典型症状：会话到第 15 轮左右开始答非所问，用户重复说过的偏好在被纠正后仍然出现旧版本；同一批回归用例上，memory 相关 token 占比从十二三成涨到占满上下文，首字延迟明显上升，但人工抽查发现召回的条目大半和当前问题无关。排查路径：先按层拆分 token 占比，确认是情景记忆无限膨胀而非系统提示变长；再抽样 50 条写入记录，发现大量工具原始返回与失败调用被总结成「用户希望重试」这类伪事实；最后复现出冲突场景——同一 key 存在三条不同值的 active 记录，检索时按向量相似度取到了旧的那条。改为分层配额 + 写入准入 + 按意图路由召回后，无关召回比例与每轮 memory token 都明显下降，纠正后的偏好能稳定生效。</p><div class="diagram"><pre class="mermaid">flowchart TD
+  A[用户本轮输入] --&gt; B[意图分类]
+  B --&gt; C{查偏好/查进度/查知识}
+  C --&gt; D[语义记忆召回]
+  C --&gt; E[情景记忆召回]
+  D --&gt; F[去重与相关性二判]
+  E --&gt; F
+  F --&gt; G[分层配额拼装上下文]
+  G --&gt; H[模型生成]
+  H --&gt; I{是否产生稳定事实}
+  I --&gt;|是| J[准入校验与幂等写入]
+  I --&gt;|否| K[丢弃]
+  J --&gt; L[冲突裁决 旧版本置为 superseded]</pre></div><p class="sub">面试官追问</p><div class="qa"><p><strong>Q：</strong>滚动摘要和原始对话冲突时，模型该信哪一个？你怎么在上下文里表达这种优先级？</p><p><strong>A：</strong>优先原始近期对话，摘要是派生数据、只作背景。实现上在拼装时给两类内容加显式区段标题（如「以下是较早会话的摘要，可能不完整」与「以下是最近的实际对话」），并在系统提示里声明冲突时的取值顺序；同时对摘要里提到的关键结论保留原文引用（消息 id 或时间戳），当模型引用摘要结论时可回溯到原始消息校验。若摘要与原文矛盾且影响到最终答案，则触发一次轻量重算，用原始消息重建摘要而不是让模型自行调和。</p><p><strong>Q：</strong>如果为了省 token 把 memory 检索做成异步预取，会不会引入「用了上一轮上下文」的错误？</p><p><strong>A：</strong>会，这是典型的时序错配。关键在于区分「与当前 query 无关、可预取的稳定层」和「必须依赖当前 query 的召回」：语义记忆中的用户画像、权限、长期偏好在会话开始即可一次性载入，属于可预取部分；而意图相关的召回必须在本轮 query 确定后同步执行。预取结果要打上 session 版本号，若本轮已经发生写入导致版本前进，则丢弃预取结果回退到同步召回，宁可多一次检索延迟也不要答错。</p></div></section><section class="q" id="agent-20261124-04"><h2><span class="no">04</span>运行时动态编排的 Agent 花在选择上：路由漂移、并行收益与预算回收怎么控</h2><p class="meta-line">资深 ｜ <span class="tag">multi-agent</span><span class="tag">动态编排</span><span class="tag">延迟成本</span><span class="tag">质量回归</span> ｜ <a href="https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/13-multi-agent-systems/README.md" target="_blank" rel="noopener">面经来源 ↗</a></p><p class="sub">为什么会有这个问题</p><p>固定拓扑的多 Agent 容易调，但覆盖不了任务复杂度差异巨大的流量，于是很多团队引入运行时动态编排：由一个规划器在每一步决定调用哪个子 Agent、串行还是并行、要不要追加一轮。问题随之而来。第一，路由决策本身是不稳定的——同一输入在不同时刻可能被分到不同子 Agent，温度、工具描述微调、上下文顺序变化都会让分布漂移，线上表现为「同样的工单昨天走两个 Agent，今天走五个」。第二，规划器只看语义不看预算，容易把可并行的子任务串行化，或在已经拿到足够信息后继续追加验证轮，延迟与成本随步数指数式放大。第三，并行分支的失败语义不统一：一个分支超时到底算整体失败还是降级返回部分结果，没有约定就会出现半成品答案被当成完整答案输出。第四，动态拓扑让 trace 无法对齐，出了问题只能看到一串无层级的调用，无法归因到是哪次路由决策导致的劣化。</p><p class="sub">怎么做</p><ol class="steps"><li>把「动态」限制在可控空间里：预先声明可用的子 Agent 集合、每个 Agent 的能力标签、输入输出契约与成本档位（模型、平均 token、典型耗时），规划器只能在这个注册表里做选择，不能凭空生成新角色。路由决策输出结构化对象（agent_id、并行分组、预算上限），而不是自由文本。</li><li>给每次编排设总预算与逐步预算：总预算按 token 与 wall-clock 双维度设上限，每进入一步先扣减；当剩余预算低于某个比例时，规划器被强制切换到「收敛模式」（只允许调用最快的 Agent 或直接由主模型作答）。并行分组要有扇出上限，避免一个分组把全部 Agent 拉起来。</li><li>统一并行分支的失败语义：把分支结果建模为 ok / partial / failed 三态并携带置信与缺失字段；聚合器按契约判断是否满足最小可交付集合，不满足则降级为「说明缺失 + 给出部分结论」，绝不把 partial 当 ok 输出。超时分支不阻塞已经完成的分支，但要在答案里显式标注未完成部分。</li><li>把路由决策变成可评估对象：为编排过程记录每一步的输入摘要、候选集、被选中的 Agent、理由、实际耗时与产出质量。用离线回放 + 小流量灰度对比「动态编排」与「固定拓扑」的成功率、P95 延迟、单任务成本三条线，任何一条显著劣化就回退。判据写死，不靠感觉。</li><li>引入决策稳定性约束：对同一输入的重复请求，在同样的上下文下应尽量得到同样的路由；可通过降低规划温度、对候选集排序取确定性 top-1、以及对路由结果做缓存（以任务特征指纹为 key，带 TTL）来实现。漂移检测用路由分布的散度指标，超出阈值即告警。</li><li>治理 trace：给每次编排分配 orchestration_id，每一步的 span 上带 orchestration_id + step_index + agent_id + 并行分组号，让同一棵调用树可在追踪系统里完整还原，出问题时能直接定位到「在哪一步、由谁决定、为什么」。</li></ol><div class="code"><code>REGISTRY = {
+    &quot;researcher&quot;: {&quot;tags&quot;: [&quot;search&quot;], &quot;cost&quot;: 2, &quot;p95_ms&quot;: 4000, &quot;fanout_ok&quot;: True},
+    &quot;coder&quot;:      {&quot;tags&quot;: [&quot;code&quot;],   &quot;cost&quot;: 3, &quot;p95_ms&quot;: 9000, &quot;fanout_ok&quot;: False},
+    &quot;critic&quot;:     {&quot;tags&quot;: [&quot;review&quot;], &quot;cost&quot;: 1, &quot;p95_ms&quot;: 2500, &quot;fanout_ok&quot;: True},
+}
+
+def orchestrate(task, budget):
+    steps, trace = [], []
+    while budget.left_tokens &gt; budget.floor and len(steps) &lt; budget.max_steps:
+        plan = planner(task, steps, REGISTRY, budget, temperature=0.0)
+        groups = plan[&quot;groups&quot;]
+        for g in groups:
+            agents = [a for a in g[&quot;agents&quot;] if budget.can_afford(REGISTRY[a][&quot;cost&quot;])]
+            if len(agents) &gt; 1 and not all(REGISTRY[a][&quot;fanout_ok&quot;] for a in agents):
+                agents = agents[:1]
+            results = run_parallel(agents, g[&quot;task&quot;]) if len(agents) &gt; 1 else [run_one(agents[0], g[&quot;task&quot;])]
+            for r in results:
+                r.state = classify(r) if r.state is None else r.state
+                budget.charge(r.cost)
+                trace.append({&quot;step&quot;: len(steps), &quot;agent&quot;: r.agent, &quot;state&quot;: r.state,
+                              &quot;latency_ms&quot;: r.latency_ms})
+            steps.append({&quot;task&quot;: g[&quot;task&quot;], &quot;results&quot;: results})
+        if should_stop(steps):
+            break
+    return aggregate(steps, trace), trace
+
+def aggregate(steps, trace):
+    if not meets_min_contract(steps):
+        return {&quot;answer&quot;: best_partial(steps), &quot;partial&quot;: True, &quot;missing&quot;: what_missing(steps)}
+    return {&quot;answer&quot;: compose(steps), &quot;partial&quot;: False}</code></div><p class="sub">真实场景</p><p>某项目把工单处理 Agent 从固定流水线改成运行时动态编排，规划器可自选调研、写代码、评审三类子 Agent，并行分组自由决定。上线后出现几类典型现象：同一类工单的调用步数方差很大，简单工单偶尔被拆成六七步，P95 延迟翻倍；部分请求返回的答案只覆盖了工单的一半，追问后才发现某个并行分支超时被吞掉，聚合器当作成功处理；成本侧按天看总量尚可，但个别租户的单个任务成本极高，定位时发现规划器在已经拿到结论后仍追加了两轮评审。排查路径：先在 trace 里按 orchestration_id 还原调用树，确认步数膨胀集中在「评审」分支反复被选中的场景；再把历史请求离线回放，对比固定拓扑与动态编排的成功率与 P95，发现动态编排在简单任务上收益为负；最后核对聚合逻辑，确认分支失败态只有一个布尔值，partial 结果被误判为 ok。补齐注册表约束、预算回收与三态聚合后，步数方差与成本长尾收敛。</p><div class="diagram"><pre class="mermaid">sequenceDiagram
+  participant U as 用户请求
+  participant P as 规划器
+  participant R as 子 Agent 注册表
+  participant S as 并行分支
+  participant A as 聚合器
+  U-&gt;&gt;P: 任务与总预算
+  P-&gt;&gt;R: 查询候选与能力标签
+  R--&gt;&gt;P: 候选集与成本档位
+  P-&gt;&gt;S: 下发分组与逐步预算
+  S--&gt;&gt;A: 返回 ok 或 partial 或 failed
+  A-&gt;&gt;P: 是否满足最小可交付集合
+  P-&gt;&gt;S: 预算未耗尽且未收敛则继续
+  P-&gt;&gt;A: 收敛并输出最终答案</pre></div><p class="sub">面试官追问</p><div class="qa"><p><strong>Q：</strong>怎么判断动态编排带来的质量提升是真实的，而不是聚合器把更多分支内容拼进答案带来的「看起来更全」？</p><p><strong>A：</strong>把评估拆成「结论正确性」和「覆盖完整性」两个独立维度，并且用不依赖字面长度的判据：结论正确性用带标准答案集的离线评测（对关键字段做精确匹配或规则校验），覆盖完整性用「必须回答的子问题清单」逐项勾选。同时做一个反事实对照——把动态编排的多分支输出交给同一个聚合器合成，与固定拓扑的单分支输出做同条件比较，若两者在正确性上无差异，说明收益来自拼装而非编排本身。另外抽样人工盲评，隐藏来源标签，避免评审者被答案长度误导。</p><p><strong>Q：</strong>如果规划器在收敛模式下仍被允许调用子 Agent，预算控制是不是形同虚设？</p><p><strong>A：</strong>是，收敛模式必须改变的是「可选项集合」而不是「建议」。实现上把预算水位映射为能力白名单：预算充足时白名单包含全部 Agent，低于阈值时白名单收敛为最快的一到两个，耗尽时白名单为空、强制主模型直答。规划器的输出要在这个白名单上做交集校验，越界直接拒绝并重新规划一次，第二次仍越界则走兜底路径。这样预算约束是硬边界的，而不是提示词里的软性建议。</p></div></section><div class="topic-head"><span>RAG 专题</span></div><section class="q" id="rag-20261124-01"><h2><span class="no">05</span>离线用大模型生成假设答案来提升召回，上线后延迟和幻觉反而增加：HyDE 的适用边界与降级怎么定</h2><p class="meta-line">进阶 ｜ <span class="tag">HyDE</span><span class="tag">查询改写</span><span class="tag">召回率</span><span class="tag">延迟预算</span> ｜ <a href="https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md" target="_blank" rel="noopener">面经来源 ↗</a></p><p class="sub">为什么会有这个问题</p><p>用户提问往往很短、口语化，且与知识库文档的写作风格（术语密集、陈述句）之间存在表达鸿沟，导致 query embedding 落在与文档向量不同的区域，出现「答案就在库里但召不回」。HyDE 的思路是先让 LLM 生成一段假设性答案，再用这段「伪文档」去检索，把查询侧向量拉近文档侧分布。常见错误认知有两个：一是把 HyDE 当成万能提效手段，忽略它引入了额外的 LLM 调用（首 token + 生成完整段落）、把生成模型的幻觉带进检索、以及在事实型精确查询（编号、错误码、人名）上会稀释关键词信号；二是只在离线评估集上调，忽略线上高并发下的 p99 抖动与成本。</p><p class="sub">怎么做</p><ol class="steps"><li>先判定是否真的需要：把线上 badcase 按「query 与命中片段的向量距离分位」和「关键词匹配情况」分桶，只有当短查询（如少于 8 个 token）、无稀有实体、召回为空或 top1 分数低于阈值时才触发 HyDE，其余走原始 query，避免全量加一次 LLM 调用。</li><li>实现上生成 1 段、长度受限（如 80–150 字）的假设答案，并显式约束「不要编造具体数字、专有名词」；同时保留原始 query 向量，做双路召回后融合，而不是用假设答案直接替换 query。</li><li>对含数字、错误码、型号的 query 做实体检测，命中则跳过 HyDE 或强制开启 BM25 混合召回，防止假设答案里的错误实体把正确文档挤出候选集。</li><li>设置超时与降级：HyDE 调用设 300–600ms 超时，超时或失败立即回退到原始 query 检索；把 HyDE 结果按 query 归一化做短 TTL 缓存（如几分钟），消化重复提问。</li><li>用 A/B 或影子流量对比四组指标：Recall@k、首答正确率、p95/p99 延迟、每次查询成本；只有在 Recall 提升能转化为答案正确率提升时才保留，而不是只看召回。</li><li>把假设答案写入 trace，便于事后归因：区分「HyDE 引入错误实体导致的错答」和「原本就召不回」两类问题。</li></ol><div class="code"><code>async def retrieve(q: str, kb: str):
+    base = await vector_search(q, kb, top_k=20)
+    if not need_hyde(q, base):
+        return fuse(base)
     try:
-        upstream = await open_llm_stream(prompt)
-        async for token in upstream:
-            if await req.is_disconnected():
-                break
-            yield &#x27;data: &#x27; + json.dumps({&#x27;type&#x27;: &#x27;token&#x27;, &#x27;t&#x27;: token}, ensure_ascii=False) + &#x27;\n\n&#x27;
-        yield &#x27;data: &#x27; + json.dumps({&#x27;type&#x27;: &#x27;done&#x27;}) + &#x27;\n\n&#x27;
-    except asyncio.CancelledError:
-        raise
-    except Exception as e:
-        yield &#x27;data: &#x27; + json.dumps({&#x27;type&#x27;: &#x27;error&#x27;, &#x27;retryable&#x27;: True, &#x27;msg&#x27;: str(e)[:200]}) + &#x27;\n\n&#x27;
-    finally:
-        if upstream is not None:
-            await upstream.aclose()
+        hypo = await llm.agenerate(HYDE_PROMPT.format(q=q), max_tokens=160, timeout=0.6)
+    except (asyncio.TimeoutError, LLMError):
+        return fuse(base)
+    hypo_hits = await vector_search(hypo, kb, top_k=20)
+    return fuse(base, hypo_hits, weights=(0.4, 0.6))
 
-@app.get(&#x27;/chat/stream&#x27;)
-async def chat_stream(request: Request, q: str):
-    return StreamingResponse(
-        gen(request, q),
-        media_type=&#x27;text/event-stream&#x27;,
-        headers={&#x27;Cache-Control&#x27;: &#x27;no-cache&#x27;, &#x27;X-Accel-Buffering&#x27;: &#x27;no&#x27;},
-    )</code></div><p class="sub">真实场景</p><p>某项目的 LLM 流式接口偶发上游 429 或读超时。前端表现为 HTTP 200、答案输出到一半后 loading 不结束；服务端 5xx 指标接近零，网关只看到连接被重置。用户以为失败重复提交，费用和下游压力一起上涨。排查路径：先确认流式响应状态码始终是 200，再在 generator 内打点看异常是否被抛出，检查客户端是否以 done 帧作为完成条件，最后看断开后上游 stream 是否被 aclose/cancel。</p><div class="diagram"><pre class="mermaid">sequenceDiagram
-    participant C as 客户端
-    participant F as FastAPI
-    participant L as 上游LLM
-    C-&gt;&gt;F: 发起流式请求
-    F-&gt;&gt;L: 建立上游流
-    L--&gt;&gt;F: 返回 token
-    F--&gt;&gt;C: 发送 token 事件
-    L--&gt;&gt;F: 上游超时或限流
-    F--&gt;&gt;C: 发送 error 事件
-    F--&gt;&gt;C: 发送 done 事件
-    F-&gt;&gt;L: 关闭上游流</pre></div><p class="sub">面试官追问</p><div class="qa"><p><strong>Q：</strong>流式接口还能做上游重试吗？</p><p><strong>A：</strong>只能在首 token 发出前重试：用有限次数加指数退避和 jitter，并设置总预算；一旦已经 yield token 就不能透明重试，否则客户端会收到重复内容，正确做法是发 error 帧让客户端带 request_id 重新生成，计费侧用幂等键去重。</p><p><strong>Q：</strong>为什么本地 curl 能看到流，线上经过网关就变成一次性返回？</p><p><strong>A：</strong>常见是代理缓冲和压缩：Nginx 默认 proxy_buffering 会攒包，gzip 也会缓冲 event-stream；需要关闭对应缓冲、设置 X-Accel-Buffering: no，并保证读超时大于心跳间隔。还要注意长连接会占用 worker，流式接口最好独立部署或限制并发。</p></div></section><section class="q" id="fastapi-20261123-02"><h2><span class="no">10</span>每个请求都新建 AsyncClient：连接池复用失效、TIME_WAIT 飙升与多 worker 配额失控</h2><p class="meta-line">进阶 ｜ <span class="tag">lifespan</span><span class="tag">httpx.AsyncClient</span><span class="tag">连接池</span><span class="tag">多进程部署</span></p><p class="sub">为什么会有这个问题</p><p>httpx.AsyncClient 不是轻量对象，它内部维护连接池、keep-alive 和 TLS 会话。如果在每个 handler 或每个请求的依赖里 async with AsyncClient()，连接无法复用，TCP/TLS 握手成本被摊到每次调用上，容易出现 TIME_WAIT 堆积和 P99 抖动。更隐蔽的是多 worker 部署：每个进程各有一份池，总连接数约等于 workers 乘 pool_size，扩容 worker 反而可能打爆下游连接配额或触发限流。常见错误认知是“用了 async 就一定快”，忽略客户端生命周期和配额。</p><p class="sub">怎么做</p><ol class="steps"><li>在 lifespan 中创建共享 AsyncClient，写入 app.state；shutdown 时 await aclose()，保证在同一个事件循环内创建和关闭。</li><li>用依赖 get_http(request) 返回同一实例；禁止在请求内 new client；不同下游按 base_url 分池，避免一个慢下游占满所有连接。</li><li>按下游配额反推 limits：workers 乘 max_connections 要小于下游连接上限并留安全余量；max_keepalive_connections 和 keepalive_expiry 要对齐下游 idle timeout。</li><li>超时要拆开：connect、read、write、pool 分别设置；pool timeout 要短，快速失败并暴露连接池等待指标，而不是让请求无限排队。</li><li>多 worker 下的限流、缓存、计数器不能只用进程内状态；需要 Redis 或网关集中限流，readiness 检查依赖可用性，滚动发布时避免流量打到未初始化完的 worker。</li></ol><div class="code"><code>from contextlib import asynccontextmanager
-from fastapi import FastAPI, Depends, Request
+def need_hyde(q: str, base) -&gt; bool:
+    if has_rare_entity(q):        # 错误码、型号、数字
+        return False
+    if len(tokenize(q)) &gt; 12:
+        return False
+    return not base or base[0].score &lt; SCORE_GATE</code></div><p class="sub">真实场景</p><p>某项目在问答助手里加了 HyDE 之后，离线评估集 Recall@10 有提升，但上线两周出现两种症状：一是 p99 从可接受范围明显上抬，高峰期排队；二是「查错误码 / 查型号」类问题开始答错，人工抽检发现召回的片段语义相近但版本不对。排查路径：按 query 类型分组看召回率，发现事实型短查询组下降、长口语问句组上升；再看 trace 里的假设答案，发现 LLM 在假设答案里自行「补全」了一个不存在的版本号，把向量拉向了另一个版本文档。最终改成按 query 特征路由 + 双路融合 + 实体检测跳过，并把超时降级补上。</p><div class="diagram"><pre class="mermaid">flowchart TD
+  A[用户查询] --&gt; B[原始查询向量召回]
+  B --&gt; C{是否短查询且无稀有实体}
+  C -- 否 --&gt; D[直接融合返回]
+  C -- 是 --&gt; E[LLM 生成假设答案]
+  E --&gt; F{超时或失败}
+  F -- 是 --&gt; D
+  F -- 否 --&gt; G[假设答案召回]
+  G --&gt; H[双路加权融合]
+  H --&gt; I[重排与答案生成]</pre></div><p class="sub">面试官追问</p><div class="qa"><p><strong>Q：</strong>HyDE 和 query rewriting / query expansion 有什么区别，什么时候选哪个？</p><p><strong>A：</strong>query rewriting 是把用户口语改写成检索友好的表达，保留原始语义意图，成本低、可控性强；query expansion 是补同义词或上位词，提升召回宽度但容易引入噪声；HyDE 是生成「答案形态」的伪文档去对齐文档侧向量分布，对「短问题 vs 长文档」的表达鸿沟最有效，但引入生成幻觉和更高延迟。经验判据：查询歧义大、需要澄清意图 → rewriting；术语不一致、同义表达多 → expansion；查询极短且知识库文档是长篇陈述体 → HyDE。三者可以叠加，但要分别量收益。</p><p><strong>Q：</strong>怎么证明 HyDE 带来的召回提升是真实的，而不是评估集偏差？</p><p><strong>A：</strong>第一，评估集要按线上 query 分布采样，包含空召回和事实型查询，不能只用「能答出来」的样本；第二，看 Recall@k 的同时看答案正确率和引用命中率，因为召回提升可能是召回了更多语义相近但事实错误的片段；第三，做分组分析（短查询/长查询/含实体/不含实体），确认收益集中在预期分组；第四，用影子流量跑线上真实分布，比较端到端指标而不是只看离线。</p></div></section><section class="q" id="rag-20261124-02"><h2><span class="no">06</span>用二进制量化把索引内存压下去后长尾 query 答不出来：量化的召回损失怎么定位、怎么补</h2><p class="meta-line">资深 ｜ <span class="tag">向量量化</span><span class="tag">二进制量化</span><span class="tag">召回损失</span><span class="tag">混合检索</span> ｜ <a href="https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/06-vector-index-optimization/README.md" target="_blank" rel="noopener">面经来源 ↗</a></p><p class="sub">为什么会有这个问题</p><p>把 float32 向量换成 binary 或 PQ 编码，本质是用更少的比特保留方向信息。二进制量化只保留每一维的符号位，等价于在超球面上做极粗的角度划分，向量间的细微差异被抹平：当多个候选片段的相似度非常接近时（长尾、细节型、近义文档多的场景），排序被打乱，top-k 里就混进了错的片段。常见错误认知是「量化只影响精度不影响召回，调大 top-k 补回来就行」——实际补 top-k 会同时放大候选集与重排成本，而且当哈希碰撞严重时，正确答案根本没进候选池，加大 k 也捞不回来，还会拖高延迟。另一个误区是忽略不同 embedding 模型对量化的友好度差异：分布各向异性强、维度低、或者模型本身未做归一化的向量，量化损失会显著更大。</p><p class="sub">怎么做</p><ol class="steps"><li>先量化损失，而不是先调参：用同一批真实 query，在原始 float 索引与量化索引上分别取 top-100，计算 Recall@k 的差值，并按 query 分桶（高频/长尾、单跳/多跳、含实体/纯语义），定位损失集中在哪一类。</li><li>分离两类误差：一是「候选池未命中」（正确答案不在量化索引的 top-N 中），二是「排序错乱」（在池中但被挤出 top-k）。前者必须靠扩大候选或混合召回，后者可以靠重排修复。</li><li>落地 rescoring 两段式：量化索引只负责粗召回（取较大的 N，如 100–200），再用原始 float 向量或交叉编码器对候选重排到 top-k；float 向量可放内存或磁盘，只对候选集加载。</li><li>对二进制量化叠加混合召回：语义分支走量化向量，词法分支走 BM25/全文索引，用 RRF 融合，弥补符号位抹平导致的近义文档混淆。</li><li>做参数与模型侧的取舍：优先选支持归一化的 embedding（余弦相似度下二进制量化更稳），必要时提升维度或用 int8 标量量化替代二进制；对比不同量化粒度的召回-内存曲线，而不是只看内存。</li><li>上线做灰度与监控：监控 recall 相关的线上代理指标（引用命中率、拒答率、用户追问率），一旦长尾 query 组指标下滑就回滚或切到混合模式。</li></ol><div class="code"><code>def search_two_stage(q: str, coarse_n: int = 150, top_k: int = 8):
+    qv = embed(q)
+    qb = binarize(qv)
+    cand = index_binary.search(qb, top_n=coarse_n)
+    ids = [c.id for c in cand]
+    exact = load_float_vectors(ids)
+    ranked = sorted(
+        zip(ids, exact),
+        key=lambda x: cosine(qv, x[1]),
+        reverse=True,
+    )[:top_k]
+    lexical = bm25.search(q, top_k=top_k)
+    return rrf_fuse([i for i, _ in ranked], [d.id for d in lexical])</code></div><p class="sub">真实场景</p><p>某项目为压内存把百万级向量集合改成二进制量化，内存占用明显下降、写入也变快，但上线后出现一类稳定复现的 badcase：用户问的是文档里某条细则的具体适用条件，库里存在多个高度相似的条款片段，回答开始张冠李戴，引用到相邻条款。排查路径：用线上真实 query 重放，对比量化前后 top-100 的候选集合，发现正确答案在量化索引里排到了 100 名开外，属于「候选池未命中」而非排序问题；同时该组 query 的向量相似度分布非常密集，符号位区分不开。最终改为量化粗召回 + float 重排 + BM25 融合，并把 coarse_n 按长尾组单独调大。</p><div class="diagram"><pre class="mermaid">sequenceDiagram
+  participant U as 用户
+  participant S as 检索服务
+  participant B as 二进制索引
+  participant F as float 向量存储
+  participant L as 词法索引
+  U-&gt;&gt;S: 提交查询
+  S-&gt;&gt;B: 粗召回取较大候选集
+  B--&gt;&gt;S: 候选 id 列表
+  S-&gt;&gt;F: 批量加载候选向量
+  F--&gt;&gt;S: 精确向量
+  S-&gt;&gt;L: 关键词召回
+  L--&gt;&gt;S: 词法候选
+  S-&gt;&gt;S: 精确重排与融合
+  S--&gt;&gt;U: 返回 top-k 片段</pre></div><p class="sub">面试官追问</p><div class="qa"><p><strong>Q：</strong>二进制量化和 PQ 在召回损失上的差异来自哪里，怎么选？</p><p><strong>A：</strong>二进制量化每维只存 1 bit 符号，压缩率最高、距离计算可用位运算，但只保留方向的正负，区分度极低，适合高维、归一化良好、候选充足且能重排的场景。PQ 把向量切段后用码本聚类中心近似，保留更多信息，同等压缩率下召回通常更好，代价是需要训练码本、查询时要做查表累加，且对数据分布漂移敏感（码本需重训）。选型判据：内存压力极端且能接受两段式重排 → 二进制；需要在中等压缩率下保持较高召回、数据分布稳定 → PQ 或 PQ 的改进变体；对精度要求高且内存尚可 → int8 标量量化往往是性价比最高的折中。</p><p><strong>Q：</strong>如果 float 向量放在磁盘上做重排，延迟怎么控？</p><p><strong>A：</strong>关键是限制重排规模并做局部性优化：coarse_n 要按延迟预算反推，而不是无脑加大；float 向量按 id 连续存放或按簇聚集，减少随机 IO；候选加载做并发批量读，避免逐条往返；对高频 query 的候选结果做短 TTL 缓存；必要时把热数据的 float 向量放内存、冷数据落盘，形成分层。上线前要用 p99 而不是均值来定 coarse_n。</p></div></section><section class="q" id="rag-20261124-03"><h2><span class="no">07</span>同一批召回片段换一下顺序答案就变了：上下文排布、位置偏置与块压缩怎么治理</h2><p class="meta-line">资深 ｜ <span class="tag">上下文编排</span><span class="tag">Lost in the Middle</span><span class="tag">评估闭环</span><span class="tag">token 成本</span> ｜ <a href="https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md" target="_blank" rel="noopener">面经来源 ↗</a></p><p class="sub">为什么会有这个问题</p><p>LLM 对长上下文的利用并不均匀，放在中间的片段被引用的概率明显低于首尾两段；而绝大多数 RAG 链路只是按相似度降序把 top-k 直接拼接，把最关键的证据放在中段；如果 k 偏大，噪声块还会稀释注意力。常见错误认知是「答案不好就加大 k、把上下文塞满」，实际效果往往相反：token 成本上升，中间位置的信息密度更低，模型更容易只依据首段作答，引用也常落在第一个块上。另一个隐性问题是切块把步骤、表格和跨段指代切断，模型只看到局部片段，无法还原完整语义。</p><p class="sub">怎么做</p><ol class="steps"><li>先做归因，不要急着改 prompt：固定同一批候选片段和同一批 query，只改变排列方式（相似度顺序、逆序、随机、把人工标注的金标块放在开头或结尾），观察答案正确率和引用命中率是否随位置波动。如果金标块换位置后答案就变，说明是位置利用问题；如果金标块无论放哪都答错，说明是切块质量或模型能力问题。</li><li>减少片段数量、提升密度：先按父块去重并合并相邻块，把 k 收到较小值（经验上 5 到 8 块），再用 rerank 截断；对超长块做抽取式压缩，只保留与 query 相关的句子，同时保留标题路径和行号。</li><li>调整位置策略：把 rerank 分数最高、与问题直接对应的证据放在开头和结尾，其余块按主题聚类后排列；多跳或汇总类问题不要一次性平铺，改成先分段提取再汇总的两阶段生成。</li><li>结构化上下文：每块都带 source_id、文档标题、章节路径和序号，块之间用明确分隔符隔开，并在 prompt 中要求逐条引用；生成后做引用校验，检查每条结论是否落在给出的块内。</li><li>建立回归指标：除答案正确率外，加入引用支持度、证据覆盖率、上下文 token 数和「引用落在第几块」的分布；上线时做 A/B 对比，避免只看个别 case 的观感。</li><li>守住成本边界：把上下文预算设成硬上限，超出时按重要性裁剪，而不是无限增加 k；对高频 query 缓存编排结果。</li></ol><div class="code"><code>def dedup_by_parent(chunks):
+    seen, out = set(), []
+    for c in sorted(chunks, key=lambda x: -x[&#x27;score&#x27;]):
+        key = (c[&#x27;doc_id&#x27;], c[&#x27;parent_id&#x27;])
+        if key in seen:
+            continue
+        seen.add(key)
+        out.append(c)
+    return out
+
+def arrange(chunks, k=6, mode=&#x27;sandwich&#x27;):
+    picked = dedup_by_parent(chunks)[:k]
+    if mode == &#x27;sim&#x27;:
+        return picked
+    half = max(1, len(picked) // 2)
+    front, back = picked[:half], picked[half:]
+    return front + list(reversed(back))
+
+def position_sensitivity(run_qa, queries, pool, modes=(&#x27;sim&#x27;, &#x27;reverse&#x27;, &#x27;sandwich&#x27;)):
+    report = {}
+    for mode in modes:
+        hits = []
+        for q in queries:
+            ctx = arrange(pool[q[&#x27;id&#x27;]], mode=mode)
+            ans = run_qa(q[&#x27;text&#x27;], ctx)
+            hits.append(1.0 if q[&#x27;gold_id&#x27;] in ans.citations else 0.0)
+        report[mode] = round(sum(hits) / len(hits), 4)
+    return report</code></div><p class="sub">真实场景</p><p>某项目做产品手册与 FAQ 的问答，最初把 top-20 全部拼进上下文，回答经常只引用第 1 条，问到手册中段的参数时开始编造或答成相邻型号；把 k 降到 6 并做父块合并后仍有波动。用位置实验复现：同一个金标片段放在第 1 位时答对，放在第 10 位时答错，说明检索本身没问题，是上下文利用问题。随后改成 rerank 截断、加压缩、高置信块前置和尾置，并加引用校验，引用正确率稳定下来，上下文 token 也明显下降；排查路径是「位置实验归因、切块与压缩、编排策略、引用校验指标」。</p><div class="diagram"><pre class="mermaid">flowchart TD
+    A[多路召回候选片段] --&gt; B[按父块去重与邻近合并]
+    B --&gt; C[rerank 截断到少量高密度块]
+    C --&gt; D[高置信块置于首尾]
+    D --&gt; E[拼接带来源与章节的结构化上下文]
+    E --&gt; F[生成并做引用校验]
+    F --&gt; G[记录引用命中与位置分布]</pre></div><p class="sub">面试官追问</p><div class="qa"><p><strong>Q：</strong>为什么不直接把 k 调大，让模型自己找？</p><p><strong>A：</strong>k 变大会同时引入噪声和中间位置信息，注意力被稀释，成本线性上升，而且真正关键的片段被稀释在中间后更容易被忽略。正确方向是提高单块信息密度，而不是堆数量：父块合并、抽取式压缩、rerank 截断、把必要证据放到首尾。只有在问题本身需要跨多段汇总时，才用分段提取再汇总的方式扩展上下文。</p><p><strong>Q：</strong>怎么区分是「位置问题」还是「召回/切块问题」？</p><p><strong>A：</strong>做 oracle 注入：把人工标注的正确片段（或原文中对应段落）按不同位置注入上下文。如果注入后放首尾能答对、放中间答错，就是位置利用问题；如果放哪都答错，就是切块断裂、片段本身信息不足或模型能力问题。再用父块扩展和重新切块验证一次，即可定位。</p></div></section><section class="q" id="rag-20261124-04"><h2><span class="no">08</span>把 1536 维向量截到 512 维省存储，长尾类目召回崩了：降维的评估、重标定与回退怎么做</h2><p class="meta-line">资深 ｜ <span class="tag">embedding 维度</span><span class="tag">Matryoshka</span><span class="tag">分片评估</span><span class="tag">影子索引</span> ｜ <a href="https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md" target="_blank" rel="noopener">面经来源 ↗</a></p><p class="sub">为什么会有这个问题</p><p>向量维度直接决定存储、内存和查询开销，截断维度看起来是最省事的降本手段，但这里有两个前提容易被忽略：只有经过 Matryoshka 式训练的模型，其向量前缀才近似可截断；普通模型直接切片，相当于把语义信息丢掉，而且不同维度上的能量分布被破坏。另一个常见错误是只看整体 recall@k：整体指标被高频简单 query 拉平，掩盖了长尾类目、含型号编号、专有名词这类 query 的下降。截断之后，向量模长和相似度分布都会变化，沿用原来的相似度阈值或拒答阈值，会出现漏召回或误召回；如果同时还叠了量化，误差叠加后更难定位。</p><p class="sub">怎么做</p><ol class="steps"><li>先确认模型是否支持前缀截断（MRL 训练），不支持就只能换低维模型或评估降维方法；不要直接对任意模型切片后上线。</li><li>建立分片评估集：按类目、query 长度、语言、是否含型号或编号、是否为长尾切片分别统计 recall@k 与 MRR，对比全维与截断维；同时构造高相似干扰项，观察区分能力。</li><li>截断后重新处理：重新做 L2 归一化；用分位数法而不是固定值重标定相似度阈值和拒答阈值；如果需要量化，先截断再量化，并单独评估组合后的损失。</li><li>归因排查时用 flat 暴力检索做基线，排除 ANN 参数造成的近似误差；再用相同索引参数分别建两套集合对比，确认是维度还是索引问题。</li><li>灰度与回退：建立低维影子集合，双写一段时间，按流量比例对比引用正确率、拒答率和长尾切片表现；低维只做粗召回，用全维向量对 top-N 重排，兼顾成本和精度。</li><li>成本核算要完整：算清存储、内存、构建时间、查询 QPS 的实际收益，与长尾损失对照；必要时按类目分层，高频类目走低维，长尾走全维集合路由。</li><li>准备回退开关：低维集合只是索引层，原文与全维向量保留在对象存储或关系库中，确保能在一个构建周期内重建并切回。</li></ol><div class="code"><code>import numpy as np
+
+def truncate(vec, dim):
+    v = np.asarray(vec, dtype=&#x27;float32&#x27;)[:dim]
+    n = np.linalg.norm(v)
+    return v / n if n else v
+
+def slice_recall(queries, gold, k=10, dims=(1536, 512, 256)):
+    out = {}
+    for d in dims:
+        per_slice = {}
+        for q in queries:
+            qv = truncate(q[&#x27;emb&#x27;], d)
+            scored = sorted(
+                ((float(truncate(c[&#x27;emb&#x27;], d) @ qv), c[&#x27;id&#x27;]) for c in q[&#x27;cands&#x27;]),
+                reverse=True,
+            )
+            hit = 1.0 if gold[q[&#x27;id&#x27;]] in [i for _, i in scored[:k]] else 0.0
+            per_slice.setdefault(q[&#x27;slice&#x27;], []).append(hit)
+        out[d] = {s: round(sum(v) / len(v), 4) for s, v in per_slice.items()}
+    return out</code></div><p class="sub">真实场景</p><p>某项目知识库向量占用内存压力大，把 1536 维截到 512 维以降低存储和查询开销，离线整体 recall@10 看起来变化不大就上线了。上线后用户反馈「搜不到具体型号」的工单增加，典型现象是：通用问题命中正常，含型号、参数编号和长尾类目的 query 命中明显变差，拒答率也异常升高。排查路径是：先按切片拆指标发现长尾类目下降，再用 flat 暴力检索确认不是 HNSW 参数问题，最后定位到截断后未重新归一化、阈值沿用旧值，且模型前缀可截断性在长尾语义上损失较大；回退到全维做重排、并只对高频类目使用低维集合后恢复。</p><div class="diagram"><pre class="mermaid">flowchart TD
+    A[全维向量基线] --&gt; B[确认模型是否支持前缀截断]
+    B --&gt; C[按类目与含编号 query 分片评估]
+    C --&gt; D[截断后重新归一化与阈值重标定]
+    D --&gt; E[影子集合双写灰度]
+    E --&gt; F[长尾损失超阈值则回退全维]</pre></div><p class="sub">面试官追问</p><div class="qa"><p><strong>Q：</strong>降维和量化应该先做哪个？</p><p><strong>A：</strong>通常先降维再量化，两者误差来源不同，顺序会影响叠加效果，必须用同一套分片评估集实测组合后的 recall 和延迟。若只能选一个，优先看损失落在哪些切片：量化更均匀地影响所有 query，截断对长尾语义更敏感。无论哪种，都要保留全维向量用于重排和回退。</p><p><strong>Q：</strong>怎么证明召回下降是维度造成的，而不是索引参数或数据漂移？</p><p><strong>A：</strong>做三步对照：一是用 flat 暴力检索在同一批向量上跑，排除 ANN 近似误差；二是两套索引使用完全相同的构建参数和查询参数；三是固定评估集与数据快照，只改变维度变量。如果 flat 下低维仍然掉，且集中在特定切片，就可以归因到维度；如果 flat 不掉而 ANN 掉，则问题在图结构和参数上。</p></div></section><div class="topic-head"><span>FastAPI 专题</span></div><section class="q" id="fastapi-20261124-01"><h2><span class="no">09</span>上游 camelCase、内部 snake_case：Pydantic v2 的 alias 在入参、出参与缓存写回三处不一致，字段悄悄丢失怎么收口</h2><p class="meta-line">进阶 ｜ <span class="tag">Pydantic v2</span><span class="tag">alias</span><span class="tag">序列化</span><span class="tag">契约一致性</span></p><p class="sub">为什么会有这个问题</p><p>FastAPI 用同一套 Pydantic 模型做请求校验、OpenAPI 文档和响应序列化，但 alias 在不同路径上的默认行为并不一致：response_model 默认按 alias 输出，而业务代码里直接调用 model_dump() 默认不按 alias 输出。如果缓存、消息队列、下游服务也复用这个模型，就会出现 HTTP 响应正常、异步链路字段丢失的分裂现象。常见错误认知是“加了 alias_generator 就全局生效”，忽略了序列化调用点和回读校验配置。</p><p class="sub">怎么做</p><ol class="steps"><li>先划清边界：API DTO 和消息 DTO 使用 alias，领域模型、ORM 模型不继承 alias 配置，避免传输契约污染内部字段访问。</li><li>把出站序列化收口到一个函数，显式使用 model_dump(by_alias=True, mode=&quot;json&quot;, exclude_none=True)，缓存、MQ、审计日志统一走它。</li><li>入站回读时要么统一按 alias 校验，要么在 DTO 上配置 populate_by_name=True，并补一条“dump 后再 load”的往返契约测试。</li><li>路由层显式声明 response_model_by_alias，保持 OpenAPI 文档、实际响应和缓存写入三处字段名一致；升级期可双写旧字段并观察消费端失败率。</li><li>排查时对比 HTTP 响应体、Redis 写入值、MQ 消息体三处的 key，检查所有 model_dump 调用是否漏传 by_alias，检查消费者 model_validate 是否因字段名不匹配被吞异常。</li></ol><div class="code"><code>import json
+from pydantic import BaseModel, ConfigDict
+from pydantic.alias_generators import to_camel
+
+class WireModel(BaseModel):
+    model_config = ConfigDict(alias_generator=to_camel, populate_by_name=True)
+
+class ChatRequest(WireModel):
+    request_id: str
+    user_query: str
+
+class CachePayload(WireModel):
+    request_id: str
+    user_query: str
+
+def dump_wire(m: BaseModel) -&gt; dict:
+    return m.model_dump(by_alias=True, mode=&quot;json&quot;, exclude_none=True)
+
+def load_wire(data: dict) -&gt; ChatRequest:
+    return ChatRequest.model_validate(data)
+
+@app.post(&quot;/chat&quot;, response_model=ChatRequest, response_model_by_alias=True)
+async def chat(req: ChatRequest):
+    payload = CachePayload(request_id=req.request_id, user_query=req.user_query)
+    await redis.set(req.request_id, json.dumps(dump_wire(payload)))
+    return req</code></div><p class="sub">真实场景</p><p>某项目做 LLM 编排服务，前端和网关约定 camelCase，内部代码习惯 snake_case。HTTP 接口返回的 requestId、userQuery 都正常，但上线后缓存反序列化失败率上升，消息消费者报缺少 requestId。排查发现缓存写入处直接调用了 model_dump()，落库是 request_id；消费者按 camelCase 解析后取不到值，而异常又被宽泛的 except 吞掉，只留下空字段。把写入统一到 dump_wire 后恢复，并补了往返契约测试。</p><p class="sub">面试官追问</p><div class="qa"><p><strong>Q：</strong>为什么不直接给所有模型加 alias_generator，省得每个地方单独转？</p><p><strong>A：</strong>领域模型和 ORM 模型会被内部代码、数据库映射、任务队列长期复用，alias 会把传输契约泄漏到内部字段访问；上游一改字段名，内部逻辑被迫跟着改。正确做法是只在 API DTO 和消息 DTO 边界定义 alias，并用统一的 dump/load 封装收口。</p><p><strong>Q：</strong>response_model_by_alias=False 什么时候可以用？</p><p><strong>A：</strong>内部服务间明确约定 snake_case、且不面向浏览器时可以用；但必须同步 OpenAPI 文档和契约测试，否则网关或前端按文档生成客户端会出现字段不匹配。默认保持 True，特殊路由显式声明并写清原因。</p></div></section><section class="q" id="fastapi-20261124-02"><h2><span class="no">10</span>上传大文件到模型网关，接口内存随并发线性上涨：UploadFile 落盘阈值、流式转发与 413 边界怎么定</h2><p class="meta-line">资深 ｜ <span class="tag">UploadFile</span><span class="tag">流式转发</span><span class="tag">内存</span><span class="tag">反向代理</span></p><p class="sub">为什么会有这个问题</p><p>UploadFile 底层是 SpooledTemporaryFile，超过阈值会落临时文件，但这只解决了“接收后放哪里”，不等于全链路流式。很多实现会在路由里 await file.read() 整体读入，再作为 bytes 传给 httpx，或者用 Pydantic 的 bytes 字段接收，导致每个并发请求在内存里保留完整文件副本。反向代理的 client_max_body_size 与应用层限制不一致时，413 还可能由代理直接返回 HTML 或重置连接，客户端拿不到可解析错误。</p><p class="sub">怎么做</p><ol class="steps"><li>入口做双层限制：反向代理限制粗粒度包体，应用层在分块读取时累计字节数并设置业务上限，超限返回统一 JSON 错误带 request id。</li><li>接收端只用 UploadFile，禁止 await file.read() 一次性读取，也避免用 bytes 字段接收大文件；按固定 chunk 读取并立即转发。</li><li>转发端用 httpx.AsyncClient 的流式请求，把异步生成器作为 content 传给模型网关，设置连接、读、写超时和并发上限，避免上游慢导致 worker 堆积。</li><li>在 finally 中显式 await file.close()，并监控进程 RSS、临时目录文件数、并发上传数、413 比例和上游超时率。</li><li>压测时用不同文件大小和并发梯度验证内存曲线，确认代理层与应用层阈值一致，并检查 chunked 上传场景下 Content-Length 校验是否失效。</li></ol><div class="code"><code>from fastapi import FastAPI, UploadFile, HTTPException
 import httpx
 
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    app.state.http = httpx.AsyncClient(
-        limits=httpx.Limits(max_connections=50, max_keepalive_connections=20, keepalive_expiry=30),
-        timeout=httpx.Timeout(connect=1.0, read=10.0, write=5.0, pool=0.5),
-    )
+CHUNK = 1024 * 1024
+MAX_BYTES = 200 * 1024 * 1024
+
+class TooLarge(Exception):
+    pass
+
+@app.post(&quot;/v1/files&quot;)
+async def upload(file: UploadFile):
+    total = 0
     try:
-        yield
+        async with httpx.AsyncClient(timeout=httpx.Timeout(60.0, read=300.0)) as client:
+            async def body_iter():
+                nonlocal total
+                while chunk := await file.read(CHUNK):
+                    total += len(chunk)
+                    if total &gt; MAX_BYTES:
+                        raise TooLarge
+                    yield chunk
+            try:
+                resp = await client.post(
+                    &quot;http://model-gateway/v1/files&quot;,
+                    content=body_iter(),
+                    headers={&quot;content-type&quot;: file.content_type or &quot;application/octet-stream&quot;},
+                )
+            except TooLarge:
+                raise HTTPException(status_code=413, detail=&quot;file too large&quot;)
+        if resp.status_code &gt;= 400:
+            raise HTTPException(status_code=502, detail=&quot;gateway error&quot;)
+        return {&quot;bytes&quot;: total}
     finally:
-        await app.state.http.aclose()
-
-app = FastAPI(lifespan=lifespan)
-
-def get_http(request: Request) -&gt; httpx.AsyncClient:
-    return request.app.state.http
-
-@app.get(&#x27;/proxy&#x27;)
-async def proxy(http: httpx.AsyncClient = Depends(get_http)):
-    r = await http.get(&#x27;https://downstream.example/api&#x27;)
-    return r.json()</code></div><p class="sub">真实场景</p><p>某项目把内部服务调用写成每个接口里 async with httpx.AsyncClient()。流量上来后下游看到大量短连接，服务端 TIME_WAIT 升高，TLS 握手 CPU 上升，P99 从几十毫秒抖到几百毫秒；扩容 worker 后下游连接数按进程数成倍增长，开始出现 429 和连接拒绝。排查路径：看 netstat 的 TIME_WAIT、下游按来源 IP 的连接数、应用日志里的 pool timeout，再对照 workers 与 pool_size 的乘积；修复为 lifespan 共享 client 并调整 limits 后，连接数和 P99 才稳定。</p><div class="diagram"><pre class="mermaid">flowchart TD
-    A[lifespan 启动] --&gt; B[创建共享 AsyncClient]
-    B --&gt; C[写入 app.state]
-    C --&gt; D[依赖 get_http 返回同一实例]
-    D --&gt; E[多个 handler 复用连接池]
-    E --&gt; F[下游服务]
-    G[多 worker 部署] --&gt; H[每个进程各一份连接池]
-    H --&gt; F</pre></div><p class="sub">面试官追问</p><div class="qa"><p><strong>Q：</strong>为什么不直接把 AsyncClient 定义成模块级全局变量？</p><p><strong>A：</strong>模块导入时创建可能不在目标事件循环里，测试或多 loop 场景容易踩 attached to a different loop；而且没有明确的关闭时机。lifespan 能保证在应用启动的事件循环内创建、在 shutdown 时关闭，测试里也更容易用依赖覆盖或 lifespan 管理。</p><p><strong>Q：</strong>多 worker 下想做全局限流，进程内令牌桶为什么不够？</p><p><strong>A：</strong>每个 worker 独立计数，实际总速率是 workers 乘单进程限额；worker 重启还会清零。要么把限额按 worker 数分摊并留余量，要么用 Redis 或网关做集中限流；同时 readiness 要检查下游依赖，避免滚动发布时新 worker 还没建好连接池就接流量。</p></div></section>
+        await file.close()</code></div><p class="sub">真实场景</p><p>某项目做文档解析和模型网关，上传 PDF 到 /v1/files，单文件上限 200MB。并发上传到二十路时，worker 的 RSS 从几百 MB 涨到数 GB 后被 OOM kill；nginx 对超大文件直接返回 413 HTML，前端解析失败。排查发现路由里先 await file.read() 拿到完整 bytes，再传给 httpx，UploadFile 的临时文件优势被抵消；同时代理层 client_max_body_size 与应用层限制不一致。改为分块读取、流式转发并统一 413 JSON 后，内存曲线随并发保持平稳。</p><div class="diagram"><pre class="mermaid">flowchart TD
+    A[客户端上传大文件] --&gt; B[反向代理检查 Content-Length]
+    B --&gt;|超限| C[返回 JSON 错误 413]
+    B --&gt;|通过| D[FastAPI multipart 解析]
+    D --&gt;|失败| E[关闭临时文件并返回 400]
+    D --&gt; F[UploadFile 临时文件]
+    F --&gt; G[分块读取并累计大小]
+    G --&gt;|超限| H[返回 JSON 错误 413]
+    G --&gt;|正常| I[httpx 流式转发]
+    I --&gt; J[模型网关]
+    J --&gt; K[返回结果并清理临时文件]</pre></div><p class="sub">面试官追问</p><div class="qa"><p><strong>Q：</strong>已经用了 UploadFile，为什么进程内存还会涨？</p><p><strong>A：</strong>UploadFile 只把超过阈值的部分落临时文件，不代表全链路流式。如果代码里整体读取、把 bytes 传给 httpx、或者 multipart 解析时复制，仍会占内存；并发高时临时文件 I/O 和多个副本也会放大。需要分块读、分块转发，并限制单请求大小和并发数。</p><p><strong>Q：</strong>413 应该由 nginx 还是 FastAPI 返回？</p><p><strong>A：</strong>代理层做粗粒度保护，防止大包进入应用；应用层做业务限额并返回统一 JSON 错误。两者阈值要一致并留余量。代理层返回 HTML 413 时，前端需要兼容，或者配置自定义错误页；关键是让客户端拿到可解析的错误和 request id。</p></div></section>
 <footer>
 <p>每天 08:00 更新 ｜ 面向 3–5 年经验的应用开发 ｜ 题目永久去重，持续累积</p>
-<p>往期：<a href="2026-11-22.html">11-22</a> ｜ <a href="2026-11-21.html">11-21</a> ｜ <a href="2026-11-20.html">11-20</a> ｜ <a href="bank/index.html">题库</a></p>
+<p>往期：<a href="2026-11-23.html">11-23</a> ｜ <a href="2026-11-22.html">11-22</a> ｜ <a href="2026-11-21.html">11-21</a> ｜ <a href="2026-11-20.html">11-20</a> ｜ <a href="bank/index.html">题库</a></p>
 </footer>
 </main>
 <script src="vendor/mermaid.min.js"></script><script>mermaid.initialize({startOnLoad:true,theme:"neutral",securityLevel:"loose"});</script>

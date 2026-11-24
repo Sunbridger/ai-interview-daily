@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-23 11:59",
+ "updated": "2026-11-24 15:08",
  "questions": [
   {
    "id": "agent-20261120-01",
@@ -679,6 +679,176 @@
    "source_type": "文档",
    "source_url": "",
    "path": "fastapi/fastapi-20261123-02.md",
+   "has_diagram": true
+  },
+  {
+   "id": "agent-20261124-01",
+   "title": "Agent 长期记忆越用越蠢：写入噪声、召回污染与遗忘策略怎么治",
+   "topic": "agent",
+   "difficulty": "资深",
+   "tags": [
+    "memory",
+    "上下文工程",
+    "召回排序",
+    "评测"
+   ],
+   "date": "2026-11-24",
+   "source_type": "面经",
+   "source_url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/22-agent-planning-reflection/README.md",
+   "path": "agent/agent-20261124-01.md",
+   "has_diagram": true
+  },
+  {
+   "id": "agent-20261124-02",
+   "title": "Prompt Caching 命中率骤降：上下文拼装顺序与工具大结果外置怎么改",
+   "topic": "agent",
+   "difficulty": "进阶",
+   "tags": [
+    "prompt-caching",
+    "上下文工程",
+    "成本优化",
+    "MCP"
+   ],
+   "date": "2026-11-24",
+   "source_type": "面经",
+   "source_url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/12-frameworks-tools/README.md",
+   "path": "agent/agent-20261124-02.md",
+   "has_diagram": true
+  },
+  {
+   "id": "agent-20261124-03",
+   "title": "Memory 检索预算被长会话吃穿：召回窗口、压缩与写回时机怎么权衡",
+   "topic": "agent",
+   "difficulty": "资深",
+   "tags": [
+    "memory",
+    "上下文工程",
+    "成本控制",
+    "召回质量"
+   ],
+   "date": "2026-11-24",
+   "source_type": "面经",
+   "source_url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/22-agent-planning-reflection/README.md",
+   "path": "agent/agent-20261124-03.md",
+   "has_diagram": true
+  },
+  {
+   "id": "agent-20261124-04",
+   "title": "运行时动态编排的 Agent 花在选择上：路由漂移、并行收益与预算回收怎么控",
+   "topic": "agent",
+   "difficulty": "资深",
+   "tags": [
+    "multi-agent",
+    "动态编排",
+    "延迟成本",
+    "质量回归"
+   ],
+   "date": "2026-11-24",
+   "source_type": "面经",
+   "source_url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/13-multi-agent-systems/README.md",
+   "path": "agent/agent-20261124-04.md",
+   "has_diagram": true
+  },
+  {
+   "id": "rag-20261124-01",
+   "title": "离线用大模型生成假设答案来提升召回，上线后延迟和幻觉反而增加：HyDE 的适用边界与降级怎么定",
+   "topic": "rag",
+   "difficulty": "进阶",
+   "tags": [
+    "HyDE",
+    "查询改写",
+    "召回率",
+    "延迟预算"
+   ],
+   "date": "2026-11-24",
+   "source_type": "面经",
+   "source_url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md",
+   "path": "rag/rag-20261124-01.md",
+   "has_diagram": true
+  },
+  {
+   "id": "rag-20261124-02",
+   "title": "用二进制量化把索引内存压下去后长尾 query 答不出来：量化的召回损失怎么定位、怎么补",
+   "topic": "rag",
+   "difficulty": "资深",
+   "tags": [
+    "向量量化",
+    "二进制量化",
+    "召回损失",
+    "混合检索"
+   ],
+   "date": "2026-11-24",
+   "source_type": "面经",
+   "source_url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/06-vector-index-optimization/README.md",
+   "path": "rag/rag-20261124-02.md",
+   "has_diagram": true
+  },
+  {
+   "id": "rag-20261124-03",
+   "title": "同一批召回片段换一下顺序答案就变了：上下文排布、位置偏置与块压缩怎么治理",
+   "topic": "rag",
+   "difficulty": "资深",
+   "tags": [
+    "上下文编排",
+    "Lost in the Middle",
+    "评估闭环",
+    "token 成本"
+   ],
+   "date": "2026-11-24",
+   "source_type": "面经",
+   "source_url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md",
+   "path": "rag/rag-20261124-03.md",
+   "has_diagram": true
+  },
+  {
+   "id": "rag-20261124-04",
+   "title": "把 1536 维向量截到 512 维省存储，长尾类目召回崩了：降维的评估、重标定与回退怎么做",
+   "topic": "rag",
+   "difficulty": "资深",
+   "tags": [
+    "embedding 维度",
+    "Matryoshka",
+    "分片评估",
+    "影子索引"
+   ],
+   "date": "2026-11-24",
+   "source_type": "面经",
+   "source_url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md",
+   "path": "rag/rag-20261124-04.md",
+   "has_diagram": true
+  },
+  {
+   "id": "fastapi-20261124-01",
+   "title": "上游 camelCase、内部 snake_case：Pydantic v2 的 alias 在入参、出参与缓存写回三处不一致，字段悄悄丢失怎么收口",
+   "topic": "fastapi",
+   "difficulty": "进阶",
+   "tags": [
+    "Pydantic v2",
+    "alias",
+    "序列化",
+    "契约一致性"
+   ],
+   "date": "2026-11-24",
+   "source_type": "文档",
+   "source_url": "",
+   "path": "fastapi/fastapi-20261124-01.md",
+   "has_diagram": false
+  },
+  {
+   "id": "fastapi-20261124-02",
+   "title": "上传大文件到模型网关，接口内存随并发线性上涨：UploadFile 落盘阈值、流式转发与 413 边界怎么定",
+   "topic": "fastapi",
+   "difficulty": "资深",
+   "tags": [
+    "UploadFile",
+    "流式转发",
+    "内存",
+    "反向代理"
+   ],
+   "date": "2026-11-24",
+   "source_type": "文档",
+   "source_url": "",
+   "path": "fastapi/fastapi-20261124-02.md",
    "has_diagram": true
   }
  ]

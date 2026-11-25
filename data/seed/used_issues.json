@@ -16,5 +16,8 @@
  "https://github.com/qdrant/qdrant/issues/10120": "2026-11-22",
  "https://github.com/milvus-io/milvus/issues/55691": "2026-11-22",
  "https://github.com/langchain-ai/langchain/issues/37673": "2026-11-22",
- "https://github.com/qdrant/qdrant/issues/11107": "2026-11-23"
+ "https://github.com/qdrant/qdrant/issues/11107": "2026-11-23",
+ "https://github.com/milvus-io/milvus/issues/54374": "2026-11-25",
+ "https://github.com/milvus-io/milvus/issues/39135": "2026-11-25",
+ "https://github.com/milvus-io/milvus/issues/53630": "2026-11-25"
 }

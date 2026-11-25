@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-24 15:08",
+ "updated": "2026-11-25 13:42",
  "questions": [
   {
    "id": "agent-20261120-01",
@@ -850,6 +850,174 @@
    "source_url": "",
    "path": "fastapi/fastapi-20261124-02.md",
    "has_diagram": true
+  },
+  {
+   "id": "agent-20261125-01",
+   "title": "MCP Sampling 回调：第三方 Server 反向借用宿主模型时，递归放大、审批与费用归属怎么控",
+   "topic": "agent",
+   "difficulty": "资深",
+   "tags": [
+    "MCP",
+    "Sampling",
+    "成本控制",
+    "权限边界"
+   ],
+   "date": "2026-11-25",
+   "source_type": "面经",
+   "source_url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md",
+   "path": "agent/agent-20261125-01.md",
+   "has_diagram": true
+  },
+  {
+   "id": "agent-20261125-02",
+   "title": "从可视化编排平台迁回代码：Agent 工作流的版本化、幂等语义与逃生舱怎么设计",
+   "topic": "agent",
+   "difficulty": "资深",
+   "tags": [
+    "工作流编排",
+    "平台选型",
+    "可观测",
+    "发布治理"
+   ],
+   "date": "2026-11-25",
+   "source_type": "面经",
+   "source_url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/12-frameworks-tools/README.md",
+   "path": "agent/agent-20261125-02.md",
+   "has_diagram": true
+  },
+  {
+   "id": "agent-20261125-03",
+   "title": "用户点了停止，Agent 还在花钱：SSE 断连后的取消传播、不可中断工具与副作用收敛",
+   "topic": "agent",
+   "difficulty": "资深",
+   "tags": [
+    "asyncio",
+    "取消传播",
+    "幂等",
+    "成本控制"
+   ],
+   "date": "2026-11-25",
+   "source_type": "面经",
+   "source_url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/22-agent-planning-reflection/README.md",
+   "path": "agent/agent-20261125-03.md",
+   "has_diagram": true
+  },
+  {
+   "id": "agent-20261125-04",
+   "title": "Prompt 改一行就上线：Agent 回归门禁、eval 过拟合与金丝雀放量怎么定",
+   "topic": "agent",
+   "difficulty": "进阶",
+   "tags": [
+    "eval",
+    "回归门禁",
+    "LLM-as-judge",
+    "金丝雀"
+   ],
+   "date": "2026-11-25",
+   "source_type": "文档",
+   "source_url": "",
+   "path": "agent/agent-20261125-04.md",
+   "has_diagram": true
+  },
+  {
+   "id": "rag-20261125-01",
+   "title": "答案引用了片段但结论是模型自己编的：claim 级支撑校验与冲突证据处理怎么落地",
+   "topic": "rag",
+   "difficulty": "资深",
+   "tags": [
+    "faithfulness",
+    "citation",
+    "eval"
+   ],
+   "date": "2026-11-25",
+   "source_type": "文档",
+   "source_url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md",
+   "path": "rag/rag-20261125-01.md",
+   "has_diagram": true
+  },
+  {
+   "id": "rag-20261125-02",
+   "title": "语义分块上线后召回提升但每次小改都像全量重建：边界漂移、稳定块 ID 与父子块成本怎么一起控",
+   "topic": "rag",
+   "difficulty": "进阶",
+   "tags": [
+    "chunking",
+    "index-update",
+    "cost"
+   ],
+   "date": "2026-11-25",
+   "source_type": "文档",
+   "source_url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md",
+   "path": "rag/rag-20261125-02.md",
+   "has_diagram": true
+  },
+  {
+   "id": "rag-20261125-03",
+   "title": "chunk 正文跟着向量一起 upsert，partial update 撞上消息体上限后静默丢字段：写入契约怎么定",
+   "topic": "rag",
+   "difficulty": "资深",
+   "tags": [
+    "写入路径",
+    "数据建模",
+    "幂等重放",
+    "可观测性"
+   ],
+   "date": "2026-11-25",
+   "source_type": "issue",
+   "source_url": "https://github.com/milvus-io/milvus/issues/54374",
+   "path": "rag/rag-20261125-03.md",
+   "has_diagram": true
+  },
+  {
+   "id": "rag-20261125-04",
+   "title": "让 LLM 自己选检索分支后长尾 query 走错路：路由置信度、并行回退与成本怎么定",
+   "topic": "rag",
+   "difficulty": "进阶",
+   "tags": [
+    "query路由",
+    "检索策略",
+    "回退设计",
+    "成本评估"
+   ],
+   "date": "2026-11-25",
+   "source_type": "面经",
+   "source_url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md",
+   "path": "rag/rag-20261125-04.md",
+   "has_diagram": true
+  },
+  {
+   "id": "fastapi-20261125-01",
+   "title": "进程内 Semaphore 控上游并发，扩到 4 个 worker 后 429 与账单一起翻倍：全局闸门该放哪一层",
+   "topic": "fastapi",
+   "difficulty": "资深",
+   "tags": [
+    "并发控制",
+    "多进程部署",
+    "成本治理",
+    "限流"
+   ],
+   "date": "2026-11-25",
+   "source_type": "文档",
+   "source_url": "",
+   "path": "fastapi/fastapi-20261125-01.md",
+   "has_diagram": true
+  },
+  {
+   "id": "fastapi-20261125-02",
+   "title": "给 async 鉴权依赖套上 lru_cache：权限回收后仍能访问，还偶发 cannot reuse already awaited coroutine",
+   "topic": "fastapi",
+   "difficulty": "进阶",
+   "tags": [
+    "依赖注入",
+    "缓存失效",
+    "并发安全",
+    "鉴权"
+   ],
+   "date": "2026-11-25",
+   "source_type": "文档",
+   "source_url": "",
+   "path": "fastapi/fastapi-20261125-02.md",
+   "has_diagram": false
   }
  ]
 }

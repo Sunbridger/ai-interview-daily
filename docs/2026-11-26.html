@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI 面试题日报 · 2026-11-26</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:#3f3f3f;font:16px/1.9 -apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;letter-spacing:.4px;-webkit-font-smoothing:antialiased}
+main{width:80%;max-width:1080px;margin:0 auto;padding:44px 0 80px}
+.masthead{text-align:center}
+.kicker{display:inline-block;font-size:12px;letter-spacing:2px;color:#d4472a;border:1px solid #f0cfc6;background:#fdf5f2;padding:3px 12px;border-radius:2px}
+h1{font-size:24px;line-height:1.5;color:#1a1a1a;font-weight:700;margin:18px 0 6px}
+.masthead .meta{font-size:13px;color:#999;margin:0}
+.lede{font-size:15px;color:#8a8a8a;text-align:center;margin:14px 0 0}
+.orn{display:flex;align-items:center;gap:12px;margin:30px 0;color:#d8d8d8;font-size:10px;line-height:1}
+.orn:before,.orn:after{content:"";flex:1;height:1px;background:#eee}
+.topic-head{text-align:center;margin:46px 0 6px}
+.topic-head span{display:inline-block;font:600 13px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.22em;color:#d4472a;border-top:1px solid #f0cfc6;border-bottom:1px solid #f0cfc6;padding:7px 16px}
+.q{margin:34px 0 0}
+.no{display:inline-block;background:#d4472a;color:#fff;font-size:12px;font-weight:600;line-height:1;padding:5px 8px;border-radius:3px;margin-right:9px;vertical-align:3px;letter-spacing:1px}
+h2{font-size:19px;line-height:1.65;color:#1a1a1a;font-weight:700;margin:0 0 8px}
+.meta-line{font-size:13px;color:#9b9b9b;margin:0 0 16px;padding-left:2px}
+.meta-line a{color:#576b95;text-decoration:none}
+.tag{display:inline-block;border:1px solid #ececec;border-radius:2px;padding:0 6px;margin-right:5px;font-size:12px;color:#8a8a8a;line-height:1.9}
+p{margin:14px 0}
+.sub{font-size:15px;font-weight:700;color:#222;margin:24px 0 10px;padding-left:9px;border-left:3px solid #d4472a;line-height:1.5}
+.steps{list-style:none;margin:0;padding:0;counter-reset:s}
+.steps li{counter-increment:s;position:relative;padding-left:27px;margin:8px 0}
+.steps li:before{content:counter(s);position:absolute;left:0;top:0;color:#d4472a;font-weight:600;font-size:14px;line-height:1.9}
+.code{background:#f7f7f7;border-radius:4px;padding:14px 16px;margin:16px 0;overflow:auto}
+.code code{display:block;font:13px/1.7 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#2f2f2f;white-space:pre}
+.qa{background:#fbfbfb;border-radius:4px;padding:12px 16px;margin:0}
+.qa p{margin:6px 0;font-size:15px;color:#444}
+.qa strong{color:#1a1a1a}
+.diagram{background:#fbfbfb;border:1px solid #eee;border-radius:4px;padding:12px;margin:16px 0;overflow:auto}
+.diagram .mermaid{display:flex;justify-content:center}
+footer{margin-top:56px;text-align:center;color:#b0b0b0;font-size:12px;line-height:2.2}
+footer a{color:#8a9bbf;text-decoration:none}
+.empty{text-align:center;color:#9b9b9b;padding:48px 0}
+/* 题库页 */
+.search-box{margin:32px 0 0}
+input[type=search]{width:100%;padding:11px 14px;border:1px solid #e5e5e5;border-radius:4px;font-size:15px;color:#333;outline:none;background:#fff}
+input[type=search]:focus{border-color:#d4472a}
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 10px}
+.filter{border:1px solid #e5e5e5;border-radius:999px;padding:3px 12px;font-size:13px;color:#666;background:#fff;cursor:pointer;font-family:inherit}
+.filter.on{border-color:#d4472a;color:#d4472a;background:#fdf5f2}
+.count{color:#9b9b9b;font-size:13px;margin:6px 0 14px}
+.bank-item{border-top:1px solid #eee;padding:16px 0}
+.bank-item a{color:#1a1a1a;text-decoration:none;font-weight:600}
+.bank-item a:hover{color:#d4472a}
+.bank-item .meta{font-size:12px;color:#9b9b9b;margin-top:4px}
+@media (max-width:760px){main{width:auto;padding:32px 20px 64px}}
+@media (min-width:1200px){body{font-size:17px}h1{font-size:28px}h2{font-size:21px}.qa p{font-size:16px}}
+</style>
+</head>
+<body>
+<main>
+<header class="masthead">
+<span class="kicker">AI 面试题日报</span>
+<h1>11 月 26 日 · 10 道</h1>
+<p class="meta">2026-11-26 · 周四 · Agent 4 · RAG 4 · FastAPI 2 · 中高级</p>
+
+</header>
+<div class="orn"><span>◆</span></div>
+<div class="topic-head"><span>Agent 专题</span></div><section class="q" id="agent-20261126-01"><h2><span class="no">01</span>HITL 审批排队期间计划已漂移：票据过期、参数哈希与旧快照执行怎么防</h2><p class="meta-line">资深 ｜ <span class="tag">HITL</span><span class="tag">审批票据</span><span class="tag">幂等</span><span class="tag">越权防护</span> ｜ <a href="https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/22-agent-planning-reflection/README.md" target="_blank" rel="noopener">面经来源 ↗</a></p><p class="sub">为什么会有这个问题</p><p>HITL 的工程本质不是弹窗确认，而是把高风险副作用放进可审计、可拦截的闸门。审批是异步的：人可能在几分钟甚至几天后响应，而 Agent 的计划、工具参数、资源状态、权限和预算都可能变化。如果审批只返回一个 approved=true，执行端没有把审批绑定到具体计划快照和参数，就会出现 TOCTOU：人批准的是 A，执行的是 B。常见错误认知是「审批通过就安全」，忽略票据有效期、执行前复核和重复执行。</p><p class="sub">怎么做</p><ol class="steps"><li>审批对象分级：只读、可逆、低风险操作走自动策略和采样审计；资金、外发、删除、权限变更等高风险工具必须做步骤级审批，计划级审批只用于可逆批量任务。</li><li>票据绑定快照：ticket 至少包含 plan_hash、step_id、tool_name、args_hash、tool_schema_version、resource_version、approver、expires_at；任一字段变化票据立即失效。</li><li>执行前 preflight：重新拉起资源版本，校验权限、预算、参数 schema 和业务前置条件；不满足就拒绝执行并进入 replan，不允许静默改参数。</li><li>幂等与副作用账本：以 ticket_id 作为幂等键传给工具，记录 intent、executed、committed 状态；不可幂等工具用 outbox 或两阶段确认，避免审批后重放导致重复副作用。</li><li>过期与拒绝处理：TTL 按风险分级；过期后把审批时快照与当前状态差异展示给审批人重新签发，不自动续期；拒绝则回退计划重写。</li><li>审计与指标：记录审批快照、执行快照和 diff；监控 approval_latency、stale_ticket_reject_rate、duplicate_side_effect、replan_rate；异常升高时暂停该类工具并人工排查。</li></ol><div class="code"><code>from dataclasses import dataclass
+from hashlib import sha256
+import json, time
+
+@dataclass(frozen=True)
+class Ticket:
+    ticket_id: str
+    plan_hash: str
+    args_hash: str
+    expires_at: float
+    approved_by: str = &#x27;pending&#x27;
+
+def digest(obj):
+    raw = json.dumps(obj, sort_keys=True, ensure_ascii=False)
+    return sha256(raw.encode()).hexdigest()
+
+def issue(plan, step, ttl=600):
+    return Ticket(
+        ticket_id=&#x27;apr_%s_%d&#x27; % (step[&#x27;id&#x27;], time.time()),
+        plan_hash=digest(plan),
+        args_hash=digest(step[&#x27;args&#x27;]),
+        expires_at=time.time() + ttl,
+    )
+
+def execute(ticket, plan, step, approver, precheck):
+    if ticket.approved_by != approver:
+        raise PermissionError(&#x27;not approved&#x27;)
+    if time.time() &gt; ticket.expires_at:
+        raise PermissionError(&#x27;expired&#x27;)
+    if ticket.plan_hash != digest(plan):
+        raise PermissionError(&#x27;plan drifted&#x27;)
+    if ticket.args_hash != digest(step[&#x27;args&#x27;]):
+        raise PermissionError(&#x27;args drifted&#x27;)
+    if not precheck(step):
+        raise RuntimeError(&#x27;precondition failed&#x27;)
+    return step[&#x27;call&#x27;](idempotency_key=ticket.ticket_id)</code></div><p class="sub">真实场景</p><p>某项目做退款和工单处理 Agent，审批队列积压，人工在较晚时间点才点通过；等待期间用户取消订单或金额变化，Agent 仍按审批时的旧参数调用退款工具，出现重复退款或越权操作。排查发现日志里只有 approved=true，没有 plan_hash 和 args_hash，执行端也无法判断票据是否过期。修复后票据绑定计划与参数哈希，执行前复核资源版本，过期票据进入 replan，重复副作用才被收敛。</p><div class="diagram"><pre class="mermaid">sequenceDiagram
+    participant A as Agent
+    participant P as 策略服务
+    participant H as 审批人
+    participant T as 工具服务
+    A-&gt;&gt;P: 提交计划指纹和参数哈希
+    P--&gt;&gt;A: 返回审批票据和有效期
+    A-&gt;&gt;H: 发起审批并展示计划快照
+    H--&gt;&gt;P: 通过或拒绝
+    A-&gt;&gt;P: 执行前复核票据和前置条件
+    alt 票据有效且条件满足
+        P--&gt;&gt;A: 放行
+        A-&gt;&gt;T: 带幂等键执行
+    else 过期或计划漂移
+        P--&gt;&gt;A: 拒绝并要求重新规划
+    end</pre></div><p class="sub">面试官追问</p><div class="qa"><p><strong>Q：</strong>审批粒度太细会让人工成为瓶颈，怎么平衡？</p><p><strong>A：</strong>按风险分级：低风险自动执行加采样审计，中风险做计划级审批或批量审批，高风险做步骤级审批；用金额、数据敏感度、可逆性、外发对象动态升级。审批界面只展示关键 diff 和证据，同时监控积压，超过阈值时转异步或直接拒绝，不能默认放行。</p><p><strong>Q：</strong>审批通过后 precheck 失败，能不能让 Agent 自动调整参数再执行？</p><p><strong>A：</strong>不能静默调整。参数变化意味着审批对象变了，必须重新签发票据；可以让 Agent 生成新计划并展示差异，走快速审批。若业务有容差，必须在策略里显式定义容差范围并记录审计，不能由模型自行判断。</p></div></section><section class="q" id="agent-20261126-02"><h2><span class="no">02</span>并行子 Agent 部分失败被合成成全量成功：覆盖率契约、可信度与降级结论怎么设计</h2><p class="meta-line">进阶 ｜ <span class="tag">多Agent</span><span class="tag">并行编排</span><span class="tag">部分失败</span><span class="tag">结果合成</span> ｜ <a href="https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/multi-agent/evaluation.md" target="_blank" rel="noopener">面经来源 ↗</a></p><p class="sub">为什么会有这个问题</p><p>fan-out 并行子 Agent 能降时延，但部分失败是常态：超时、限流、工具报错、子 Agent 返回空结果。问题常出在收集与合成阶段：异常被 except 吞掉，results 里只 append 成功项，模型看到的是「看起来完整」的上下文，于是把部分覆盖当成全量覆盖，输出确定结论。另一种错误是把「成功但空」和「失败」混为一谈，或者对所有失败无脑重试，放大成本和重复副作用。</p><p class="sub">怎么做</p><ol class="steps"><li>子任务契约：拆解时标记 required/optional、是否幂等、超时预算、可重试错误类型；required 决定是否允许降级。</li><li>统一结果信封：每个子 Agent 返回 task_id、status、data、error_class、coverage、source_refs、trace_id；禁止只返回裸 data 或字符串。</li><li>收集阶段不吞异常：用 gather(return_exceptions=True) 或等价机制，把异常转成 failed/timeout 信封，保留失败原因和已耗时。</li><li>确定性 gate：合成前计算 coverage；required 未全覆盖进入 degraded 模式，缺失项单独列出；optional 缺失可继续，但输出必须标注。</li><li>重试策略：只对 retryable 且幂等的子任务重试，预算随链递减；权限拒绝、业务拒绝不重试；重试仍失败则固化结果，不无限重入。</li><li>合成约束：给模型的输入包含 coverage 和 missing，prompt 明确禁止推断缺失项；输出 schema 要求每个结论带 source_task_id，后置校验 unsupported claim。</li><li>降级输出与接管：degraded 结果附带覆盖率、限制和下一步建议；高风险结论进入 HITL 或二次补采，不直接对外。</li></ol><div class="code"><code>import asyncio
+from dataclasses import dataclass
+from enum import Enum
+
+class Status(str, Enum):
+    OK = &#x27;ok&#x27;
+    FAILED = &#x27;failed&#x27;
+    TIMEOUT = &#x27;timeout&#x27;
+
+@dataclass
+class Envelope:
+    task_id: str
+    required: bool
+    status: Status
+    data: dict | None = None
+    error: str | None = None
+
+async def run_one(task, agent):
+    try:
+        data = await asyncio.wait_for(agent(task), timeout=task.timeout)
+        return Envelope(task.id, task.required, Status.OK, data)
+    except asyncio.TimeoutError:
+        return Envelope(task.id, task.required, Status.TIMEOUT)
+    except Exception as e:
+        return Envelope(task.id, task.required, Status.FAILED, error=type(e).__name__)
+
+async def collect(tasks, agent):
+    return await asyncio.gather(*(run_one(t, agent) for t in tasks))
+
+def synthesis_gate(results):
+    missing = [r.task_id for r in results if r.required and r.status is not Status.OK]
+    coverage = sum(r.status is Status.OK for r in results) / max(len(results), 1)
+    if missing:
+        return {&#x27;mode&#x27;: &#x27;degraded&#x27;, &#x27;missing&#x27;: missing, &#x27;coverage&#x27;: coverage}
+    return {&#x27;mode&#x27;: &#x27;full&#x27;, &#x27;coverage&#x27;: 1.0}</code></div><p class="sub">真实场景</p><p>某项目做行业研究 Agent，并行拆出财报、新闻、招聘、专利等子任务，其中部分子任务超时；合成模型仍输出完整结论和确定数字，用户追问时发现关键数据没有来源。排查发现收集阶段把异常吞掉，失败子任务没有进入 results，synthesis prompt 也没有 missing 字段。修复后每个子任务返回统一信封，required 缺失时进入降级合成并列出缺失项，结论必须带 source_task_id；同时监控 subtask_success_rate、synthesis_coverage、unsupported_claim_rate 和重试成本。</p><div class="diagram"><pre class="mermaid">flowchart TD
+    A[拆解子任务并标记 required] --&gt; B[并行委派子 Agent]
+    B --&gt; C[收集统一结果信封]
+    C --&gt; D{required 是否全覆盖}
+    D -- 是 --&gt; E[全量合成]
+    D -- 否 --&gt; F[降级合成并列出缺失项]
+    E --&gt; G[输出结论与来源]
+    F --&gt; H[输出覆盖率与限制]</pre></div><p class="sub">面试官追问</p><div class="qa"><p><strong>Q：</strong>required 子任务失败时，应该阻塞等待还是先输出降级结果？</p><p><strong>A：</strong>看时效、风险和补采成本：可补采且预算允许时做有限重试或换源；否则输出降级结果并明确缺失，不阻塞整个会话。对外高风险结论走 HITL。关键是不能让模型把缺失当已知。</p><p><strong>Q：</strong>如何避免合成模型编造缺失项？</p><p><strong>A：</strong>输入结构化，只给 covered data，missing 单独字段；prompt 明确禁止推断；输出 schema 强制 source_task_id；后置规则校验无来源断言；必要时用模板化合成替代自由生成。</p></div></section><section class="q" id="agent-20261126-03"><h2><span class="no">03</span>代码执行 Agent 的沙箱：超时残留、容器复用污染与产物回灌怎么控</h2><p class="meta-line">资深 ｜ <span class="tag">工具执行</span><span class="tag">沙箱隔离</span><span class="tag">资源限制</span><span class="tag">故障定位</span></p><p class="sub">为什么会有这个问题</p><p>代码解释器类工具把模型生成的不可信代码直接跑在服务侧，执行时长和资源占用都不可预知，最常见的错误认知是「给个 timeout 就安全了」。实际上有三个坑：一是超时后 kill 只杀了父进程，模型代码里 fork/subprocess 出去的子孙进程仍在跑，形成孤儿进程；二是容器池复用时工作目录和 pip 缓存被跨会话继承，模型读到上一次会话的文件却当作本会话数据；三是产物（csv/图片）被 base64 塞回工具结果，直接把下一轮上下文打爆，表现为请求 400 而不是工具报错。三者都不报异常，线上只看到「Agent 结论怪」或「偶发超限」。</p><p class="sub">怎么做</p><ol class="steps"><li>执行隔离：每次执行创建会话级独立 workspace（mkdtemp），容器根文件系统只读，HOME 指向 workspace，python 用 -I 隔离开环境变量与用户 site-packages，避免上一次会话的模块与数据残留。</li><li>进程回收：用 Popen(start_new_session=True) 让执行体独占进程组，超时后 os.killpg 整组 SIGKILL，并在 finally 里再补一次 killpg（吞掉 ProcessLookupError），覆盖模型代码已经 spawn 子进程的场景；内存用容器侧 limit/ulimit 做硬限，不依赖代码自检。</li><li>输出与产物契约：stdout/stderr 按字节截断并回传 truncated 标记，让模型知道内容不全；产物一律落 artifact store，工具结果只返回 {artifact_id, name, size, preview 若干行}，需要细看时由模型再调用读取工具按需取片段。</li><li>错误分类回灌：把 returncode / signal / OOM / timeout 分成不同 reason，回灌给模型的文本不同（超时要提示拆分数据或降低复杂度，OOM 要提示分块处理，语法错误才回 traceback 末尾若干行），避免把整段堆栈塞进上下文引发连锁重试。</li><li>可观测与容量：每次执行记录 exec_id、排队等待、执行耗时、peak rss、kill reason；用等待时间占比区分「池容量不足」与「模型代码慢」，前者扩池或排队超时降级，后者改 prompt 或限制单次数据量。</li><li>池化复位校验：容器归还前删除 workspace、清 pip 缓存与 /tmp，并对关键目录做一次 diff 校验，防止清理逻辑漏掉路径导致跨会话污染。</li><li>压测与回归：用固定的一组恶意样例（死循环、fork 炸弹、写大文件、读上一会话文件）纳入回归，每次改沙箱配置都跑一遍。</li></ol><div class="code"><code>import os, signal, subprocess, tempfile, shutil
+
+OUT_LIMIT = 8 * 1024
+
+
+def run_python(code: str, timeout: float = 20.0) -&gt; dict:
+    workdir = tempfile.mkdtemp(prefix=&quot;exec-&quot;)
+    proc = subprocess.Popen(
+        [&quot;python&quot;, &quot;-I&quot;, &quot;-c&quot;, code],
+        cwd=workdir,
+        stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+        start_new_session=True,
+        env={&quot;PATH&quot;: &quot;/usr/local/bin&quot;, &quot;HOME&quot;: workdir},
+    )
+    reason = None
+    try:
+        out, err = proc.communicate(timeout=timeout)
+    except subprocess.TimeoutExpired:
+        os.killpg(proc.pid, signal.SIGKILL)
+        out, err = proc.communicate()
+        reason = &quot;timeout&quot;
+    finally:
+        try:
+            os.killpg(proc.pid, signal.SIGKILL)
+        except ProcessLookupError:
+            pass
+    if proc.returncode in (-9, 137):
+        reason = reason or &quot;oom_or_sigkill&quot;
+    artifacts = [
+        {&quot;name&quot;: n, &quot;size&quot;: os.path.getsize(os.path.join(workdir, n)),
+         &quot;artifact_id&quot;: put_artifact(os.path.join(workdir, n))}
+        for n in os.listdir(workdir)
+    ]
+    shutil.rmtree(workdir, ignore_errors=True)
+    return {&quot;reason&quot;: reason, &quot;returncode&quot;: proc.returncode,
+            &quot;stdout&quot;: out[:OUT_LIMIT].decode(&quot;utf-8&quot;, &quot;replace&quot;),
+            &quot;truncated&quot;: len(out) &gt; OUT_LIMIT, &quot;artifacts&quot;: artifacts}</code></div><p class="sub">真实场景</p><p>某项目的分析类 Agent 挂了代码执行工具。症状一：夜间批量任务偶发把宿主 CPU 打满，排查发现执行超时后主进程被杀，但模型代码里起的多进程仍在跑，killpg 缺失是根因。症状二：容器池复用后，某次会话的分析结论引用了上一轮遗留的 data.csv，数据完全对得上但业务方说「这不是我们的客户」。症状三：工具生成的 csv 被 base64 回填进工具结果，下一轮请求直接超上下文，前端只看到一个 400，链路里没有任何工具层错误。</p><div class="diagram"><pre class="mermaid">flowchart TD
+  A[模型生成代码] --&gt; B[创建会话级 workspace]
+  B --&gt; C[独立进程组执行]
+  C --&gt; D{超时还是退出}
+  D --&gt;|超时| E[整组 SIGKILL 标 timeout]
+  D --&gt;|正常退出| F[stdout 按字节截断]
+  E --&gt; G[扫描 workspace 产物]
+  F --&gt; G
+  G --&gt; H[产物写 artifact store 只回引用]
+  H --&gt; I[清理 workspace 归还容器]</pre></div><p class="sub">面试官追问</p><div class="qa"><p><strong>Q：</strong>为什么不用线程 join(timeout) 或 signal.alarm 做超时？</p><p><strong>A：</strong>线程无法被强制终止，join 超时只是放弃等待，执行体仍在跑并继续占 CPU；signal.alarm 只对主线程有效，且与业务侧其他定时器冲突。超时必须落到进程边界：独立进程组 + killpg，资源上限交给 cgroup/ulimit，仅靠 Python 层控制不住。</p><p><strong>Q：</strong>怎么区分「模型写的代码慢」和「沙箱资源不足」？</p><p><strong>A：</strong>看三个指标：排队等待时间、执行耗时、peak rss。排队占大头是池容量问题，扩池或加排队超时；执行耗时集中撞 timeout 且 rss 接近上限，是算法或数据量问题，应把提示改成「先采样再聚合」而不是加超时。两类要打不同 reason 标签，否则优化方向会跑偏。</p></div></section><section class="q" id="agent-20261126-04"><h2><span class="no">04</span>strict 默认值被封装层翻转后，工具参数三层校验错位：静默回默认与批量拒绝怎么定位</h2><p class="meta-line">进阶 ｜ <span class="tag">工具调用</span><span class="tag">schema 校验</span><span class="tag">SDK 升级</span><span class="tag">灰度发布</span> ｜ <a href="https://github.com/langchain-ai/langchain/issues/35837" target="_blank" rel="noopener">issue来源 ↗</a></p><p class="sub">为什么会有这个问题</p><p>工具参数的约束实际上分散在四层：模型侧的 JSON Schema（strict 模式）、SDK 封装层构造请求时的默认值、应用层 pydantic 校验、下游服务自己的校验。四层语义并不一致，常见错误认知是「有 pydantic 就安全了」。典型错位有两类方向相反的故障：一是封装层或 SDK 升级把 strict 从 false 改为 true，以前能跑的宽松 schema（缺 additionalProperties:false、optional 字段没进 required）被上游直接拒绝，表现为批量 400；二是应用层用 extra=ignore 把模型多给的字段悄悄丢掉，缺失的必填字段又有默认值，工具「成功」返回但参数是默认值。前者是硬失败容易发现，后者静默出错，往往等业务方反馈才发现。</p><p class="sub">怎么做</p><ol class="steps"><li>确立唯一事实源：用 pydantic 模型生成 JSON Schema，生成后显式补 additionalProperties:false，并要求所有字段在 strict 模式下都进入 required，可空字段用 Optional + null 表达，不允许「字段可缺省」这种表达能力。</li><li>schema 快照测试：把每个工具的最终 spec 存成快照文件，SDK 或模型适配层升级后跑 diff，任何字段类型、required 列表、默认值变化都在 CI 阶段拦住，而不是等线上错误率抬升。</li><li>应用层显式严格：模型用 ConfigDict(extra=&quot;forbid&quot;)，必填字段一律不给默认值；校验失败时不填默认值兜底，而是返回结构化错误（字段名 + 允许值 + 简短原因）回灌给模型，让它自己改参数重试一次。</li><li>打 rejected_by 标签：工具结果里区分 model_schema / sdk / app_schema / upstream 四类拒绝来源，以及一个 silent_default 标记（参数由默认值填充而非模型给出），把静默失败变成可统计指标。</li><li>灰度与止血：先在 shadow 模式记录「如果按 strict 校验会被拒」的比例，再按工具维度打开 strict；出问题时按工具名 + rejected_by 快速回滚成旧 spec，而不是整体降级 SDK。</li><li>兼容不支持 strict 的模型：适配层把统一 spec 降级成自然语言描述 + 应用层强校验，同时记录降级标记，按模型统计参数错误率，超过阈值就禁止该模型接这个工具。</li></ol><div class="code"><code>from typing import Literal
+from pydantic import BaseModel, ConfigDict, Field, ValidationError
+
+
+class CreateTicket(BaseModel):
+    model_config = ConfigDict(extra=&quot;forbid&quot;)
+    title: str = Field(min_length=1, max_length=120)
+    priority: Literal[&quot;low&quot;, &quot;mid&quot;, &quot;high&quot;]
+    assignee: str | None = None
+
+
+TOOL_SPEC = {
+    &quot;name&quot;: &quot;create_ticket&quot;,
+    &quot;description&quot;: &quot;创建工单&quot;,
+    &quot;parameters&quot;: {**CreateTicket.model_json_schema(), &quot;additionalProperties&quot;: False},
+    &quot;strict&quot;: True,
+}
+
+
+def handle_tool_call(args: dict) -&gt; dict:
+    try:
+        payload = CreateTicket.model_validate(args)
+    except ValidationError as exc:
+        return {
+            &quot;ok&quot;: False,
+            &quot;rejected_by&quot;: &quot;app_schema&quot;,
+            &quot;errors&quot;: [{&quot;field&quot;: &quot;.&quot;.join(map(str, e[&quot;loc&quot;])), &quot;msg&quot;: e[&quot;msg&quot;]}
+                       for e in exc.errors()],
+        }
+    return {&quot;ok&quot;: True, &quot;rejected_by&quot;: None, &quot;data&quot;: create(payload)}</code></div><p class="sub">真实场景</p><p>某项目升级 agent SDK 小版本后，create_ticket、search_docs 等带枚举和可选字段的工具错误率一夜抬升，日志里只有下游返回的 invalid_request，本地单测全绿。同期另一批工具看起来正常，但工单 priority 全部落在 low——因为模型多给的字段在应用层被 extra=ignore 丢掉，priority 缺失又走了默认值。两种症状一个硬失败一个静默错误，只有加上 rejected_by 与 silent_default 标签、并做 schema 快照 diff 后，才定位到是封装层 strict 默认值与本地 schema 不完整叠加导致的。</p><div class="diagram"><pre class="mermaid">flowchart TD
+  A[模型侧 strict schema] --&gt; B[SDK 封装层默认值]
+  B --&gt; C[应用层 pydantic 校验]
+  C --&gt; D[下游服务校验]
+  D --&gt; E{调用结果}
+  E --&gt;|被上游拒绝| F[硬失败 记录 rejected_by]
+  E --&gt;|字段被丢弃| G[静默回退默认值 记录 silent_default]
+  G --&gt; H[快照 diff 与错误率告警]</pre></div><p class="sub">面试官追问</p><div class="qa"><p><strong>Q：</strong>为什么不在 prompt 里把 schema 写清楚就够了？</p><p><strong>A：</strong>prompt 不是契约，模型输出会随版本和采样漂移，且不同 provider 的 strict 语义不同。schema 必须由代码生成、做快照、由服务端校验兜底；prompt 只放描述与示例，承担引导作用而不承担正确性。</p><p><strong>Q：</strong>如何兼容不支持 strict JSON Schema 的模型？</p><p><strong>A：</strong>对外统一一份严格 spec 作为事实源，适配层对弱能力模型降级成「自然语言描述 + 示例 + 应用层强校验」，并给调用打 model_degraded 标签。按模型统计参数错误率与 silent_default 比例，超阈值就把该模型从这个工具的候选列表里摘掉。</p></div></section><div class="topic-head"><span>RAG 专题</span></div><section class="q" id="rag-20261126-01"><h2><span class="no">05</span>知识经常变却用 SFT 灌进去，两周后模型还在答旧政策：RAG、微调与规则层的职责怎么切、回归验证怎么做</h2><p class="meta-line">资深 ｜ <span class="tag">rag</span><span class="tag">finetune</span><span class="tag">评测</span><span class="tag">选型</span> ｜ <a href="https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md" target="_blank" rel="noopener">面经来源 ↗</a></p><p class="sub">为什么会有这个问题</p><p>团队遇到答不准时第一反应是「模型不行，微调一下」，于是把产品文档、政策条款、FAQ 全部做成 SFT 数据。问题在于：参数化记忆没有 TTL、不能按单条失效、不能按用户权限过滤、也无法溯源引用，知识一旦进权重就只能靠再训一次覆盖，而 base model 升级又会把上一次的知识全部丢掉。反过来说，RAG 也治不了所有病：输出格式不稳定、领域缩写解读错误、该拒答时硬答、工具调用参数不规范，这些是「行为分布」问题，靠检索塞上下文往往越塞越乱。真实工程里必须先把「缺知识 / 行为不稳 / 流程没设计好」切开，再决定是补索引、写约束还是上 SFT，否则两个手段互相背锅。</p><p class="sub">怎么做</p><ol class="steps"><li>建立 badcase 归因表：每条失败样本必须落盘 query、召回 top-k 的 doc_id 与分数、gold 文档是否命中、模型答案、人工判定标签（缺证据 / 有证据没用上 / 多次回答不一致 / 流程走错），没有这张表就没有选型依据。</li><li>按归因分流：gold 文档不在 top-k → 知识缺失或召回问题，走补数据、改切分、加词法通道；gold 在但答案没用到 → 提示词与上下文排布、引用契约；同一 query 同等召回下多次采样答案不一致 → 行为不稳；多步任务中间步骤错 → 编排与工具契约。</li><li>只有当「证据齐全但模型持续不遵守输出规范或不懂领域表述」时才考虑 SFT，且训练集里不放易变事实，只放行为样本：引用格式、拒答话术、字段解读、工具参数范式。</li><li>采用混合形态：RAG 提供事实与权限边界，SFT 只教「怎么用检索结果说话」；用 LoRA 小学习率，混入 10%–20% 通用指令与「依据上下文作答」样本抵抗遗忘。</li><li>把「不改模型就能改」的东西全部下沉到规则层：schema 约束解码、答案校验器、低置信度转人工、路由规则，这些才能按天迭代。</li><li>建回归门禁：把评测集拆成知识子集与行为子集，任何一次 prompt、切分、索引参数或 SFT 版本变更都要跑双集，知识集不允许下降，行为集看格式合规率与拒答准确率，通过后灰度。</li><li>版本治理：索引侧支持热更新与 alias 切换；SFT 版本必须绑定 base model 版本，base 升级视为重训，不能默认继承。</li></ol><div class="code"><code>def triage(case):
+    docs = case[&quot;retrieved&quot;][:10]
+    if not ({d[&quot;doc_id&quot;] for d in docs} &amp; set(case[&quot;gold_doc_ids&quot;])):
+        return &quot;knowledge_missing&quot;       # 补文档、改切分、加召回通道
+    used = any(g in case[&quot;answer&quot;] for g in case[&quot;gold_spans&quot;])
+    answers = {r[&quot;answer&quot;] for r in case[&quot;repeats&quot;]}
+    if len(answers) &gt; 1 and all(r[&quot;top5&quot;] == case[&quot;top5&quot;] for r in case[&quot;repeats&quot;]):
+        return &quot;behavior_unstable&quot;       # 约束解码、schema、少量 SFT
+    if not used:
+        return &quot;prompt_or_context&quot;       # 引用契约、上下文排布
+    return &quot;workflow&quot;                    # 路由、工具契约、流程校验
+
+
+def decide(counts, total):
+    share = {k: v / total for k, v in counts.items()}
+    plan = []
+    if share.get(&quot;knowledge_missing&quot;, 0) &gt; 0.5:
+        plan.append(&quot;fix_retrieval_first&quot;)   # 此时微调几乎无收益
+    if share.get(&quot;behavior_unstable&quot;, 0) &gt; 0.2:
+        plan.append(&quot;constrain_then_sft&quot;)
+    if share.get(&quot;workflow&quot;, 0) &gt; 0.15:
+        plan.append(&quot;refactor_orchestration&quot;)
+    return plan</code></div><p class="sub">真实场景</p><p>某项目做内部制度问答，运营每两周改一次报销与假期政策，团队最初把政策条文做成 SFT 数据，上线初期效果很好。两周后出现两类症状：一是用户问新政策时模型给出旧金额且语气非常肯定，检索日志里新文档其实已被召回，但模型答案与上下文冲突；二是同一个问题，一次带引用一次不带，格式合规率只有七成左右。排查路径：先跑归因表，发现知识缺失只占少数、大部分是「有证据没用上」和「多次回答不一致」；再对比 SFT 前后在知识子集上的表现，确认微调把「优先相信权重」这个偏好带了进来。最终把政策事实全部退回索引层，SFT 只保留引用格式与拒答行为的样本，并把格式校验下沉为输出 schema 校验，旧模型版本按 alias 回滚。</p><div class="diagram"><pre class="mermaid">flowchart TD
+  A[线上 badcase] --&gt; B{gold 文档是否进 top-k}
+  B --&gt;|否| C[知识缺失 补数据或改召回]
+  B --&gt;|是| D{同等召回下多次回答是否一致}
+  D --&gt;|否| E[行为不稳 输出约束或少量 SFT]
+  D --&gt;|是| F{答案是否用上证据}
+  F --&gt;|否| G[提示词与上下文排布]
+  F --&gt;|是| H[流程编排与校验]
+  C --&gt; I[回归门禁 知识集与行为集]
+  E --&gt; I
+  G --&gt; I
+  H --&gt; I</pre></div><p class="sub">面试官追问</p><div class="qa"><p><strong>Q：</strong>如果 SFT 之后行为集变好但知识集明显下降，你怎么处理？</p><p><strong>A：</strong>先确认不是评测集与文档版本错位；然后按灾难性遗忘处理：降低 LoRA rank 与学习率、缩短步数、在训练集里混入「仅依据给定上下文作答」和通用指令样本；同时把知识类问题在推理侧强制走 RAG，并在 prompt 里明确上下文优先于参数记忆。若仍下降，说明这批 SFT 数据本身在教模型「凭记忆答」，应删样本而不是继续调参。</p><p><strong>Q：</strong>为什么不干脆把全部文档塞进长上下文，省掉索引和微调的争论？</p><p><strong>A：</strong>成本、权限与更新粒度三方面都不成立：长上下文按 token 计费且每轮重复付费；文档级权限过滤在拼接前就要做，长文直塞很难保证不越权；一次政策改动要重建整个 prompt 缓存。长上下文适合「少量、稳定、同一租户」的材料，知识型、多租户、频繁变更的场景仍然要靠检索分层。</p></div></section><section class="q" id="rag-20261126-02"><h2><span class="no">06</span>服务指标全绿但用户说新文档搜不到：向量索引的健康度该监控哪些层、抽检召回怎么建</h2><p class="meta-line">进阶 ｜ <span class="tag">rag</span><span class="tag">vector-index</span><span class="tag">监控</span><span class="tag">召回评估</span> ｜ <a href="https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/06-vector-index-optimization/README.md" target="_blank" rel="noopener">面经来源 ↗</a></p><p class="sub">为什么会有这个问题</p><p>向量库的故障几乎都是静默的：不会抛 5xx，也不会让 p99 变红，只会让召回一点点变差。原因在于 ANN 索引本身是近似结构且异步维护——删除是打墓碑、更新是写新段、段合并与索引构建在后台跑、量化与剪枝有损，任何一环滞后都只体现在「结果里少了几条」。只监控 QPS、延迟、错误率等于没监控；只看向量条数也不够，条数对但内容过期、删除未生效、部分 partition 没重建，都会让条数看起来完全正常。必须把数据层、索引层、效果层分开定义指标，并用带 gold 的抽检集持续验证真实召回。</p><p class="sub">怎么做</p><ol class="steps"><li>数据层指标：期望条数（由上游文档 manifest 与切分版本推算）与实际 num_entities 的缺口、删除率 tombstone ratio、最新一条写入的时间水位、以及每个 partition 的向量数与文档数是否同比例。</li><li>索引层指标：段数量与单段大小分布、索引构建滞后 build lag（写入成功到可被检索的时间差）、索引字节与原始向量字节之比（判断是否膨胀或未压缩）、内存驻留率与是否落盘、索引版本号。</li><li>效果层指标：分层抽检集的 recall@k 与 nDCG、空结果率、top1 相似度分数分布漂移、拒答率；分数分布漂移往往先于 recall 下降出现，是最早的信号。</li><li>抽检集建设：200–500 条 query，按业务类目分层并显式覆盖长尾，每条绑定当前文档版本的 gold doc_id；文档改版时必须重标，否则监控会长期失真。定时任务跑结果写入时序库，与上一基线比较。</li><li>线上 trace 关联：每次请求记录 top-k 的 doc_id、score 与 index_version，badcase 可原样回放，直接判断是「没召回」还是「召回了没用上」。</li><li>告警分级与处置动作：效果层跌超过阈值 → 通知并考虑切回上一 alias；build lag 超阈值 → 暂停批量写入或降级读旧索引；删除率过高 → 触发 compaction 或重建；变更（换 embedding、改切分、调参）必须跑同一套抽检集才允许放量。</li></ol><div class="code"><code>def inspect(store, golden, baseline, dim=1536):
+    s = store.stats(&quot;kb&quot;)
+    alive = s[&quot;num_entities&quot;]
+    expected = store.manifest_chunks(&quot;kb&quot;)
+    tomb = s[&quot;deleted&quot;] / max(s[&quot;inserted&quot;], 1)
+    bloat = s[&quot;index_bytes&quot;] / max(alive * dim * 4, 1)
+    ok = sum(1 for q, g in golden
+             if {d[&quot;doc_id&quot;] for d in store.search(q, k=10, partition=&quot;kb&quot;)} &amp; g)
+    recall = ok / len(golden)
+    alerts = []
+    if alive &lt; expected * 0.95:
+        alerts.append(&quot;count_gap&quot;)
+    if tomb &gt; 0.30:
+        alerts.append(&quot;tombstone_high&quot;)
+    if bloat &gt; 1.6:
+        alerts.append(&quot;index_bloat&quot;)
+    if recall &lt; baseline[&quot;recall&quot;] - 0.03:
+        alerts.append(&quot;recall_drift&quot;)
+    if store.build_lag_seconds() &gt; 900:
+        alerts.append(&quot;build_lag&quot;)
+    return {&quot;recall@10&quot;: round(recall, 3), &quot;tombstone&quot;: round(tomb, 2),
+            &quot;alerts&quot;: alerts}</code></div><p class="sub">真实场景</p><p>某项目上线三个月，看板上 QPS 平稳、p99 正常、错误率为零，但陆续有用户反馈「上周上传的文档问不到」。排查路径：先核对写入侧，SDK 调用全部返回成功；再看索引层，build lag 曲线在白天持续爬升，段数量随每日增量单调增长，删除率因频繁重刷同一批文档已接近四成而合并没跟上；再用抽检集跑效果层，recall@10 相对基线缓慢下滑，空结果率同时抬升——说明不是写入失败，而是可检索性与索引结构在退化。处置是限制批量写入速率、触发 compaction、按 alias 切到重建后的索引，并把删除率与 build lag 加进告警。另一类事故是换 embedding 时只重建了部分 partition，同一集合里混了两套向量空间，条数完全正常但相似度不可比，靠 index_version 维度的抽检对比才定位到。</p><div class="diagram"><pre class="mermaid">flowchart TD
+  A[定时巡检任务] --&gt; B[数据层 条数缺口与删除率]
+  A --&gt; C[索引层 段数 构建滞后 字节比]
+  A --&gt; D[效果层 分层抽检召回率]
+  B --&gt; E[告警与变更门禁]
+  C --&gt; E
+  D --&gt; E
+  E --&gt; F[触发合并或重建]
+  E --&gt; G[按 alias 切回上一版本]
+  E --&gt; H[暂停批量写入并限流]</pre></div><p class="sub">面试官追问</p><div class="qa"><p><strong>Q：</strong>抽检集怎么选才不会被误导？</p><p><strong>A：</strong>分层抽样而不是随机抽样，长尾类目必须有代表样本；gold 要绑定文档版本，文档改版即重标；定期用线上真实 query 补充，并结合采纳、点击、人工纠错等信号扩充难例。同时监控抽检集自身的命中率分布，如果某类目长期全对或全错，说明该层样本已经失去区分度。</p><p><strong>Q：</strong>只监控 recall 够不够？</p><p><strong>A：</strong>不够。recall 只反映「能不能捞到」，不反映「捞到之后有没有用上」，也不反映延迟和成本。要同时看空结果率、top1 分数分布漂移（阈值会跟着失效）、索引字节与构建滞后。诊断时用 trace 把召回结果和最终答案对齐，才能区分是检索问题还是生成与流程问题。</p></div></section><section class="q" id="rag-20261126-03"><h2><span class="no">07</span>全量重建 RAG 索引时导入很快、可检索却晚了数小时：导入后 compaction 与段可见性怎么算进重建窗口</h2><p class="meta-line">资深 ｜ <span class="tag">索引重建</span><span class="tag">compaction</span><span class="tag">写入放大</span><span class="tag">容量规划</span> ｜ <a href="https://github.com/milvus-io/milvus/issues/50593" target="_blank" rel="noopener">issue来源 ↗</a></p><p class="sub">为什么会有这个问题</p><p>很多团队用「导入吞吐」估算重建窗口，把写入任务完成当成索引可用；但向量库内部通常是分段写入 + 后台合并 + 建索引 + 段发布，导入只完成了日志与原始段落盘，真正可高效检索要等索引构建完成、段发布、compaction 收敛。逐条 upsert 会制造大量小段，后台合并与在线查询抢 CPU/IO，导致「导入 40 分钟、可服务却拖到几小时后」，同时在线 p99 抖动。另一个常见错误认知是只看导入任务的成功状态，不看 searchable/indexed 比例、段数量与后台任务积压，于是把「搜不到新文档」误判为应用层缓存或 embedding 问题。</p><p class="sub">怎么做</p><ol class="steps"><li>先把重建拆成四个可观测阶段：写入接收完成、段可服务（searchable）、索引构建完成（indexed）、后台 compaction 积压归零。每个阶段都设门禁，而不是只看导入任务退出码。</li><li>在 staging 用与生产同规模、同更新比例的数据做基准，记录不同 batch size 与并发下的导入吞吐、段数量增长、compaction backlog 曲线，把重建窗口算成「导入 + 索引构建 + 合并收敛 + 灰度切换 + buffer」，不要用单次小样本外推。</li><li>控制写入形态：优先用 bulk import 通道而非逐条 upsert；按时间或业务分区重建到新 collection，稳定后切别名；避免边导边大批量删除，减少 tombstone 与写放大。</li><li>做资源隔离与限流：给 compaction 设并发上限或错峰执行，让在线 query 节点与重建写入不共享同一批 CPU/IO；导入窗口避开业务高峰。</li><li>建立切换门禁与回滚：searchable 比例达标、段数量与行数比例合理、compaction backlog 低于阈值、冒烟集召回通过，才允许切别名；旧 collection 保留一段时间用于回滚。</li><li>上线后持续监控 segment 数、indexed ratio、后台任务积压、查询 p99 与召回抽检，防止「一次性重建成功、日常增量又把段数堆回去」。</li></ol><div class="code"><code>import time
+
+def rebuild(alias, new_collection, client, max_backlog=50, timeout=6 * 3600):
+    client.create_collection(new_collection)
+    bulk_import(client, new_collection, source=&quot;snapshot/latest&quot;)
+    client.flush(new_collection)
+
+    deadline = time.time() + timeout
+    last = {}
+    while time.time() &lt; deadline:
+        last = client.get_collection_metrics(new_collection)
+        ready = (
+            last[&quot;searchable_ratio&quot;] &gt;= 0.999
+            and last[&quot;indexed_ratio&quot;] &gt;= 0.999
+            and last[&quot;compaction_backlog&quot;] &lt;= max_backlog
+            and last[&quot;segment_count&quot;] &lt;= max(8, last[&quot;rows&quot;] // 200_000)
+        )
+        if ready and smoke_test(client, new_collection):
+            client.switch_alias(alias, new_collection)
+            return True
+        time.sleep(60)
+    raise TimeoutError(f&quot;rebuild not ready: {last}&quot;)</code></div><p class="sub">真实场景</p><p>某项目夜间做全量重建：导入任务约一小时就显示完成，但新文档到第二天早上才稳定可搜，期间在线查询 p99 明显抬升。排查发现写入走的是逐条 upsert，产生大量小段，后台 compaction 持续积压并与在线查询抢 IO；运维只监控了导入任务成功率，没有监控 searchable 比例与段数量。改为快照 bulk import + 新 collection 重建 + 指标门禁后，可服务时间点变得可预测，切别名前也能提前发现未就绪。</p><div class="diagram"><pre class="mermaid">flowchart TD
+  A[快照导出] --&gt; B[写入新 collection]
+  B --&gt; C[flush 并等待段可服务]
+  C --&gt; D{searchable 与 indexed 达标}
+  D -- 否 --&gt; C
+  D -- 是 --&gt; E{compaction 积压低于阈值}
+  E -- 否 --&gt; C
+  E -- 是 --&gt; F[冒烟集召回验证]
+  F -- 不通过 --&gt; C
+  F -- 通过 --&gt; G[切换别名]
+  G --&gt; H[保留旧 collection 以便回滚]</pre></div><p class="sub">面试官追问</p><div class="qa"><p><strong>Q：</strong>直接把 compaction 并发调大不就能缩短窗口吗？</p><p><strong>A：</strong>不一定。瓶颈可能在单分片、磁盘 IO 或索引构建线程，盲目提高并发会加剧写放大并与在线查询抢资源，表现为导入更快但查询长尾更差。应先定位瓶颈在 CPU、IO 还是段数量，再做限流与错峰，而不是只调大并发。</p><p><strong>Q：</strong>怎么判断「新文档搜不到」是段未发布、索引未建完，还是应用缓存？</p><p><strong>A：</strong>分层验证：先按主键做精确查询，能中说明数据已写入；再做向量查询，不能中多为索引未就绪或段未发布。对照 searchable/indexed 指标与 segment 状态；最后在应用侧带 trace 重放，确认是否命中语义缓存或旧别名。</p></div></section><section class="q" id="rag-20261126-04"><h2><span class="no">08</span>同一个问题昨天答对今天答错、trace 里检索却都命中：缺知识、行为不稳与流程缺陷怎么分层归因</h2><p class="meta-line">资深 ｜ <span class="tag">可观测性</span><span class="tag">归因</span><span class="tag">回归评测</span><span class="tag">trace</span> ｜ <a href="https://github.com/didilili/ai-agents-from-zero/blob/main/1-3-RAG%E3%80%81%E5%BE%AE%E8%B0%83%E3%80%81%E7%BB%AD%E8%AE%AD%E4%B8%8E%E6%99%BA%E8%83%BD%E4%BD%93%E9%80%89%E5%9E%8B.md" target="_blank" rel="noopener">面经来源 ↗</a></p><p class="sub">为什么会有这个问题</p><p>RAG 回答不好往往被笼统归因为「模型不行」或「知识不够」，但真实原因分布在四层：知识层（文档没入库、切块丢内容、权限过滤把证据删掉）、检索层（没召回、排名低、被噪声淹没）、生成层（有证据仍答错、prompt 遵循差、上下文截断）、流程层（路由走错、工具没调、语义缓存返回旧答案、会话状态污染）。缺少固定输入快照与分层指标时，任何单点修改都无法验证，还会出现「改 prompt 治好了个例、整体回归变差」。另一个常见错误认知是线上日志能直接复现，实际上模型温度、缓存、索引版本与 query 改写都会让结果不可复现。</p><p class="sub">怎么做</p><ol class="steps"><li>先固化可复现证据：记录原始 query、改写后 query、filters、top-k 文档 id/分数/版本、prompt 版本与 hash、模型与采样参数、工具调用链、命中的缓存键、最终答案。没有这些就无法 replay。</li><li>做分层判定而不是直接改 prompt：第一步确认 gold 证据是否在库且未被权限/切块丢弃；第二步确认是否被召回及排名；第三步做 oracle 注入，把 gold 证据直接喂给模型看能否答对；第四步检查路由、工具与缓存是否走对。</li><li>用对照实验隔离变量：同一 prompt 与证据换温度或模型；同一模型换检索结果；关闭缓存重放；固定采样参数。一次只动一个变量，避免「补了文档又改了 prompt」导致归因失效。</li><li>建立小规模分层回归集，按失败类型打标签（缺知识/未召回/生成错误/流程错误），每次改动跑同一批样本，统计各层通过率与拒答率，而不是只看整体准确率。</li><li>按归因结果修复：缺知识补库、修切块与权限；未召回调召回与改写；生成层收紧 prompt、降温度、加结构化校验或 claim 支撑检查；流程层修路由规则、工具契约与缓存键/失效策略。</li><li>把分层指标与抽检做成日常门禁：新文档入库抽检、缓存命中抽检、模型或 prompt 变更前后回归，避免同类问题反复出现。</li></ol><div class="code"><code>def diagnose(case, rag, llm):
+    q = case[&quot;query&quot;]
+    ctx = rag.retrieve(q, filters=case[&quot;filters&quot;], trace=True)
+
+    if not rag.exists(case[&quot;gold_doc_id&quot;], filters=case[&quot;filters&quot;]):
+        return &quot;缺知识: 文档未入库或被切块/权限过滤&quot;
+
+    if case[&quot;gold_doc_id&quot;] not in [d.id for d in ctx.docs]:
+        return &quot;检索层: 未召回或排名过低&quot;
+
+    oracle = llm.answer(q, evidence=[case[&quot;gold_text&quot;]], temperature=0)
+    if not case[&quot;judge&quot;](oracle, case[&quot;gold_answer&quot;]):
+        return &quot;生成层: 有证据仍答错, 查 prompt/模型/截断&quot;
+
+    base = llm.answer(q, evidence=ctx.docs, temperature=0)
+    if not case[&quot;judge&quot;](base, case[&quot;gold_answer&quot;]):
+        return &quot;上下文层: 排序或噪声导致证据被淹没&quot;
+
+    return &quot;流程层: 缓存/路由/会话状态或评测口径&quot;</code></div><p class="sub">真实场景</p><p>某项目客服 RAG 出现「同一问题上午答对、下午答错」，日志显示两次都召回了同一篇文档。分层 replay 后发现：一部分是语义缓存命中了旧答案；一部分是权限过滤把关键段落删掉后模型仍然编造；还有一部分是 query 改写把产品型号写错导致根本没召回。此前团队一直在调 prompt，整体指标没有改善；按层打标签后，修复分别落到缓存键与失效、权限与切块、改写规则与召回阈值上，回归集通过率才稳定提升。</p><div class="diagram"><pre class="mermaid">flowchart TD
+  A[收集可复现 trace] --&gt; B{gold 证据在库且未被过滤}
+  B -- 否 --&gt; C[缺知识: 补库 切块 权限]
+  B -- 是 --&gt; D{gold 证据被召回且排名靠前}
+  D -- 否 --&gt; E[检索层: 改写 召回 排序]
+  D -- 是 --&gt; F{oracle 注入能否答对}
+  F -- 否 --&gt; G[生成层: prompt 模型 截断]
+  F -- 是 --&gt; H{使用真实上下文能否答对}
+  H -- 否 --&gt; I[上下文层: 排序 噪声 压缩]
+  H -- 是 --&gt; J[流程层: 缓存 路由 会话状态]</pre></div><p class="sub">面试官追问</p><div class="qa"><p><strong>Q：</strong>怎么区分「检索没召回到」和「召回了但模型没用」？</p><p><strong>A：</strong>做 oracle 注入：把 gold 片段直接放在上下文首位喂给模型，若答对说明生成层可用，问题在召回或排序；若仍答错则查 prompt 约束、上下文长度截断与模型参数。再用原始召回结果对照，就能把两层拆开。</p><p><strong>Q：</strong>线上没有人工标注，怎么低成本做归因？</p><p><strong>A：</strong>用 LLM-as-judge 对「证据是否充分」「答案是否被证据支撑」打分，并人工抽检校准 judge 的一致性；按 query 聚类采样而不是全量跑，优先覆盖高频与高风险意图，同时保留原始 trace 以便复核。</p></div></section><div class="topic-head"><span>FastAPI 专题</span></div><section class="q" id="fastapi-20261126-01"><h2><span class="no">09</span>滚动发布时 LLM 流式响应被拦腰截断：SIGTERM 到 lifespan shutdown 之间，在途请求和后台任务谁来兜</h2><p class="meta-line">资深 ｜ <span class="tag">lifespan</span><span class="tag">graceful-shutdown</span><span class="tag">streaming</span><span class="tag">uvicorn</span></p><p class="sub">为什么会有这个问题</p><p>多数人默认「容器收到 SIGTERM 会自动优雅退出，等请求跑完」，这套假设在流式 LLM 接口上几乎必然失效。第一，uvicorn 排空连接的等待上限由 timeout-graceful-shutdown 决定，老版本甚至没有该参数；Gunicorn 侧还有 HTTP 流的 graceful-timeout，超时直接 SIGKILL。LLM 一次生成长回答常在几十秒到几分钟，正好落在被强杀的时间窗口里。第二，lifespan 的 shutdown 阶段只在连接排空后执行，被 SIGKILL 的进程一行 shutdown 代码都不会跑，连接池没关、进程内 BackgroundTasks 全部丢失，而且不会有错误日志。第三，K8s 从 Endpoints 摘除和发送 SIGTERM 是并行发生的，存在新请求仍打到正在退出 pod 的窗口期。最恶劣的症状是客户端拿到 200 和半截正文：重试逻辑不触发、前端只表现为一直转圈，比直接 503 难排查一个数量级。</p><p class="sub">怎么做</p><ol class="steps"><li>先摘除流量再退出：单独提供 /healthz/ready，draining 置位后返回 503，readiness probe 因此失败；同时 ASGI 层对新的业务请求直接返回 503 和 Retry-After，避免窗口期接到新请求。</li><li>在 preStop 里 sleep 的时间要不少于摘除流量在负载均衡各节点的传播时间，保证 SIGTERM 到达前新请求已停；stuck 的 preStop 会拖慢发布，需要与 rollout 的 progressDeadline 对齐。</li><li>把 timeout-graceful-shutdown 与 Gunicorn 的 graceful-timeout 显式设为大于流式请求 P99.9 的值，不要使用默认值；两个参数的先后关系要理清：Gunicorn 的值必须大于 uvicorn 的值，否则在 worker 还活着时就被强杀。</li><li>自己做排空：在 ASGI 中间件层统计在途请求数，进入 draining 后等待计数归零或达到上限，再置 server.should_exit 交给 uvicorn 走正常退出；不要指望 lifespan 里等待，那时排空已经结束，或者根本没有执行。</li><li>流式生成器要在 finally 里补结束帧或 error 帧，让客户端能区分「正常结束」和「被截断」，否则只能靠超时兜底。</li><li>耗时不可控的任务（长文档处理、批量 embedding）不要塞进请求进程，改成任务 ID 加队列，前台轮询或重连；进程内 BackgroundTasks 只用于可丢弃的事。</li><li>lifespan 内按反序关停：先确认 draining、再等 in-flight 清零、随后 aclose 上游 client、最后关闭 DB pool 并写一条 shutdown 完成日志；线上排查时最重要的证据就是这条日志是否存在。</li></ol><div class="code"><code>import asyncio
+from fastapi import FastAPI
+from fastapi.responses import JSONResponse
+
+class Drain:
+    def __init__(self):
+        self.draining = False
+        self.inflight = 0
+        self.idle = asyncio.Event(); self.idle.set()
+    def enter(self):
+        self.inflight += 1; self.idle.clear()
+    def exit(self):
+        self.inflight -= 1
+        if self.inflight == 0: self.idle.set()
+
+DRAIN = Drain()
+
+async def drain_mw(app, scope, receive, send):
+    if scope[&#x27;type&#x27;] != &#x27;http&#x27; or scope[&#x27;path&#x27;].startswith(&#x27;/healthz&#x27;):
+        return await app(scope, receive, send)
+    if DRAIN.draining:
+        resp = JSONResponse({&#x27;error&#x27;: &#x27;draining&#x27;}, status_code=503,
+                            headers={&#x27;Retry-After&#x27;: &#x27;5&#x27;})
+        return await resp(scope, receive, send)
+    DRAIN.enter(); done = False
+    async def send_wrapper(msg):
+        nonlocal done
+        if msg[&#x27;type&#x27;] == &#x27;http.response.body&#x27; and not msg.get(&#x27;more_body&#x27;):
+            done = True; DRAIN.exit()
+        await send(msg)
+    try:
+        await app(scope, receive, send_wrapper)
+    finally:
+        if not done: DRAIN.exit()  # 客户端中断或异常路径
+
+async def drain_and_exit(server, timeout: float = 180):
+    DRAIN.draining = True
+    try:
+        await asyncio.wait_for(DRAIN.idle.wait(), timeout=timeout)
+    finally:
+        server.should_exit = True</code></div><p class="sub">真实场景</p><p>某项目用 Gunicorn 加 uvicorn worker 部署 4 进程，接口是流式问答。每次滚动发布，监控都能看到一小部分请求返回 200，但正文明显不完整，前端一直停在加载态；同时后台用 BackgroundTasks 写的会话摘要记录，在发布窗口内出现丢失。排查路径：先把 SIGTERM 时间点与网关侧 ingress 日志对齐，发现 pod 收到 TERM 后仍有新请求进来，说明摘除流量存在延迟窗口；再看进程退出日志，一部分 pod 完全没有 shutdown 阶段的记录，判定为 graceful timeout 到期后被 SIGKILL；最后核对配置，Gunicorn graceful-timeout 是默认值，明显小于流式响应的 P99 时长。</p><div class="diagram"><pre class="mermaid">sequenceDiagram
+    participant K8s
+    participant Pod
+    participant Client
+    K8s-&gt;&gt;Pod: 从 Endpoints 摘除并发送 SIGTERM
+    Pod-&gt;&gt;Pod: 置 draining 状态并让 readiness 失败
+    Pod-&gt;&gt;Client: 新请求返回 503 与 Retry-After
+    Client-&gt;&gt;Pod: 在途流式请求继续读完
+    Pod-&gt;&gt;Client: 生成器 finally 发送结束帧
+    Pod-&gt;&gt;Pod: inflight 归零后置 should_exit
+    Pod-&gt;&gt;Pod: lifespan 关闭连接池与上游客户端</pre></div><p class="sub">面试官追问</p><div class="qa"><p><strong>Q：</strong>为什么不能用 @app.middleware(&#x27;http&#x27;) 里的 call_next 前后计数在途请求？</p><p><strong>A：</strong>@app.middleware(&#x27;http&#x27;) 底层是 BaseHTTPMiddleware，await call_next 返回的是 Response 对象，此时响应体还没真正发出去，尤其是 StreamingResponse 的 body 会在之后异步迭代。用它做计数会在流式响应刚开始时就减一，排空判断提前成立，结果还是被截断。要通过包装 ASGI 的 send，以最后一个 more_body 为 False 的 http.response.body 帧作为真正结束标志。</p><p><strong>Q：</strong>进程被强杀时，除了请求被截断还有什么隐患？</p><p><strong>A：</strong>lifespan 的 shutdown 不执行，上游 AsyncClient 和 DB 连接池没有关闭，连接在服务端仍然保留到超时，重连风暴会打到刚起来的 pod；进程内的 BackgroundTasks、定时清理、指标 flush 全部丢失且没有痕迹。所以凡是有副作用的写入，都不能只依赖后台任务，要在请求内完成持久化，或者投递到持久队列。</p></div></section><section class="q" id="fastapi-20261126-02"><h2><span class="no">10</span>客户端超时重发，同一次问答扣了两次费、写了两条会话：幂等键、请求指纹与在途并发怎么收口</h2><p class="meta-line">进阶 ｜ <span class="tag">idempotency</span><span class="tag">retry</span><span class="tag">depends</span><span class="tag">postgres</span></p><p class="sub">为什么会有这个问题</p><p>超时不等于失败。移动端 SDK 或网关在 60 秒拿不到响应时会重发，此时服务端第一次请求可能还在跑，也可能已经成功只是响应慢，没有幂等键就只能当成两次独立请求处理：两次调用 LLM、两份账单、两条会话。常见错误认知是用请求体哈希做去重，这有三个坑：用户先后问同样的问题是合法业务，应该计费两次；请求体里带 timestamp 或 nonce 时哈希永远不命中；哈希无法表达去重的时间窗口。第二个坑是并发同键：两个相同 key 同时到达，双方都判定「记录不存在」，然后都执行，或者唯一索引冲突直接冒泡成 500。第三个坑是流式场景，第一次已经吐了一半 token，重试时既不能续上也不能重放半截内容。</p><p class="sub">怎么做</p><ol class="steps"><li>定契约：客户端必须带 Idempotency-Key（建议 UUID，一次用户动作生成一次，重试沿用），服务端用 (tenant, key) 做唯一索引；缺失时按非幂等路径处理或直接 400，取决于产品能否接受重复计费。</li><li>建幂等表：key、tenant、route、fingerprint、status（in_progress / succeeded / failed_retryable）、status_code、response_body、updated_at、expires_at。写入与业务数据放同一个库，保证能在同一事务里提交，跨服务调用再补 outbox。</li><li>抢占用 INSERT ... ON CONFLICT DO NOTHING，看影响行数决定是执行者还是观察者；观察者按状态分流：succeeded 直接回放存储的状态码和 body；in_progress 且租约未过期返回 409 加 Retry-After；租约过期则用带条件的 UPDATE 抢占，防止进程崩溃后这条键永久卡住。</li><li>拿到执行权后必须校验指纹：同 key 换了请求体说明客户端复用错了，返回 422，绝不能用旧结果冒充新请求的响应。指纹用 route 加规范化后的 body 计算，并排除签名、时间戳这类易变字段。</li><li>业务成功与幂等表置 succeeded 在同一事务提交，或者在 handler 里先写 usage 记录再更新状态；调用上游 LLM 时把幂等键透传成上游的 request 标识，上游侧再去一次重，形成双保险。</li><li>流式接口不缓存 token 流，只落最终全文与 usage；重试方拿到 409 后改为轮询 GET /runs/{key} 或依赖 SSE 的 Last-Event-ID 续传，避免在半截流上做幂等。</li><li>过期清理由定时任务批量删除，同时在幂等表上监控 in_progress 超期比例，这个指标能直接暴露进程崩溃和上游卡死。</li></ol><div class="code"><code>import hashlib
+from datetime import timedelta
+from fastapi import Depends, Header, HTTPException, Request
+
+LEASE = timedelta(seconds=120)
+
+async def idempotency(
+    request: Request,
+    key: str | None = Header(default=None, alias=&#x27;Idempotency-Key&#x27;),
+    db=Depends(get_db),
+):
+    if key is None:
+        yield None
+        return
+    body = await request.body()
+    fp = hashlib.sha256(request.url.path.encode() + body).hexdigest()
+    row = await claim_or_get(db, key, fp, LEASE)  # INSERT ON CONFLICT DO NOTHING
+    if row.status == &#x27;succeeded&#x27;:
+        raise ReplayResponse(row.status_code, row.response_body)
+    if row.status == &#x27;in_progress&#x27;:
+        raise HTTPException(409, headers={&#x27;Retry-After&#x27;: &#x27;2&#x27;})
+    if row.fingerprint != fp:
+        raise HTTPException(422, &#x27;Idempotency-Key reused with different payload&#x27;)
+    try:
+        yield row
+    except Exception:
+        await mark_failed(db, key)
+        raise
+    await mark_succeeded(db, key,
+                         request.state.idem_status,
+                         request.state.idem_body)
+
+# 路由里：先 request.state.idem_status/body 落值，再 return
+# 部署侧：网关对 POST 的重试必须透传 Idempotency-Key</code></div><p class="sub">真实场景</p><p>某项目接入移动端 SDK，SDK 默认超时 60 秒并对 POST 重试 3 次。上线长回答功能后，账单里出现同一段 prompt 连续多次调用，会话表中也有多条内容一致但 id 不同的记录。排查路径：先按用户 ID 拉出同一分钟的入站日志，发现同一个业务动作对应多条 X-Request-Id，说明是客户端重发而不是上游重试；再看第一次请求的耗时分布，多数超过 60 秒且最终成功，确认是「成功的慢请求」被客户端判为失败；核对请求头，POST 上没有携带任何幂等键，服务端也没有去重表。压测阶段还复现了并发同键双双执行、以及崩溃后同一键永久卡在 in_progress 两种边界。</p><div class="diagram"><pre class="mermaid">flowchart TD
+    A[收到带 Idempotency-Key 的请求] --&gt; B[计算请求指纹]
+    B --&gt; C{唯一索引抢占是否成功}
+    C --&gt;|成功| D[执行业务并写入幂等表]
+    C --&gt;|冲突| E{读取已有记录状态}
+    E --&gt;|succeeded| F[回放存储的状态码与响应体]
+    E --&gt;|in_progress 且租约未过期| G[返回 409 与 Retry-After]
+    E --&gt;|in_progress 且租约已过期| H[条件更新抢租约后重新执行]
+    E --&gt;|指纹不一致| I[返回 422 拒绝复用键]</pre></div><p class="sub">面试官追问</p><div class="qa"><p><strong>Q：</strong>业务已经把 LLM 调成功，但在更新幂等表之前进程崩了，重试会怎样？</p><p><strong>A：</strong>这条键会停在 in_progress，租约过期后重试方会抢占并再次执行，于是重复扣费。缓解要三道：一是调用上游时把幂等键透传成上游可识别的 request 标识，让上游也去重；二是把扣费落到独立的 usage 表，以业务键做唯一索引，重复写入自然冲突；三是 in_progress 超期的记录不要自动重放，转入告警与对账流程，宁可让用户重试一次，也不要静默重复计费。</p><p><strong>Q：</strong>为什么不用 Redis SETNX 直接把 key 锁住，而要落库？</p><p><strong>A：</strong>Redis 可以做第一层锁压低数据库压力，但它不能作为权威记录：主从切换或淘汰策略可能丢键，过期后重试方拿不到上次的结果，只能重新执行，幂等就退化成限流。正确做法是 Redis 承担短时并发控制、数据库承担持久状态，并且幂等结果要和业务写入保持同源，才能在一个事务里提交。</p></div></section>
+<footer>
+<p>每天 08:00 更新 ｜ 面向 3–5 年经验的应用开发 ｜ 题目永久去重，持续累积</p>
+<p>往期：<a href="2026-11-25.html">11-25</a> ｜ <a href="2026-11-24.html">11-24</a> ｜ <a href="2026-11-23.html">11-23</a> ｜ <a href="2026-11-22.html">11-22</a> ｜ <a href="2026-11-21.html">11-21</a> ｜ <a href="2026-11-20.html">11-20</a> ｜ <a href="bank/index.html">题库</a></p>
+</footer>
+</main>
+<script src="vendor/mermaid.min.js"></script><script>mermaid.initialize({startOnLoad:true,theme:"neutral",securityLevel:"loose"});</script>
+</body>
+</html>

@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-26 13:27",
+ "updated": "2026-11-27 13:22",
  "questions": [
   {
    "id": "agent-20261120-01",
@@ -1187,6 +1187,176 @@
    "source_type": "文档",
    "source_url": "",
    "path": "fastapi/fastapi-20261126-02.md",
+   "has_diagram": true
+  },
+  {
+   "id": "agent-20261127-01",
+   "title": "多 Agent 失败只有一句最终报错：步骤级证据链与反事实归因怎么建",
+   "topic": "agent",
+   "difficulty": "资深",
+   "tags": [
+    "多Agent",
+    "失败归因",
+    "可观测性",
+    "eval"
+   ],
+   "date": "2026-11-27",
+   "source_type": "面经",
+   "source_url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/multi-agent/evaluation.md",
+   "path": "agent/agent-20261127-01.md",
+   "has_diagram": true
+  },
+  {
+   "id": "agent-20261127-02",
+   "title": "第三方 MCP Server 在工具描述里夹带指令：工具投毒、描述漂移与跨工具越权串联怎么防",
+   "topic": "agent",
+   "difficulty": "资深",
+   "tags": [
+    "MCP",
+    "安全",
+    "权限",
+    "审计"
+   ],
+   "date": "2026-11-27",
+   "source_type": "面经",
+   "source_url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md",
+   "path": "agent/agent-20261127-02.md",
+   "has_diagram": true
+  },
+  {
+   "id": "agent-20261127-03",
+   "title": "语音 Agent 被打断后仍在朗读：VAD 误触发、TTS 回声与半句意图的取消传播怎么处理",
+   "topic": "agent",
+   "difficulty": "资深",
+   "tags": [
+    "实时语音",
+    "多模态",
+    "取消传播",
+    "时序对齐"
+   ],
+   "date": "2026-11-27",
+   "source_type": "面经",
+   "source_url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/21-multimodal-agents/README.md",
+   "path": "agent/agent-20261127-03.md",
+   "has_diagram": true
+  },
+  {
+   "id": "agent-20261127-04",
+   "title": "工具返回空结果后 Agent 换词重试同一查询：空结果语义、无进展检测与强制收敛怎么设计",
+   "topic": "agent",
+   "difficulty": "进阶",
+   "tags": [
+    "循环控制",
+    "工具调用",
+    "无进展检测",
+    "预算"
+   ],
+   "date": "2026-11-27",
+   "source_type": "面经",
+   "source_url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/22-agent-planning-reflection/README.md",
+   "path": "agent/agent-20261127-04.md",
+   "has_diagram": true
+  },
+  {
+   "id": "rag-20261127-01",
+   "title": "离线 Recall@10 涨到 0.9，线上答案正确率却没动：检索评估集的标注方式与指标漏斗怎么对齐",
+   "topic": "rag",
+   "difficulty": "资深",
+   "tags": [
+    "评估体系",
+    "Recall@K",
+    "标注一致性",
+    "漏斗归因"
+   ],
+   "date": "2026-11-27",
+   "source_type": "面经",
+   "source_url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/06-vector-index-optimization/README.md",
+   "path": "rag/rag-20261127-01.md",
+   "has_diagram": true
+  },
+  {
+   "id": "rag-20261127-02",
+   "title": "榜单分数最高、上线后型号与条款后段却搜不到：embedding 选型的领域实验与 tokenizer 截断边界怎么验",
+   "topic": "rag",
+   "difficulty": "进阶",
+   "tags": [
+    "embedding选型",
+    "tokenizer截断",
+    "非对称检索",
+    "影子索引"
+   ],
+   "date": "2026-11-27",
+   "source_type": "面经",
+   "source_url": "https://github.com/cdavid817/agent-interview/blob/main/docs/02-capabilities/rag/embedding-vector-1.md",
+   "path": "rag/rag-20261127-02.md",
+   "has_diagram": true
+  },
+  {
+   "id": "rag-20261127-03",
+   "title": "用户追问一句「那它保修多久」后检索就失灵：多轮 query 重写、漂移检测与回退怎么设计",
+   "topic": "rag",
+   "difficulty": "资深",
+   "tags": [
+    "多轮对话",
+    "query rewrite",
+    "漂移检测",
+    "RRF"
+   ],
+   "date": "2026-11-27",
+   "source_type": "面经",
+   "source_url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md",
+   "path": "rag/rag-20261127-03.md",
+   "has_diagram": true
+  },
+  {
+   "id": "rag-20261127-04",
+   "title": "dense 的 cosine 和 BM25 的分直接加权排序后，精确命中的那条反而掉出窗口：融合函数与分路深度怎么定",
+   "topic": "rag",
+   "difficulty": "进阶",
+   "tags": [
+    "混合检索",
+    "融合函数",
+    "分数归一化",
+    "参数调优"
+   ],
+   "date": "2026-11-27",
+   "source_type": "面经",
+   "source_url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/06-vector-index-optimization/README.md",
+   "path": "rag/rag-20261127-04.md",
+   "has_diagram": true
+  },
+  {
+   "id": "fastapi-20261127-01",
+   "title": "开启 GZip 后流式接口首 token 延迟从百毫秒级涨到数秒：压缩中间件与代理缓冲的边界怎么定",
+   "topic": "fastapi",
+   "difficulty": "资深",
+   "tags": [
+    "StreamingResponse",
+    "中间件",
+    "SSE",
+    "性能"
+   ],
+   "date": "2026-11-27",
+   "source_type": "文档",
+   "source_url": "",
+   "path": "fastapi/fastapi-20261127-01.md",
+   "has_diagram": true
+  },
+  {
+   "id": "fastapi-20261127-02",
+   "title": "多 worker 下每个进程都跑对账定时任务：重复扣费与重复消息，单实例调度该放哪一层",
+   "topic": "fastapi",
+   "difficulty": "资深",
+   "tags": [
+    "lifespan",
+    "多进程",
+    "后台任务",
+    "分布式锁"
+   ],
+   "date": "2026-11-27",
+   "source_type": "文档",
+   "source_url": "",
+   "path": "fastapi/fastapi-20261127-02.md",
    "has_diagram": true
   }
  ]

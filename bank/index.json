@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-27 13:22",
+ "updated": "2026-11-28 13:01",
  "questions": [
   {
    "id": "agent-20261120-01",
@@ -1357,6 +1357,176 @@
    "source_type": "文档",
    "source_url": "",
    "path": "fastapi/fastapi-20261127-02.md",
+   "has_diagram": true
+  },
+  {
+   "id": "agent-20261128-01",
+   "title": "GUI Agent 动作已执行却判为失败：截图滞后、坐标过期与重复副作用怎么防",
+   "topic": "agent",
+   "difficulty": "资深",
+   "tags": [
+    "GUI-Agent",
+    "Computer-Use",
+    "幂等",
+    "状态确认"
+   ],
+   "date": "2026-11-28",
+   "source_type": "面经",
+   "source_url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/21-multimodal-agents/README.md",
+   "path": "agent/agent-20261128-01.md",
+   "has_diagram": true
+  },
+  {
+   "id": "agent-20261128-02",
+   "title": "离线 eval 分数上涨而线上投诉变多：判官偏差、只判终态与评测口径怎么校准",
+   "topic": "agent",
+   "difficulty": "进阶",
+   "tags": [
+    "eval",
+    "LLM-as-judge",
+    "指标设计",
+    "回归"
+   ],
+   "date": "2026-11-28",
+   "source_type": "面经",
+   "source_url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/12-frameworks-tools/README.md",
+   "path": "agent/agent-20261128-02.md",
+   "has_diagram": true
+  },
+  {
+   "id": "agent-20261128-03",
+   "title": "MCP Server 把用户令牌透传给下游：confused deputy、audience 校验与按用户降权怎么落地",
+   "topic": "agent",
+   "difficulty": "资深",
+   "tags": [
+    "MCP",
+    "OAuth",
+    "多租户",
+    "审计"
+   ],
+   "date": "2026-11-28",
+   "source_type": "面经",
+   "source_url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md",
+   "path": "agent/agent-20261128-03.md",
+   "has_diagram": true
+  },
+  {
+   "id": "agent-20261128-04",
+   "title": "多图输入被并行预处理打乱顺序：指代错配、缓存键碰撞与引用表怎么治",
+   "topic": "agent",
+   "difficulty": "进阶",
+   "tags": [
+    "多模态",
+    "上下文拼装",
+    "缓存",
+    "回归测试"
+   ],
+   "date": "2026-11-28",
+   "source_type": "面经",
+   "source_url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/21-multimodal-agents/README.md",
+   "path": "agent/agent-20261128-04.md",
+   "has_diagram": true
+  },
+  {
+   "id": "rag-20261128-01",
+   "title": "中文提问检索英文技术文档总是排不进 top10：跨语言对齐、分路检索与分层评估怎么落地",
+   "topic": "rag",
+   "difficulty": "进阶",
+   "tags": [
+    "多语言检索",
+    "混合检索",
+    "embedding选型",
+    "分层评估"
+   ],
+   "date": "2026-11-28",
+   "source_type": "文档",
+   "source_url": "",
+   "path": "rag/rag-20261128-01.md",
+   "has_diagram": true
+  },
+  {
+   "id": "rag-20261128-02",
+   "title": "把检索从必走链路改成按需工具调用后，模型有时不查直接编、有时同一问题反复查：触发、幂等与预算怎么定",
+   "topic": "rag",
+   "difficulty": "资深",
+   "tags": [
+    "agentic-rag",
+    "工具调用",
+    "预算控制",
+    "幻觉治理"
+   ],
+   "date": "2026-11-28",
+   "source_type": "面经",
+   "source_url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/14-mcp-skill-systems/README.md",
+   "path": "rag/rag-20261128-02.md",
+   "has_diagram": true
+  },
+  {
+   "id": "rag-20261128-03",
+   "title": "召回窗口被同一文档的多个版本和近似重复片段占满：去重指纹、版本收敛与多样性重排怎么设计",
+   "topic": "rag",
+   "difficulty": "资深",
+   "tags": [
+    "检索多样性",
+    "去重与版本治理",
+    "MMR",
+    "证据覆盖"
+   ],
+   "date": "2026-11-28",
+   "source_type": "面经",
+   "source_url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/03-rag-system/README.md",
+   "path": "rag/rag-20261128-03.md",
+   "has_diagram": true
+  },
+  {
+   "id": "rag-20261128-04",
+   "title": "用户上传的文档里夹带指令，模型照着执行并外发数据：内容与指令的隔离、权限下推与回归用例怎么建",
+   "topic": "rag",
+   "difficulty": "资深",
+   "tags": [
+    "间接提示注入",
+    "信任边界",
+    "ACL 下推",
+    "回归评估"
+   ],
+   "date": "2026-11-28",
+   "source_type": "面经",
+   "source_url": "https://github.com/guocong-bincai/ai-interview-guide/blob/main/docs/20-rag-advanced-optimization/README.md",
+   "path": "rag/rag-20261128-04.md",
+   "has_diagram": true
+  },
+  {
+   "id": "fastapi-20261128-01",
+   "title": "扩容后新实例探针已通过，请求却成片 5xx：lifespan 就绪窗口、探针分工与冷启动闸门",
+   "topic": "fastapi",
+   "difficulty": "资深",
+   "tags": [
+    "lifespan",
+    "健康检查",
+    "部署",
+    "冷启动"
+   ],
+   "date": "2026-11-28",
+   "source_type": "文档",
+   "source_url": "",
+   "path": "fastapi/fastapi-20261128-01.md",
+   "has_diagram": true
+  },
+  {
+   "id": "fastapi-20261128-02",
+   "title": "一次 /chat 请求打开三个数据库会话：Depends 缓存键、Security 与 use_cache 的边界",
+   "topic": "fastapi",
+   "difficulty": "进阶",
+   "tags": [
+    "Depends",
+    "依赖缓存",
+    "连接池",
+    "事务边界"
+   ],
+   "date": "2026-11-28",
+   "source_type": "文档",
+   "source_url": "",
+   "path": "fastapi/fastapi-20261128-02.md",
    "has_diagram": true
   }
  ]
